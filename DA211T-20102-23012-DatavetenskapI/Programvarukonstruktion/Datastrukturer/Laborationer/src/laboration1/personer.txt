@@ -1,0 +1,10 @@
+531019-1234,Sven,Andersson
+690320-2345,Elin,Gustavsson
+600930-3456,Roland,Ek
+840102-4567,Anna,Lundh
+770123-5678,Martin,Andersson
+800221-6789,Alma,Dahl
+770610-7890,Steve,Nelson
+660503-8901,Birgitta,Asp
+290129-9012,Sten,Stensson
+861213-0123,Eva,Flood
