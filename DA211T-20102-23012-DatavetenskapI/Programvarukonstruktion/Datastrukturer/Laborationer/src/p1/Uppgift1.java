@@ -4,6 +4,7 @@ public class Uppgift1
 {
     public static void bubbleSort(long[] array)
     {
+        // TODO
     }
 
     public static void printArray(long[] array)
