@@ -4,18 +4,24 @@ public class Uppgift1
 {
     public static void bubbleSort(long[] array)
     {
-        // TODO
-    }
-
-    public static void printArray(long[] array)
-    {
-        for (long element : array)
-            System.out.println(element);
+        for (int i = 0; i < array.length; i++)
+        {
+            System.out.println("iteration (i)" + i);
+            for (int j = array.length - 1; j > i; j--)
+            {
+                System.out.println("iteration (j)" + j);
+                if (array[j] < array[j-1])
+                    Utility.swap(array, j, j-1);
+            }
+        }
     }
 
     public static void main(String[] argv)
     {
         long[] array = {7, 11, 3, 5, 2 };
-        printArray(array);
+        Utility.printArray(array);
+
+        bubbleSort(array);
+        Utility.printArray(array);
     }
 }
