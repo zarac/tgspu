@@ -54,9 +54,13 @@ public class Board extends JPanel implements Runnable, KeyListener {
         this.addKeyListener(this);
         setBackground(Color.black);
 
-        ball = getImage("dot.png");
-        apple = getImage("apple.png");
-        head = getImage("head.png");
+        ball = getImage("static/snake/dot.png");
+        apple = getImage("static/snake/apple.png");
+        head = getImage("static/snake/head.png");
+
+        //ball = getImage("dot.png");
+        //apple = getImage("apple.png");
+        //head = getImage("head.png");
 
         setFocusable(true);
         CardLayout cl = (CardLayout)(cards.getLayout());
@@ -70,7 +74,8 @@ public class Board extends JPanel implements Runnable, KeyListener {
      * @return      Image objektet som ska sättas till instans variablen.
      */
     public Image getImage(String in){
-        return new ImageIcon(this.getClass().getResource(in)).getImage();
+        return new ImageIcon(in).getImage();
+        //return new ImageIcon(this.getClass().getResource(in)).getImage();
     }
     /**
      * initGame initierar spelet.

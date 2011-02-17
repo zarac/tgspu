@@ -17,7 +17,7 @@ o Buildmappen måste vara satt till "/bin", (det ligger bilder där).
 
 o Programmet startas ifrån "datavetenskapht10projekt/Main.java".
 
-o Hitta hjälp och mer information i form av javadoc (/doc) och Systemmanual.doc.
+o Hitta hjälp och mer information i form av javadoc (/doc), UML (uml.html) och Systemmanual.doc.
 
 
 GJORTS AV
