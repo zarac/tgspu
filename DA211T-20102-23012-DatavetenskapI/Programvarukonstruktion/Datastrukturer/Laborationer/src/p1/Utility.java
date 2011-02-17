@@ -2,6 +2,11 @@ package p1;
 
 public class Utility
 {
+    public static void log(String text)
+    {
+        System.out.println(text);
+    }
+
     public static void printArray(long[] array)
     {
         for (long element : array)
