@@ -1,0 +1,249 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+Bet	.\Hand.java	/^    public class Bet extends JLabel$/;"	c	class:Hand
+BlackJack	.\BlackJack.java	/^    public BlackJack()$/;"	m	class:BlackJack
+BlackJack	.\BlackJack.java	/^public class BlackJack extends JPanel$/;"	c
+BlackJackButton	.\BlackJack.java	/^        public BlackJackButton(String p_text)$/;"	m	class:BlackJack.BlackJackButton
+BlackJackButton	.\BlackJack.java	/^    public class BlackJackButton extends JLabel implements MouseListener$/;"	c	class:BlackJack
+BlackJackDatabase	.\BlackJackDatabase.java	/^    public BlackJackDatabase(String p_host, int p_port, String p_username, String p_password, String p_databaseName)$/;"	m	class:BlackJackDatabase
+BlackJackDatabase	.\BlackJackDatabase.java	/^public class BlackJackDatabase extends MySQLDatabase$/;"	c
+BlackJackDeck	.\BlackJackDeck.java	/^    public BlackJackDeck()$/;"	m	class:BlackJackDeck
+BlackJackDeck	.\BlackJackDeck.java	/^public class BlackJackDeck extends ArrayList<Card>$/;"	c
+BlackJackFrame	.\BlackJack.java	/^        public BlackJackFrame()$/;"	m	class:BlackJack.BlackJackFrame
+BlackJackFrame	.\BlackJack.java	/^    private class BlackJackFrame extends JFrame$/;"	c	class:BlackJack
+BlackJackTable	.\BlackJackTable.java	/^    public BlackJackTable(BlackJackDatabase p_database, House p_house, int p_numSlots)$/;"	m	class:BlackJackTable
+BlackJackTable	.\BlackJackTable.java	/^public class BlackJackTable extends JPanel$/;"	c
+Card	.\Card.java	/^    public Card(int p_value, char p_suite)$/;"	m	class:Card
+Card	.\Card.java	/^class Card extends JPanel$/;"	c
+CloseButton	.\BlackJack.java	/^        public CloseButton()$/;"	m	class:BlackJack.CloseButton
+CloseButton	.\BlackJack.java	/^    public class CloseButton extends BlackJackButton$/;"	c	class:BlackJack
+Console	.\BlackJack.java	/^        public Console()$/;"	m	class:BlackJack.Console
+Console	.\BlackJack.java	/^    public class Console extends JPanel implements KeyListener$/;"	c	class:BlackJack
+Dealer	.\Dealer.java	/^    public Dealer(BlackJackTable table)$/;"	m	class:Dealer
+Dealer	.\Dealer.java	/^public class Dealer$/;"	c
+ExitButton	.\Slot.java	/^        public ExitButton()$/;"	m	class:Slot.ExitButton
+ExitButton	.\Slot.java	/^    private class ExitButton extends JLabel implements MouseListener$/;"	c	class:Slot
+Hand	.\Hand.java	/^    public Hand(Slot slot)$/;"	m	class:Hand
+Hand	.\Hand.java	/^class Hand extends JPanel implements ActionListener, ChangeListener$/;"	c
+House	.\House.java	/^    public House()$/;"	m	class:House
+House	.\House.java	/^public class House extends JPanel$/;"	c
+KeyBindings	.\BlackJack.java	/^    public class KeyBindings implements KeyListener$/;"	c	class:BlackJack
+Logger	.\Logger.java	/^    public Logger(Object p_object)$/;"	m	class:Logger
+Logger	.\Logger.java	/^class Logger$/;"	c
+MySQLDatabase	.\MySQLDatabase.java	/^    public MySQLDatabase(String p_host, int p_port, String p_username, String p_password, String p_databaseName)$/;"	m	class:MySQLDatabase
+MySQLDatabase	.\MySQLDatabase.java	/^public class MySQLDatabase$/;"	c
+NameTextField	.\Slot.java	/^    private class NameTextField extends JTextField implements ActionListener$/;"	c	class:Slot
+Player	.\Player.java	/^    public Player(String name, int stack)$/;"	m	class:Player
+Player	.\Player.java	/^public class Player$/;"	c
+RevalidateButton	.\BlackJack.java	/^        public RevalidateButton()$/;"	m	class:BlackJack.RevalidateButton
+RevalidateButton	.\BlackJack.java	/^    public class RevalidateButton extends BlackJackButton$/;"	c	class:BlackJack
+Slot	.\Slot.java	/^    public Slot(BlackJackDatabase p_database, BlackJackTable table)$/;"	m	class:Slot
+Slot	.\Slot.java	/^public class Slot extends JPanel$/;"	c
+StartButton	.\BlackJack.java	/^        public StartButton()$/;"	m	class:BlackJack.StartButton
+StartButton	.\BlackJack.java	/^    public class StartButton extends BlackJackButton$/;"	c	class:BlackJack
+TestButton	.\BlackJack.java	/^        public TestButton()$/;"	m	class:BlackJack.TestButton
+TestButton	.\BlackJack.java	/^    public class TestButton extends BlackJackButton$/;"	c	class:BlackJack
+Users	.\blackjack.sql	/^CREATE TABLE Users ($/;"	t
+Users.ID	.\blackjack.sql	/^    ID int,$/;"	F
+Users.Name	.\blackjack.sql	/^    Name varchar,$/;"	F
+Users.Stack	.\blackjack.sql	/^    Stack int$/;"	F
+actionPerformed	.\Hand.java	/^    public void actionPerformed(ActionEvent e)$/;"	m	class:Hand
+actionPerformed	.\Slot.java	/^        public void actionPerformed(ActionEvent e)$/;"	m	class:Slot.NameTextField
+addCard	.\Hand.java	/^    public void addCard(Card card)$/;"	m	class:Hand
+addCard	.\House.java	/^    public void addCard(Card card)$/;"	m	class:House
+addCards	.\Dealer.java	/^    public void addCards(ArrayList<Card> cards)$/;"	m	class:Dealer
+addHand	.\Slot.java	/^    public void addHand(Hand hand)$/;"	m	class:Slot
+addSlot	.\BlackJackTable.java	/^    public void addSlot(Slot p_slot)$/;"	m	class:BlackJackTable
+betField	.\Hand.java	/^    private JLabel betField = new JLabel();$/;"	f	class:Hand	file:
+betSlider	.\Hand.java	/^    private JSlider betSlider = new JSlider();$/;"	f	class:Hand	file:
+blackJack	.\BlackJack.java	/^package blackJack;$/;"	p
+blackJack	.\BlackJackDatabase.java	/^package blackJack;$/;"	p
+blackJack	.\BlackJackDeck.java	/^package blackJack;$/;"	p
+blackJack	.\BlackJackTable.java	/^package blackJack;$/;"	p
+blackJack	.\Card.java	/^package blackJack;$/;"	p
+blackJack	.\Dealer.java	/^package blackJack;$/;"	p
+blackJack	.\Hand.java	/^package blackJack;$/;"	p
+blackJack	.\House.java	/^package blackJack;$/;"	p
+blackJack	.\Logger.java	/^package blackJack;$/;"	p
+blackJack	.\MySQLDatabase.java	/^package blackJack;$/;"	p
+blackJack	.\Player.java	/^package blackJack;$/;"	p
+blackJack	.\Slot.java	/^package blackJack;$/;"	p
+buttonPanel	.\Hand.java	/^    private JPanel buttonPanel = new JPanel();$/;"	f	class:Hand	file:
+cardPanel	.\Hand.java	/^    private JPanel cardPanel;$/;"	f	class:Hand	file:
+cards	.\Hand.java	/^    private ArrayList<Card> cards = new ArrayList<Card>();$/;"	f	class:Hand	file:
+cards	.\House.java	/^    private ArrayList<Card> cards = new ArrayList<Card>();$/;"	f	class:House	file:
+clearHand	.\House.java	/^    public void clearHand()$/;"	m	class:House
+clearHands	.\Slot.java	/^    public void clearHands()$/;"	m	class:Slot
+colorDisabled	.\Hand.java	/^    private Color colorDisabled = new Color(240, 80, 80);$/;"	f	class:Hand	file:
+colorEnabled	.\Hand.java	/^    private Color colorEnabled = new Color(80, 240, 80);$/;"	f	class:Hand	file:
+connect	.\MySQLDatabase.java	/^    public void connect()$/;"	m	class:MySQLDatabase
+connect	.\MySQLDatabase.java	/^    public void connect(String url, String usr, String pw) throws SQLException$/;"	m	class:MySQLDatabase
+connection	.\MySQLDatabase.java	/^    private static Connection connection;$/;"	f	class:MySQLDatabase	file:
+console	.\BlackJack.java	/^    private Console console;$/;"	f	class:BlackJack	file:
+controls	.\BlackJack.java	/^    private JPanel controls;$/;"	f	class:BlackJack	file:
+currentBet	.\Hand.java	/^    private int currentBet = 0;$/;"	f	class:Hand	file:
+currentBetLabel	.\Hand.java	/^    private JLabel currentBetLabel;$/;"	f	class:Hand	file:
+currentHand	.\Dealer.java	/^    private Hand currentHand;$/;"	f	class:Dealer	file:
+database	.\BlackJack.java	/^    private BlackJackDatabase database;$/;"	f	class:BlackJack	file:
+database	.\BlackJackTable.java	/^    private BlackJackDatabase database;$/;"	f	class:BlackJackTable	file:
+database	.\Slot.java	/^    private BlackJackDatabase database;$/;"	f	class:Slot	file:
+databaseName	.\MySQLDatabase.java	/^    private String databaseName;$/;"	f	class:MySQLDatabase	file:
+dealGame	.\Dealer.java	/^    public void dealGame() $/;"	m	class:Dealer
+dealer	.\BlackJack.java	/^    private Dealer dealer;$/;"	f	class:BlackJack	file:
+dealer	.\BlackJackTable.java	/^    private Dealer dealer;$/;"	f	class:BlackJackTable	file:
+debug	.\Logger.java	/^    public void debug(String p_message)$/;"	m	class:Logger
+decStack	.\Player.java	/^    public void decStack(int p_sub)$/;"	m	class:Player
+deck	.\Dealer.java	/^    private ArrayList<Card> deck;$/;"	f	class:Dealer	file:
+defaultName	.\Slot.java	/^    private String defaultName = "John Doe";$/;"	f	class:Slot	file:
+defaultStack	.\BlackJackDatabase.java	/^    private int defaultStack = 100;$/;"	f	class:BlackJackDatabase	file:
+disconnect	.\MySQLDatabase.java	/^    public void disconnect() throws SQLException$/;"	m	class:MySQLDatabase
+doBet	.\Hand.java	/^    private void doBet()$/;"	m	class:Hand	file:
+doBet	.\Hand.java	/^    public void doBet(int p_bet)$/;"	m	class:Hand
+doHit	.\Dealer.java	/^    public void doHit()$/;"	m	class:Dealer
+doInsert	.\MySQLDatabase.java	/^    public void doInsert(String query)$/;"	m	class:MySQLDatabase
+doLoss	.\Hand.java	/^    public void doLoss()$/;"	m	class:Hand
+doSelect	.\MySQLDatabase.java	/^    public ResultSet doSelect(String query)$/;"	m	class:MySQLDatabase
+doSplit	.\Dealer.java	/^    public void doSplit()$/;"	m	class:Dealer
+doStay	.\Dealer.java	/^    public void doStay()$/;"	m	class:Dealer
+doUpdate	.\MySQLDatabase.java	/^    public int doUpdate(String query)$/;"	m	class:MySQLDatabase
+doWin	.\Hand.java	/^    public void doWin()$/;"	m	class:Hand
+dumpPlayerTable	.\BlackJackDatabase.java	/^    public void dumpPlayerTable()$/;"	m	class:BlackJackDatabase
+error	.\Logger.java	/^    public void error(String p_message)$/;"	m	class:Logger
+executeSQLquery	.\MySQLDatabase.java	/^    public ResultSet executeSQLquery(String query)$/;"	m	class:MySQLDatabase
+exitButton	.\Slot.java	/^    private ExitButton exitButton;$/;"	f	class:Slot	file:
+finishGame	.\Dealer.java	/^    private void finishGame()$/;"	m	class:Dealer	file:
+getActiveSlots	.\BlackJackTable.java	/^    public ArrayList<Slot> getActiveSlots()$/;"	m	class:BlackJackTable
+getCurrentBet	.\Hand.java	/^    public int getCurrentBet()$/;"	m	class:Hand
+getDealer	.\BlackJackTable.java	/^    public Dealer getDealer()$/;"	m	class:BlackJackTable
+getHands	.\BlackJackTable.java	/^    public ArrayList<Hand> getHands()$/;"	m	class:BlackJackTable
+getHands	.\Slot.java	/^    public ArrayList<Hand> getHands()$/;"	m	class:Slot
+getHouse	.\BlackJackTable.java	/^    public House getHouse()$/;"	m	class:BlackJackTable
+getId	.\Player.java	/^    public int getId()$/;"	m	class:Player
+getMinimumBet	.\BlackJackTable.java	/^    public int getMinimumBet()$/;"	m	class:BlackJackTable
+getName	.\Player.java	/^    public String getName()$/;"	m	class:Player
+getNumRows	.\MySQLDatabase.java	/^    public int getNumRows(ResultSet resultSet)$/;"	m	class:MySQLDatabase
+getPlayer	.\BlackJackDatabase.java	/^    public Player getPlayer(String p_name)$/;"	m	class:BlackJackDatabase
+getPlayer	.\Slot.java	/^    public Player getPlayer()$/;"	m	class:Slot
+getPlayerByName	.\BlackJackDatabase.java	/^    public Player getPlayerByName(String p_name)$/;"	m	class:BlackJackDatabase
+getResultSet	.\MySQLDatabase.java	/^    public ResultSet getResultSet()$/;"	m	class:MySQLDatabase
+getSlot	.\Hand.java	/^    public Slot getSlot()$/;"	m	class:Hand
+getSlots	.\BlackJackTable.java	/^    public ArrayList<Slot> getSlots()$/;"	m	class:BlackJackTable
+getStack	.\Player.java	/^    public int getStack()$/;"	m	class:Player
+getTable	.\Slot.java	/^    public BlackJackTable getTable()$/;"	m	class:Slot
+getValue	.\Card.java	/^    public int getValue()$/;"	m	class:Card
+getValue	.\Hand.java	/^    public int getValue()$/;"	m	class:Hand
+getValue	.\House.java	/^    public int getValue()$/;"	m	class:House
+handDone	.\Dealer.java	/^    private void handDone()$/;"	m	class:Dealer	file:
+hands	.\Slot.java	/^    private ArrayList<Hand> hands;$/;"	f	class:Slot	file:
+handsPanel	.\Slot.java	/^    private JPanel handsPanel;$/;"	f	class:Slot	file:
+hitButton	.\Hand.java	/^    private JButton hitButton = new JButton("Hit");$/;"	f	class:Hand	file:
+host	.\MySQLDatabase.java	/^    private String host;$/;"	f	class:MySQLDatabase	file:
+house	.\BlackJackTable.java	/^    private House house;$/;"	f	class:BlackJackTable	file:
+house	.\Dealer.java	/^    private House house;$/;"	f	class:Dealer	file:
+id	.\Player.java	/^    private int id;$/;"	f	class:Player	file:
+incStack	.\Player.java	/^    public void incStack(int p_add) {$/;"	m	class:Player
+info	.\Logger.java	/^    public void info(String p_message)$/;"	m	class:Logger
+infoPanel	.\Slot.java	/^    private JPanel infoPanel;$/;"	f	class:Slot	file:
+initDeck	.\Dealer.java	/^    public void initDeck()$/;"	m	class:Dealer
+initSlots	.\BlackJackTable.java	/^    public void initSlots(int p_numSlots)$/;"	m	class:BlackJackTable
+input	.\BlackJack.java	/^        private JTextField input;$/;"	f	class:BlackJack.Console	file:
+inputPanel	.\Hand.java	/^    private JPanel inputPanel = new JPanel();$/;"	f	class:Hand	file:
+isHidden	.\Card.java	/^    private boolean isHidden;$/;"	f	class:Card	file:
+keyPressed	.\BlackJack.java	/^        public void keyPressed(KeyEvent e)$/;"	m	class:BlackJack.Console
+keyPressed	.\BlackJack.java	/^        public void keyPressed(KeyEvent e)$/;"	m	class:BlackJack.KeyBindings
+keyReleased	.\BlackJack.java	/^        public void keyReleased(KeyEvent e)$/;"	m	class:BlackJack.Console
+keyReleased	.\BlackJack.java	/^        public void keyReleased(KeyEvent e)$/;"	m	class:BlackJack.KeyBindings
+keyTyped	.\BlackJack.java	/^        public void keyTyped(KeyEvent e)$/;"	m	class:BlackJack.Console
+keyTyped	.\BlackJack.java	/^        public void keyTyped(KeyEvent e)$/;"	m	class:BlackJack.KeyBindings
+label	.\Card.java	/^    private JLabel label;$/;"	f	class:Card	file:
+log	.\Logger.java	/^    public void log(String p_message)$/;"	m	class:Logger
+logIn	.\Slot.java	/^    private void logIn(String p_name)$/;"	m	class:Slot	file:
+logOut	.\Slot.java	/^    private void logOut()$/;"	m	class:Slot	file:
+logger	.\BlackJack.java	/^        private Logger logger = new Logger(this);$/;"	f	class:BlackJack.BlackJackButton	file:
+logger	.\BlackJack.java	/^        private Logger logger = new Logger(this);$/;"	f	class:BlackJack.CloseButton	file:
+logger	.\BlackJack.java	/^        private Logger logger = new Logger(this);$/;"	f	class:BlackJack.KeyBindings	file:
+logger	.\BlackJack.java	/^        private Logger logger = new Logger(this);$/;"	f	class:BlackJack.RevalidateButton	file:
+logger	.\BlackJack.java	/^        private Logger logger = new Logger(this);$/;"	f	class:BlackJack.StartButton	file:
+logger	.\BlackJack.java	/^        private Logger logger = new Logger(this);$/;"	f	class:BlackJack.TestButton	file:
+logger	.\BlackJack.java	/^    private Logger logger = new Logger(this);$/;"	f	class:BlackJack	file:
+logger	.\BlackJackDatabase.java	/^    private Logger logger = new Logger(this);$/;"	f	class:BlackJackDatabase	file:
+logger	.\BlackJackDeck.java	/^    private Logger logger = new Logger(this);$/;"	f	class:BlackJackDeck	file:
+logger	.\BlackJackTable.java	/^    private Logger logger = new Logger(this);$/;"	f	class:BlackJackTable	file:
+logger	.\Card.java	/^    private Logger logger = new Logger(this);$/;"	f	class:Card	file:
+logger	.\Dealer.java	/^    private Logger logger = new Logger(this);$/;"	f	class:Dealer	file:
+logger	.\Hand.java	/^    private Logger logger = new Logger(this);$/;"	f	class:Hand	file:
+logger	.\MySQLDatabase.java	/^    private Logger logger = new Logger(this);$/;"	f	class:MySQLDatabase	file:
+logger	.\Player.java	/^    private Logger logger = new Logger(this);$/;"	f	class:Player	file:
+logger	.\Slot.java	/^        private Logger logger = new Logger(this);$/;"	f	class:Slot.ExitButton	file:
+logger	.\Slot.java	/^        private Logger logger = new Logger(this);$/;"	f	class:Slot.NameTextField	file:
+logger	.\Slot.java	/^    private Logger logger = new Logger(this);$/;"	f	class:Slot	file:
+main	.\BlackJack.java	/^    public static void main(String[] argv)$/;"	m	class:BlackJack
+minCardsToPlay	.\Dealer.java	/^    private int minCardsToPlay;$/;"	f	class:Dealer	file:
+minimumBet	.\BlackJackTable.java	/^    private int minimumBet = 5;$/;"	f	class:BlackJackTable	file:
+mouseClicked	.\BlackJack.java	/^        public void mouseClicked(MouseEvent e)$/;"	m	class:BlackJack.BlackJackButton
+mouseClicked	.\BlackJack.java	/^        public void mouseClicked(MouseEvent e)$/;"	m	class:BlackJack.CloseButton
+mouseClicked	.\BlackJack.java	/^        public void mouseClicked(MouseEvent e)$/;"	m	class:BlackJack.RevalidateButton
+mouseClicked	.\BlackJack.java	/^        public void mouseClicked(MouseEvent e)$/;"	m	class:BlackJack.TestButton
+mouseClicked	.\Slot.java	/^        public void mouseClicked(MouseEvent e)$/;"	m	class:Slot.ExitButton
+mouseEntered	.\BlackJack.java	/^        public void mouseEntered(MouseEvent e)$/;"	m	class:BlackJack.BlackJackButton
+mouseEntered	.\Slot.java	/^        public void mouseEntered(MouseEvent e)$/;"	m	class:Slot.ExitButton
+mouseExited	.\BlackJack.java	/^        public void mouseExited(MouseEvent e)$/;"	m	class:BlackJack.BlackJackButton
+mouseExited	.\Slot.java	/^        public void mouseExited(MouseEvent e)$/;"	m	class:Slot.ExitButton
+mousePressed	.\BlackJack.java	/^        public void mousePressed(MouseEvent e)$/;"	m	class:BlackJack.BlackJackButton
+mousePressed	.\BlackJack.java	/^        public void mousePressed(MouseEvent e)$/;"	m	class:BlackJack.StartButton
+mousePressed	.\Slot.java	/^        public void mousePressed(MouseEvent e)$/;"	m	class:Slot.ExitButton
+mouseReleased	.\BlackJack.java	/^        public void mouseReleased(MouseEvent e)$/;"	m	class:BlackJack.BlackJackButton
+mouseReleased	.\Slot.java	/^        public void mouseReleased(MouseEvent e)$/;"	m	class:Slot.ExitButton
+name	.\Player.java	/^    private String name;$/;"	f	class:Player	file:
+nameLabel	.\Slot.java	/^    private JLabel nameLabel;$/;"	f	class:Slot	file:
+nameTextField	.\Slot.java	/^    private NameTextField nameTextField;$/;"	f	class:Slot	file:
+numDecks	.\Dealer.java	/^    private int numDecks;$/;"	f	class:Dealer	file:
+object	.\Logger.java	/^    private Object object;$/;"	f	class:Logger	file:
+output	.\BlackJack.java	/^        private JTextArea output;$/;"	f	class:BlackJack.Console	file:
+password	.\MySQLDatabase.java	/^    private String password;$/;"	f	class:MySQLDatabase	file:
+player	.\Slot.java	/^    private Player player;$/;"	f	class:Slot	file:
+playerTable	.\BlackJackDatabase.java	/^    private String playerTable = "blackJackPlayer";$/;"	f	class:BlackJackDatabase	file:
+port	.\MySQLDatabase.java	/^    private int port;$/;"	f	class:MySQLDatabase	file:
+result	.\MySQLDatabase.java	/^    private static ResultSet result;$/;"	f	class:MySQLDatabase	file:
+revealHiddenCard	.\House.java	/^    public void revealHiddenCard()$/;"	m	class:House
+runUpdate	.\MySQLDatabase.java	/^    public int runUpdate(String p_query)$/;"	m	class:MySQLDatabase
+setDealer	.\BlackJackTable.java	/^    public void setDealer(Dealer dealer)$/;"	m	class:BlackJackTable
+setHidden	.\Card.java	/^    public void setHidden(boolean p_isHidden)$/;"	m	class:Card
+setHouse	.\BlackJackTable.java	/^    public void setHouse(House house)$/;"	m	class:BlackJackTable
+setId	.\Player.java	/^    public void setId(int id)$/;"	m	class:Player
+setMaxBet	.\Hand.java	/^    public void setMaxBet(int p_maxValue)$/;"	m	class:Hand
+setMinimumBet	.\BlackJackTable.java	/^    public void setMinimumBet(int minimumBet)$/;"	m	class:BlackJackTable
+setName	.\Player.java	/^    public void setName(String name)$/;"	m	class:Player
+setPlayer	.\Slot.java	/^    public void setPlayer(Player player)$/;"	m	class:Slot
+setSlot	.\Hand.java	/^    public void setSlot(Slot p_slot)$/;"	m	class:Hand
+setStack	.\Player.java	/^    public void setStack(int stack)$/;"	m	class:Player
+setTurn	.\Dealer.java	/^    public void setTurn(Hand p_hand)$/;"	m	class:Dealer
+setTurn	.\Hand.java	/^    public void setTurn(boolean isTurn)$/;"	m	class:Hand
+shuffle	.\Dealer.java	/^    public void shuffle() $/;"	m	class:Dealer
+sliderPanel	.\Hand.java	/^    private JPanel sliderPanel = new JPanel();$/;"	f	class:Hand	file:
+slot	.\Hand.java	/^    private Slot slot;$/;"	f	class:Hand	file:
+slotPanel	.\BlackJackTable.java	/^    private JPanel slotPanel;$/;"	f	class:BlackJackTable	file:
+slots	.\BlackJackTable.java	/^    private ArrayList<Slot> slots;$/;"	f	class:BlackJackTable	file:
+splitButton	.\Hand.java	/^    private JButton splitButton = new JButton("Split");$/;"	f	class:Hand	file:
+stack	.\Player.java	/^    private int stack;$/;"	f	class:Player	file:
+stackLabel	.\Slot.java	/^    private JLabel stackLabel;$/;"	f	class:Slot	file:
+startButton	.\House.java	/^    private JButton startButton;$/;"	f	class:House	file:
+startGame	.\Dealer.java	/^    public void startGame()$/;"	m	class:Dealer
+stateChanged	.\Hand.java	/^    public void stateChanged(ChangeEvent e)$/;"	m	class:Hand
+statement	.\MySQLDatabase.java	/^    private static Statement statement;$/;"	f	class:MySQLDatabase	file:
+stayButton	.\Hand.java	/^    private JButton stayButton = new JButton("Stay");$/;"	f	class:Hand	file:
+storePlayer	.\BlackJackDatabase.java	/^    public void storePlayer(Player p_player)$/;"	m	class:BlackJackDatabase
+suite	.\Card.java	/^    private char suite;$/;"	f	class:Card	file:
+table	.\BlackJack.java	/^    private BlackJackTable table;$/;"	f	class:BlackJack	file:
+table	.\Dealer.java	/^    private BlackJackTable table;$/;"	f	class:Dealer	file:
+table	.\Slot.java	/^    private BlackJackTable table;$/;"	f	class:Slot	file:
+test	.\BlackJackDatabase.java	/^    public void test()$/;"	m	class:BlackJackDatabase
+toString	.\Card.java	/^    public String toString()$/;"	m	class:Card
+updateBetSlider	.\Hand.java	/^    private void updateBetSlider()$/;"	m	class:Hand	file:
+url	.\MySQLDatabase.java	/^    private String url;$/;"	f	class:MySQLDatabase	file:
+username	.\MySQLDatabase.java	/^    private String username;$/;"	f	class:MySQLDatabase	file:
+value	.\Card.java	/^    private int value;$/;"	f	class:Card	file:
