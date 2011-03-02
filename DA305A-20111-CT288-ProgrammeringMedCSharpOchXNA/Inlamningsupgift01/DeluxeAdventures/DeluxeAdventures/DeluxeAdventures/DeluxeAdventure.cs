@@ -9,6 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using ZLogger;
+using GUI;
+
 namespace DeluxeAdventures
 {
     /// <summary>
@@ -18,6 +21,7 @@ namespace DeluxeAdventures
     {
         public static GraphicsDeviceManager graphics;
         public static SpriteBatch spriteBatch;
+        public static Logger logger;
         //SpriteBatch spriteBatch2;
         //Texture2D white1x1;
         //Menu men;u
@@ -31,6 +35,7 @@ namespace DeluxeAdventures
             Content.RootDirectory = "Content";
 
             gameParts = new List<XNAGamePart>();
+
         }
 
         /// <summary>
@@ -41,11 +46,16 @@ namespace DeluxeAdventures
         /// </summary>
         protected override void Initialize()
         {
-            Menu menu = new Menu(this, graphics);
-
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont fontArial = Content.Load<SpriteFont>(@"fonts/Arial");
 
-            menu.AddPart(new Button("hejsan", fontArial, 10, 10));
+            logger = new Logger(new Text(spriteBatch, fontArial), 10, 10);
+            logger.Log("testicle");
+
+            Menu menu = new Menu(this, graphics);
+            Button button = new Button(null, "hejsan", fontArial, 10, 10);
+            menu.SetRoot(button);
+            button.AddChild(new Button(null, "hoppsan", fontArial, 20, 20));
 
             gameParts.Add(menu);
 
@@ -58,8 +68,6 @@ namespace DeluxeAdventures
         /// </summary>
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-
             foreach (XNAGamePart part in gameParts)
                 part.LoadContent();
         }
@@ -102,6 +110,8 @@ namespace DeluxeAdventures
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
+
+            logger.Draw(gameTime);
 
             foreach (XNAGamePart part in gameParts)
                 part.Draw(gameTime);

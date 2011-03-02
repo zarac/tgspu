@@ -123,6 +123,14 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\..\laboration01\zXNAPong\GUI\GUI.csproj">
+      <Project>{96F1A736-500B-4001-BC57-9BC5D30293D9}</Project>
+      <Name>GUI</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\..\..\laboration01\zXNAPong\Logger\Logger.csproj">
+      <Project>{FE2A1011-20CC-4957-B4DF-37F0FD130F5D}</Project>
+      <Name>Logger</Name>
+    </ProjectReference>
     <ProjectReference Include="..\DeluxeAdventuresContent\DeluxeAdventuresContent.contentproj">
       <Name>DeluxeAdventuresContent</Name>
       <XnaReferenceType>Content</XnaReferenceType>

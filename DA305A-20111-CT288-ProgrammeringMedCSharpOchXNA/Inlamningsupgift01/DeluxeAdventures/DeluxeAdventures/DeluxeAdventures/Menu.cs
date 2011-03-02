@@ -15,29 +15,35 @@ namespace DeluxeAdventures
 
         public static Texture2D white1x1;
 
-        List<MenuPart> parts;
+        //List<Node> nodes;
+
+        public Node root;
 
         public Menu(Game game, GraphicsDeviceManager graphics)
         {
             this.game = game;
             this.graphics = graphics;
-            parts = new List<MenuPart>();
+            //nodes = new List<Node>();
 
             spriteBatch = new SpriteBatch(game.GraphicsDevice);
         }
 
-        public void AddPart(MenuPart part)
+        public void SetRoot(Node root)
         {
-            parts.Add(part);
+            this.root = root;
         }
 
         public void Draw(GameTime gameTime)
         {
             // draw each menu part
             DeluxeAdventure.spriteBatch.Begin();
-
-            foreach (MenuPart part in parts)
-                part.DrawPart();
+            
+            if (root is Button)
+                ((Button)root).DrawPart();
+            else if (root is Node)
+                root.DrawPart();
+            else
+                throw new UnsupportedMenuTypeException("vafan f0r typ jao?", null);
 
             DeluxeAdventure.spriteBatch.End();
         }
@@ -52,12 +58,49 @@ namespace DeluxeAdventures
         }
     }
 
-    interface MenuPart
+    abstract public class Node
     {
-        void DrawPart();
+        public Node parent;
+        public List<Node> children;
+
+        public Vector2 position;
+        public Vector2 size;
+
+        public Node(Node parent) : this(parent, Vector2.Zero, Vector2.Zero)
+        //public Node(Node parent) : this(parent, null, null)
+        {
+        }
+
+        public Node(Node parent, Vector2 position, Vector2 size)
+        {
+            this.parent = parent;
+            children = new List<Node>();
+        }
+
+        public void AddChild(Node child)
+        {
+            children.Add(child);
+        }
+
+        public void DrawPart()
+        {
+            foreach (Node child in children)
+            {
+                if (child is Button)
+                    ((Button)child).DrawPart();
+                else if (child is Node)
+                    child.DrawPart();
+                else
+                    throw new UnsupportedMenuTypeException("vafan f0r typ jao?", null);
+            }
+        }
     }
 
-    public class Button : MenuPart
+    //public class ParentNode : Node
+    //{
+    //}
+
+    public class Button : Node
     {
         Vector2 position;
         //Rectangle dimensions;
@@ -74,7 +117,7 @@ namespace DeluxeAdventures
 
         int border;
 
-        public Button(String text, SpriteFont font, int x, int y)
+        public Button(Node parent, String text, SpriteFont font, int x, int y) : base(parent)
         {
             border = 2;
             color = Color.Red;
@@ -96,11 +139,21 @@ namespace DeluxeAdventures
             //dimensions = new Rectangle(x, y, width, height);
         }
 
-        public void DrawPart()
+        new public void DrawPart()
         {
             DeluxeAdventure.spriteBatch.Draw(Menu.white1x1, new Rectangle(x, y, width, height), Color.White);
             DeluxeAdventure.spriteBatch.Draw(Menu.white1x1, new Rectangle(x + border, y + border, width - border * 2, height - border * 2), Color.CornflowerBlue);
             DeluxeAdventure.spriteBatch.DrawString(font, text, new Vector2(position.X + border, position.Y + border), color);
+
+            base.DrawPart();
+        }
+    }
+
+    public class UnsupportedMenuTypeException : Exception
+    {
+        public UnsupportedMenuTypeException(String reason, Exception inner)
+            : base(reason, inner)
+        {
         }
     }
 }
