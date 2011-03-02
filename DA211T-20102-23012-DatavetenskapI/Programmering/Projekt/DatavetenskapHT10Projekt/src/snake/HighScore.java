@@ -76,7 +76,7 @@ public class HighScore extends JPanel implements ActionListener {
      */
     public void fillArea(){
         txt.setText("");
-        txt.setText(sql.getResultSetString(sql.getAllOrderByHighscoreDesc("snake")));
+        txt.setText(sql.getResultSetString(sql.getAll("snake")));
     }
     /**
      * sendScore metoden skicker en querry till databasen.

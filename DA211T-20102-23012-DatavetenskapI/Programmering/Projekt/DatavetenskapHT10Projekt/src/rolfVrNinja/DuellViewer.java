@@ -44,26 +44,16 @@ public class DuellViewer extends JPanel {
     public void initImg(){
 //        String url = "D:/Laborationer/JavaApplication1/src/spel";
         // [HL-2011-01-17 04:15] Edited paths to be relative to class file.
-        ninjaEtt = new Projektil("static/rolfVrNinja/ettVsnoll.png");
-        humanEtt = new Projektil("static/rolfVrNinja/ettVstva.png");
-        likaEtt = new Projektil("static/rolfVrNinja/likaEtt.png");
-        likaTvå = new Projektil("static/rolfVrNinja/likaTva.png");
-        humanNoll = new Projektil("static/rolfVrNinja/nollVsett.png");
-        ninjaNoll = new Projektil("static/rolfVrNinja/nollVstva.png");
-        ninjaTvå = new Projektil("static/rolfVrNinja/tvaVsett.png");
-        humanTvå = new Projektil("static/rolfVrNinja/tvaVsnoll.png");
-        lika = new Projektil("static/rolfVrNinja/likaNoll.png");
-        start = new Projektil("static/rolfVrNinja/start.png");
-        //ninjaEtt = new Projektil(getImage("ettVsnoll.png"));
-        //humanEtt = new Projektil(getImage("ettVstva.png"));
-        //likaEtt = new Projektil(getImage("likaEtt.png"));
-        //likaTvå = new Projektil(getImage("likaTva.png"));
-        //humanNoll = new Projektil(getImage("nollVsett.png"));
-        //ninjaNoll = new Projektil(getImage("nollVstva.png"));
-        //ninjaTvå = new Projektil(getImage("tvaVsett.png"));
-        //humanTvå = new Projektil(getImage("tvaVsnoll.png"));
-        //lika = new Projektil(getImage("likaNoll.png"));
-        //start = new Projektil(getImage("start.png"));
+        ninjaEtt = new Projektil(getImage("static/rolfVrNinja/ettVsnoll.png"));
+        humanEtt = new Projektil(getImage("static/rolfVrNinja/ettVstva.png"));
+        likaEtt = new Projektil(getImage("static/rolfVrNinja/likaEtt.png"));
+        likaTvå = new Projektil(getImage("static/rolfVrNinja/likaTva.png"));
+        humanNoll = new Projektil(getImage("static/rolfVrNinja/nollVsett.png"));
+        ninjaNoll = new Projektil(getImage("static/rolfVrNinja/nollVstva.png"));
+        ninjaTvå = new Projektil(getImage("static/rolfVrNinja/tvaVsett.png"));
+        humanTvå = new Projektil(getImage("static/rolfVrNinja/tvaVsnoll.png"));
+        lika = new Projektil(getImage("static/rolfVrNinja/likaNoll.png"));
+        start = new Projektil(getImage("static/rolfVrNinja/start.png"));
         //String url = "C:/BilderGrupp1/";
         //ninjaEtt = new Projektil(url+"/ettVsnoll.png");
         //humanEtt = new Projektil(url+"/ettVstva.png");
@@ -89,7 +79,8 @@ public class DuellViewer extends JPanel {
     }
 
     public Image getImage(String in){
-        return new ImageIcon(this.getClass().getResource(in)).getImage();
+        return new ImageIcon(in).getImage();
+        //return new ImageIcon(this.getClass().getResource(in)).getImage();
     }
 
     public PaintWindow getWindow(){

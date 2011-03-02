@@ -54,13 +54,13 @@ public class Board extends JPanel implements Runnable, KeyListener {
         this.addKeyListener(this);
         setBackground(Color.black);
 
-        ball = getImage("static/snake/dot.png");
-        apple = getImage("static/snake/apple.png");
-        head = getImage("static/snake/head.png");
-
         //ball = getImage("dot.png");
         //apple = getImage("apple.png");
         //head = getImage("head.png");
+
+        ball = getImage("static/snake/dot.png");
+        apple = getImage("static/snake/apple.png");
+        head = getImage("static/snake/head.png");
 
         setFocusable(true);
         CardLayout cl = (CardLayout)(cards.getLayout());

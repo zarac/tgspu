@@ -135,10 +135,6 @@ public class MysqlDataBase {
             return "INSERT INTO "+tabell+" VALUES (\""+name+"\","+score+")";
         }
 
-    public String getAllOrderByHighscoreDesc(String tabell){
-            return "SELECT * FROM "+tabell + " ORDER BY highscore DESC";
-        }
-
     public String getAll(String tabell){
             return "SELECT * FROM "+tabell;
         }
