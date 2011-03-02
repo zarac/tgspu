@@ -1,0 +1,42 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zXNAPong", "zXNAPong\zXNAPong\zXNAPong.csproj", "{D0263F8B-5CCE-4372-90EE-B644BF2A6660}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "zXNAPongContent", "zXNAPong\zXNAPongContent\zXNAPongContent.contentproj", "{91E936F8-085D-4678-B3D8-37EE579503F8}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GUI", "GUI\GUI.csproj", "{96F1A736-500B-4001-BC57-9BC5D30293D9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Console", "Console\Console.csproj", "{89AAD683-CA6D-42DD-8F82-F4880499708D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logger", "Logger\Logger.csproj", "{FE2A1011-20CC-4957-B4DF-37F0FD130F5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D0263F8B-5CCE-4372-90EE-B644BF2A6660}.Debug|x86.ActiveCfg = Debug|x86
+		{D0263F8B-5CCE-4372-90EE-B644BF2A6660}.Debug|x86.Build.0 = Debug|x86
+		{D0263F8B-5CCE-4372-90EE-B644BF2A6660}.Release|x86.ActiveCfg = Release|x86
+		{D0263F8B-5CCE-4372-90EE-B644BF2A6660}.Release|x86.Build.0 = Release|x86
+		{91E936F8-085D-4678-B3D8-37EE579503F8}.Debug|x86.ActiveCfg = Debug|x86
+		{91E936F8-085D-4678-B3D8-37EE579503F8}.Release|x86.ActiveCfg = Release|x86
+		{96F1A736-500B-4001-BC57-9BC5D30293D9}.Debug|x86.ActiveCfg = Debug|x86
+		{96F1A736-500B-4001-BC57-9BC5D30293D9}.Debug|x86.Build.0 = Debug|x86
+		{96F1A736-500B-4001-BC57-9BC5D30293D9}.Release|x86.ActiveCfg = Release|x86
+		{96F1A736-500B-4001-BC57-9BC5D30293D9}.Release|x86.Build.0 = Release|x86
+		{89AAD683-CA6D-42DD-8F82-F4880499708D}.Debug|x86.ActiveCfg = Debug|x86
+		{89AAD683-CA6D-42DD-8F82-F4880499708D}.Debug|x86.Build.0 = Debug|x86
+		{89AAD683-CA6D-42DD-8F82-F4880499708D}.Release|x86.ActiveCfg = Release|x86
+		{89AAD683-CA6D-42DD-8F82-F4880499708D}.Release|x86.Build.0 = Release|x86
+		{FE2A1011-20CC-4957-B4DF-37F0FD130F5D}.Debug|x86.ActiveCfg = Debug|x86
+		{FE2A1011-20CC-4957-B4DF-37F0FD130F5D}.Debug|x86.Build.0 = Debug|x86
+		{FE2A1011-20CC-4957-B4DF-37F0FD130F5D}.Release|x86.ActiveCfg = Release|x86
+		{FE2A1011-20CC-4957-B4DF-37F0FD130F5D}.Release|x86.Build.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
