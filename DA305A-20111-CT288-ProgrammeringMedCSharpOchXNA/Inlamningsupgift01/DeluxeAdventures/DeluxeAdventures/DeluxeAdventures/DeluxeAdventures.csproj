@@ -110,7 +110,6 @@
     <Compile Include="Character\Character.cs" />
     <Compile Include="Character\Generator.cs" />
     <Compile Include="Character\Interface1.cs" />
-    <Compile Include="GUI\Font.cs" />
     <Compile Include="XNAGamePart.cs" />
     <Compile Include="Class\Warrior.cs" />
     <Compile Include="Menu.cs" />
@@ -123,13 +122,9 @@
     <Content Include="GameThumbnail.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\..\..\laboration01\zXNAPong\GUI\GUI.csproj">
-      <Project>{96F1A736-500B-4001-BC57-9BC5D30293D9}</Project>
-      <Name>GUI</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\..\..\laboration01\zXNAPong\Logger\Logger.csproj">
-      <Project>{FE2A1011-20CC-4957-B4DF-37F0FD130F5D}</Project>
-      <Name>Logger</Name>
+    <ProjectReference Include="..\..\..\..\HannesXNA\HannesXNA.csproj">
+      <Project>{609E6FF5-7384-443D-A027-B8406E924A6D}</Project>
+      <Name>HannesXNA</Name>
     </ProjectReference>
     <ProjectReference Include="..\DeluxeAdventuresContent\DeluxeAdventuresContent.contentproj">
       <Name>DeluxeAdventuresContent</Name>

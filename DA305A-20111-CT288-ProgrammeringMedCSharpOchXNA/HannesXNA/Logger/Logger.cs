@@ -9,17 +9,17 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-using GUI;
+using HannesXNA.GUI;
 
-namespace ZLogger
+namespace HannesXNA.Logger
 {
     public class Logger
     {
-        Text text;
+        Font text;
         int x, y;
         String log;
 
-        public Logger(Text text, int x, int y)
+        public Logger(Font text, int x, int y)
         {
             this.text = text;
             this.x = x;

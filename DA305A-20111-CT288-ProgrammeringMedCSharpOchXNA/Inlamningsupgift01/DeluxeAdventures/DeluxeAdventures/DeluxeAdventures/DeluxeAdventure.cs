@@ -9,8 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-using ZLogger;
-using GUI;
+using HannesXNA.Logger;
+using HannesXNA.GUI;
 
 namespace DeluxeAdventures
 {
@@ -49,7 +49,7 @@ namespace DeluxeAdventures
             spriteBatch = new SpriteBatch(GraphicsDevice);
             SpriteFont fontArial = Content.Load<SpriteFont>(@"fonts/Arial");
 
-            logger = new Logger(new Text(spriteBatch, fontArial), 10, 10);
+            logger = new Logger(new Font(spriteBatch, fontArial), 10, 10);
             logger.Log("testicle");
 
             Menu menu = new Menu(this, graphics);

@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using Microsoft.Xna.Framework;
@@ -9,9 +9,9 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
-namespace GUI
+namespace HannesXNA.GUI
 {
-    public class Text
+    public class Font
     {
         public float Size
         {
@@ -26,7 +26,7 @@ namespace GUI
 
         SpriteBatch spriteBatch;
 
-        public Text(SpriteBatch p_batch, SpriteFont p_font)
+        public Font(SpriteBatch p_batch, SpriteFont p_font)
         {
             batch = p_batch;
             font = p_font;

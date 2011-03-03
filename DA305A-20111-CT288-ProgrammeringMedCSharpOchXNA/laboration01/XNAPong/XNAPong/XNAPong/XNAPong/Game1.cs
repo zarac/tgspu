@@ -80,7 +80,11 @@ namespace XNAPong
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
+<<<<<<< Updated upstream
             // TODO: Add your update logic here
+=======
+            
+>>>>>>> Stashed changes
             for (int i = 0; i < paddleLoc.Length; i++)
             {
                 GamePadState state = GamePad.GetState((PlayerIndex)i);

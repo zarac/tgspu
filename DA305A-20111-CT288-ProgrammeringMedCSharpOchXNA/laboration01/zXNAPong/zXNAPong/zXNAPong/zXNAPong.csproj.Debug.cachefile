@@ -1,6 +1,9 @@
 Content\Fonts\Arial.xnb
 Content\gfx\background.xnb
 Content\gfx\sprites.xnb
+<<<<<<< Updated upstream
 Content\gfx\paddle_blue.xnb
 Content\gfx\paddle_red.xnb
 Content\gfx\1x1white.xnb
+=======
+>>>>>>> Stashed changes

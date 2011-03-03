@@ -48,11 +48,14 @@ namespace zXNAPong
         float maxRight;
         int paddleWidth;
         int paddleHeight;
+<<<<<<< Updated upstream
         Texture2D redPaddle;
         Texture2D bluePaddle;
         Texture2D white1x1;
         Vector2 spritePosition = Vector2.Zero;
         Vector2 spriteSpeed = Vector2.One;
+=======
+>>>>>>> Stashed changes
 
         // Controls
         private Keys startKey = Keys.Space;
@@ -62,12 +65,18 @@ namespace zXNAPong
         public XNAPong()
         {
             graphics = new GraphicsDeviceManager(this);
+<<<<<<< Updated upstream
             graphics.PreferredBackBufferWidth = 1024;
             graphics.PreferredBackBufferHeight = 768;
             graphics.ApplyChanges();
 
             Content.RootDirectory = "Content";
 
+=======
+            Content.RootDirectory = "Content";
+
+
+>>>>>>> Stashed changes
             marginTop = 5;
             marginRight = 0;
             marginBottom = 5;
@@ -103,7 +112,10 @@ namespace zXNAPong
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+<<<<<<< Updated upstream
             this.IsMouseVisible = true;
+=======
+>>>>>>> Stashed changes
 
             base.Initialize();
         }
@@ -123,10 +135,13 @@ namespace zXNAPong
             texture = Content.Load<Texture2D>(@"gfx/sprites");
             background = this.Content.Load<Texture2D>(@"gfx/background");
 
+<<<<<<< Updated upstream
             white1x1 = Content.Load<Texture2D>(@"gfx/1x1white");
             redPaddle = Content.Load<Texture2D>(@"gfx/paddle_red");
             bluePaddle = Content.Load<Texture2D>(@"gfx/paddle_blue");
 
+=======
+>>>>>>> Stashed changes
             textTest = new Text(spriteBatch, arial);
             log = new ZLogger.Logger(textTest, 50, 50);
 
@@ -151,6 +166,7 @@ namespace zXNAPong
                     Keys.A,
                     Keys.Z
                     )));
+<<<<<<< Updated upstream
 
             players.Add(new Player(new Paddle(
                     PlayerIndex.One,
@@ -170,6 +186,8 @@ namespace zXNAPong
                     Keys.C
                     )));
 
+=======
+>>>>>>> Stashed changes
             players.Add(new Player(new Paddle(
                 PlayerIndex.Two,
                 spriteBatch,
@@ -310,6 +328,7 @@ namespace zXNAPong
                 }
             }
 
+<<<<<<< Updated upstream
             // Move the sprite by speed, scaled by elapsed time.
             spritePosition += spriteSpeed * (float)gameTime.ElapsedGameTime.TotalSeconds;
 
@@ -343,6 +362,8 @@ namespace zXNAPong
                 spritePosition.Y = MinY;
             }
 
+=======
+>>>>>>> Stashed changes
             base.Update(gameTime);
         }
 
@@ -400,32 +421,53 @@ namespace zXNAPong
             //    Color.White);
             //spriteBatch.End();
 
+<<<<<<< Updated upstream
             spriteBatch.Begin(SpriteSortMode.BackToFront, BlendState.AlphaBlend);
             // WUTFUX? Why doesn't using Vector2 and Rectangle update at the same time?
             //spriteBatch.Draw(white1x1, spritePosition, Color.Red);
             //spriteBatch.Draw(white1x1, new Rectangle((int)spritePosition.X + 50, (int)spritePosition.Y + 50, paddleWidth, paddleHeight), Color.Blue);
             spriteBatch.Draw(white1x1, new Rectangle((int)spritePosition.X, (int)spritePosition.Y, paddleWidth, paddleHeight), Color.Red);
             spriteBatch.End();
+=======
+>>>>>>> Stashed changes
 
             // players
             for (int i = 0; i < players.Count; i++)
             {
+<<<<<<< Updated upstream
                 //log.Log("[PADDLE[" + i + 1 + "] X: " + players[i].paddle.X + ", Y: " + players[i].paddle.Y + " [SCORE] " + players[i].Score);
+=======
+                log.Log("[PADDLE[" + i + 1 + "] X: " + players[i].paddle.X + ", Y: " + players[i].paddle.Y + " [SCORE] " + players[i].Score);
+>>>>>>> Stashed changes
                 players[i].paddle.Draw();
             }
 
             // balls
             for (int i = 0; i < balls.Count; i++)
             {
+<<<<<<< Updated upstream
                 //log.Log("[BALL LOC.] X: " + balls[i].location.X + ", Y: " + balls[i].location.Y + " [-TRAJ.] X: " + balls[i].trajectory.X + ", Y: " + balls[i].trajectory.Y);
+=======
+                log.Log("[BALL LOC.] X: " + balls[i].location.X + ", Y: " + balls[i].location.Y + " [-TRAJ.] X: " + balls[i].trajectory.X + ", Y: " + balls[i].trajectory.Y);
+>>>>>>> Stashed changes
                 balls[i].Draw();
             }
 
 
             // DEBUGGING
+<<<<<<< Updated upstream
             //textTest.Draw("[TIME] " + gameTime.ElapsedGameTime.Milliseconds, testXPos + 40, testYPos + 40);
 
             //log.Log("Elapsed Milliseconds : " + (float)gameTime.ElapsedGameTime.Milliseconds * 0.5f);
+=======
+            textTest.Draw("[TIME] " + gameTime.ElapsedGameTime.Milliseconds,
+                testXPos + 40,
+                testYPos + 40);
+
+            log.Log("Elapsed Milliseconds : " + (float)gameTime.ElapsedGameTime.Milliseconds * 0.5f);
+
+
+>>>>>>> Stashed changes
 
             log.Draw(gameTime);
 

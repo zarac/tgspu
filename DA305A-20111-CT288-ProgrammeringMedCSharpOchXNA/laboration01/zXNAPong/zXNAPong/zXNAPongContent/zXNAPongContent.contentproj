@@ -62,6 +62,7 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+<<<<<<< Updated upstream
   <ItemGroup>
     <Compile Include="gfx\paddle_blue.png">
       <Name>paddle_blue</Name>
@@ -81,6 +82,8 @@
       <Processor>TextureProcessor</Processor>
     </Compile>
   </ItemGroup>
+=======
+>>>>>>> Stashed changes
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\XNA Game Studio\$(XnaFrameworkVersion)\Microsoft.Xna.GameStudio.ContentPipeline.targets" />
   <!--  To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
