@@ -1,0 +1,7 @@
+delete (key)
+    if left = null
+        return right
+    if right = null
+        return left
+
+    nd = left.getRightMost()
