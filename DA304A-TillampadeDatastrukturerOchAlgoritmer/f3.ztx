@@ -1,0 +1,38 @@
+Föreläsning 3
+=============
+
+* [HL-2011-03-07 10:31]
+
+AVL Tree
+========
+
+Traversing = an organized way to go through all elements/nodes in a graph (or structure in general).
+
+Three types of traversing a binary tree: preorder, inorder and postorder.
+
+preorder = pass node, traverse left node then right node.
+inorder = traverse left, pass node then traverse right
+postorder = left, right, self
+
+Another type of traversing is level traversing where you go through elements in order of level/height from top to bottom.
+
+
+B-Tree
+======
+
+* Bayer and McCreight around year 70-72.
+
+* Block oriented!
+
+o Rules (m = element count)
+    * Data are in the leaves
+    * All internal nodes have maximum m children
+    * All nodes (except root) have at least m/2 children
+    * All leaves have same distant to the root.
+    * An internal node with k children has k-1 keys.
+
+o Insert implementation
+    * find position
+    * if there's room in leaf, insert...
+    * else, divide element in two parts with (m+1)/2 elements in each
+    * continue recursively up in the tree
