@@ -24,11 +24,12 @@ B-Tree
 
 * Block oriented!
 
-o Rules (m = element count)
+o Rules (m = max element count for each node)
     * Data are in the leaves
     * All internal nodes have maximum m children
     * All nodes (except root) have at least m/2 children
-    * All leaves have same distant to the root.
+    * Root has at least 2 children (unless itself is a leaf)
+    * All leaves have same distance to the root.
     * An internal node with k children has k-1 keys.
 
 o Insert implementation
