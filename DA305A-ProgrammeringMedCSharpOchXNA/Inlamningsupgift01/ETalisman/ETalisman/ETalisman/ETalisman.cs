@@ -14,12 +14,14 @@ namespace ETalisman
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class Game1 : Microsoft.Xna.Framework.Game
+    public class ETalisman : Microsoft.Xna.Framework.Game
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        public Game1()
+        MainMenu mainMenu;
+
+        public ETalisman()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
@@ -48,6 +50,11 @@ namespace ETalisman
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
             // TODO: use this.Content to load your game content here
+            mainMenu = new MainMenu(this);
+            mainMenu.Enabled = false;
+            mainMenu.Visible = false;
+            Components.Add(mainMenu);
+            Services.AddService(typeof(SpriteBatch), spriteBatch);
         }
 
         /// <summary>
@@ -56,7 +63,6 @@ namespace ETalisman
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -66,11 +72,23 @@ namespace ETalisman
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // Allows the game to exit
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
+            // get input states
+            GamePadState gamePadOneState = GamePad.GetState(PlayerIndex.One);
+            KeyboardState keyBoardState = Keyboard.GetState();
+
+            // allow the game to exit
+            if (keyBoardState.IsKeyDown(Keys.Q)
+                || gamePadOneState.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
-            // TODO: Add your update logic here
+            // enable menu
+            if (!mainMenu.Enabled
+                && keyBoardState.IsKeyDown(Keys.Escape))
+            {
+                Console.WriteLine("eTalisman.Update(...):");
+                mainMenu.Enabled = true;
+                mainMenu.Visible = true;
+            }
 
             base.Update(gameTime);
         }
@@ -82,8 +100,6 @@ namespace ETalisman
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
 
             base.Draw(gameTime);
         }

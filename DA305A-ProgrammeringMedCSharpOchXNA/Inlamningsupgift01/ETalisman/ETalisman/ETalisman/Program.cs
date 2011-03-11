@@ -10,7 +10,7 @@ namespace ETalisman
         /// </summary>
         static void Main(string[] args)
         {
-            using (Game1 game = new Game1())
+            using (ETalisman game = new ETalisman())
             {
                 game.Run();
             }
