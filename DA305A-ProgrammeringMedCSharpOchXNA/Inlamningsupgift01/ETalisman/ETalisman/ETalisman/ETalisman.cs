@@ -93,9 +93,10 @@ namespace ETalisman
                 && keyboardState.IsKeyDown(Keys.Escape)
                 && !lastKeyboardState.IsKeyDown(Keys.Escape))
             {
-                Console.WriteLine("eTalisman.Update(...):");
                 mainMenu.Enabled = true;
                 mainMenu.Visible = true;
+                // Clears previous state so we don't act on same key again (will close menu otherwise).
+                lastKeyboardState = keyboardState;
             }
 
             base.Update(gameTime);

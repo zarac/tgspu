@@ -68,8 +68,8 @@ namespace ETalisman.Menu
 
             // Allow closing menu.
             // TODO: Use gameTime to not disable if we just enabled (when using same key)?
-            if (eTalisman.keyboardState.IsKeyDown(Keys.H)
-                && !eTalisman.lastKeyboardState.IsKeyDown(Keys.H))
+            if (eTalisman.keyboardState.IsKeyDown(Keys.Escape)
+                && !eTalisman.lastKeyboardState.IsKeyDown(Keys.Escape))
             {
                 Visible = false;
                 Enabled = false;
