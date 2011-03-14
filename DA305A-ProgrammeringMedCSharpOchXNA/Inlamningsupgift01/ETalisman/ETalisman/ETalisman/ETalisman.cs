@@ -9,6 +9,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using ETalisman.Menu;
+
 namespace ETalisman
 {
     /// <summary>
@@ -16,8 +18,10 @@ namespace ETalisman
     /// </summary>
     public class ETalisman : Microsoft.Xna.Framework.Game
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        public GraphicsDeviceManager graphics;
+        public SpriteBatch spriteBatch;
+        public KeyboardState keyboardState;
+        public KeyboardState lastKeyboardState;
 
         MainMenu mainMenu;
 
@@ -49,12 +53,14 @@ namespace ETalisman
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            // TODO: use this.Content to load your game content here
             mainMenu = new MainMenu(this);
-            mainMenu.Enabled = false;
-            mainMenu.Visible = false;
+            //mainMenu.Enabled = false;
+            //mainMenu.Visible = false;
             Components.Add(mainMenu);
             Services.AddService(typeof(SpriteBatch), spriteBatch);
+
+            // ??? Does this work? It didn't for me...
+            //base.LoadContent();
         }
 
         /// <summary>
@@ -74,16 +80,18 @@ namespace ETalisman
         {
             // get input states
             GamePadState gamePadOneState = GamePad.GetState(PlayerIndex.One);
-            KeyboardState keyBoardState = Keyboard.GetState();
+            lastKeyboardState = keyboardState;
+            keyboardState = Keyboard.GetState();
 
             // allow the game to exit
-            if (keyBoardState.IsKeyDown(Keys.Q)
+            if (keyboardState.IsKeyDown(Keys.Q)
                 || gamePadOneState.Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // enable menu
             if (!mainMenu.Enabled
-                && keyBoardState.IsKeyDown(Keys.Escape))
+                && keyboardState.IsKeyDown(Keys.Escape)
+                && !lastKeyboardState.IsKeyDown(Keys.Escape))
             {
                 Console.WriteLine("eTalisman.Update(...):");
                 mainMenu.Enabled = true;
@@ -99,9 +107,14 @@ namespace ETalisman
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
+            GraphicsDevice.Clear(Color.Black);
 
             base.Draw(gameTime);
+        }
+
+        public void ExitGame()
+        {
+            Exit();
         }
     }
 }
