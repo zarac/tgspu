@@ -1,0 +1,27 @@
+Lecture 5
+=========
+
+* [HL-2011-03-14 10:24]
+
+o Träd
+    o BST
+        * traversing
+    o AVL
+        * traversing, balancing
+    o B-Tree
+        * balancing
+
+o Abstract Data Type (ADT) definition is a pair(s?) of (E, O)
+    * E = some elements
+    * O = some operations
+    : Stack, queue, lexicon
+    : list (sequence)
+    : tree
+    : graph
+    : priority queue
+
+o Heap (not the same heap as in stack & heap)
+    * Tree structure that implements priority queue.
+    o Perfectly balanced.
+    o higher prioritized are higher in the tree
+    o root has highest prioritized element
