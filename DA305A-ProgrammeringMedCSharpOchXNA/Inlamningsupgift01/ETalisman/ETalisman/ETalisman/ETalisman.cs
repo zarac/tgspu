@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 
+using ETalisman.Pong;
 using ETalisman.Menu;
 
 namespace ETalisman
@@ -16,19 +17,28 @@ namespace ETalisman
     /// <summary>
     /// This is the main type for your game
     /// </summary>
-    public class ETalisman : Microsoft.Xna.Framework.Game
+    public class ETalisman : Game
     {
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
-        public KeyboardState keyboardState;
-        public KeyboardState lastKeyboardState;
 
-        MainMenu mainMenu;
+        public MainMenu mainMenu;
+        public Adventure adventure;
+
+        // this is so we can change the previous state to current so we don't act twice on one input
+        // TODO: there should be a better way to do this.
+        public ZXNA.Input.Input input;
+
+        // bonus :)
+        Pong.Pong pong;
 
         public ETalisman()
         {
             graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
+
+            graphics.PreferredBackBufferWidth = 800;
+            graphics.PreferredBackBufferHeight = 600;
         }
 
         /// <summary>
@@ -38,74 +48,69 @@ namespace ETalisman
         /// and initialize them as well.
         /// </summary>
         protected override void Initialize()
-        {
+        {   
             // TODO: Add your initialization logic here
 
             base.Initialize();
         }
 
-        /// <summary>
-        /// LoadContent will be called once per game and is the place to load
-        /// all of your content.
-        /// </summary>
         protected override void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            mainMenu = new MainMenu(this);
-            //mainMenu.Enabled = false;
-            //mainMenu.Visible = false;
-            Components.Add(mainMenu);
-            Services.AddService(typeof(SpriteBatch), spriteBatch);
+            // input
+            input = new ZXNA.Input.Input(this);
 
-            // ??? Does this work? It didn't for me...
-            //base.LoadContent();
+            // menu
+            mainMenu = new MainMenu(this);
+            mainMenu.open();
+            mainMenu.DrawOrder = 1;
+            Components.Add(mainMenu);
+
+            // adventure
+            adventure = new Adventure(this);
+            Components.Add(adventure);
+
+            // pong
+            pong = new Pong.Pong(this);
+            Components.Add(pong);
+
+            //Services.AddService(typeof(SpriteBatch), spriteBatch);
+
+            base.LoadContent();
         }
 
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// all content.
-        /// </summary>
         protected override void UnloadContent()
         {
         }
 
-        /// <summary>
-        /// Allows the game to run logic such as updating the world,
-        /// checking for collisions, gathering input, and playing audio.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            // get input states
-            GamePadState gamePadOneState = GamePad.GetState(PlayerIndex.One);
-            lastKeyboardState = keyboardState;
-            keyboardState = Keyboard.GetState();
+            input.Update();
+
+            // TODO: ? prettier way to do this
+            // pass input states to menu (this is so we can set last to current after acting on input (actually nm.. ))
+            //mainMenu.setInputStates(keyboardState, lastKeyboardState);
+
 
             // allow the game to exit
-            if (keyboardState.IsKeyDown(Keys.Q)
-                || gamePadOneState.Buttons.Back == ButtonState.Pressed)
+            // || input.gamePadOneState.Buttons.Back == ButtonState.Pressed)
+            if (input.keyboardState.IsKeyDown(Keys.Q))
                 this.Exit();
 
-            // enable menu
-            if (!mainMenu.Enabled
-                && keyboardState.IsKeyDown(Keys.Escape)
-                && !lastKeyboardState.IsKeyDown(Keys.Escape))
+            // open menu
+            if (!mainMenu.Opened
+                && input.keyboardState.IsKeyDown(Keys.Escape)
+                && !input.lastKeyboardState.IsKeyDown(Keys.Escape))
             {
-                mainMenu.Enabled = true;
-                mainMenu.Visible = true;
+                mainMenu.open();
                 // Clears previous state so we don't act on same key again (will close menu otherwise).
-                lastKeyboardState = keyboardState;
+                input.lastKeyboardState = input.keyboardState;
             }
 
             base.Update(gameTime);
         }
 
-        /// <summary>
-        /// This is called when the game should draw itself.
-        /// </summary>
-        /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.Black);
