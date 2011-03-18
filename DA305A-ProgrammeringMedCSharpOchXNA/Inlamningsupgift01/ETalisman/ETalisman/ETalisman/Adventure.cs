@@ -8,13 +8,6 @@ using ETalisman.Character;
 
 namespace ETalisman
 {
-    enum Step
-    {
-        NEW_CHARACTER = 0,
-        MOVING = 1,
-        FIGHTING = 2,
-    }
-
     /// <summary>
     /// I guess this kinda controls the different stages of the game...
     /// </summary>
@@ -24,23 +17,36 @@ namespace ETalisman
         public Character.Character character;
 
         internal Creater creater;
+        Map map;
 
         ETalisman eTalisman;
 
-        Step step;
+        public Step step;
+        public enum Step
+        {
+            NONE = 0,
+            NEW_CHARACTER = 1,
+            MAP = 2,
+            FIGHT = 3,
+        }
 
 
         public Adventure(ETalisman eTalisman) : base(eTalisman)
         {
             this.eTalisman = eTalisman;
+            step = Step.NONE;
 
             creater = new Creater(eTalisman);
+            map = new Map(eTalisman);
         }
 
         public override void Draw(GameTime gameTime)
         {
             if (step == Step.NEW_CHARACTER)
                 creater.Draw(gameTime);
+
+            if (step == Step.MAP)
+                map.Draw(gameTime);
 
             base.Draw(gameTime);
         }
@@ -49,6 +55,9 @@ namespace ETalisman
         {
             if (step == Step.NEW_CHARACTER)
                 creater.Update(gameTime);
+
+            if (step == Step.MAP)
+                map.Update(gameTime);
             
             base.Update(gameTime);
         }

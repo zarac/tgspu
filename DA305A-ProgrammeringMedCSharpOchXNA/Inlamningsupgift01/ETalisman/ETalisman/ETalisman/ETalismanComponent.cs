@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace ETalisman
 {
-    abstract class ETalismanComponent
+    public abstract class ETalismanComponent
     {
         protected ETalisman eTalisman;
         protected SpriteBatch spriteBatch;

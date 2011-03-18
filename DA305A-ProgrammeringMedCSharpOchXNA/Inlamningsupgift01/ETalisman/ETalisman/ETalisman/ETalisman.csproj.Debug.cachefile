@@ -1,7 +1,6 @@
 Content\gfx\menu_item_background-300x100.xnb
 Content\gfx\menu_item_background.xnb
 Content\gfx\menu_item_background2_selected-300x100.xnb
-Content\font\Arial.xnb
 Content\gfx\ball.xnb
 Content\gfx\paddle.xnb
 Content\gfx\amazon\amazon.xnb
@@ -16,3 +15,5 @@ Content\gfx\warrior\warrior3.xnb
 Content\gfx\etandmichaeljackson\etandmichaeljackson3.xnb
 Content\gfx\etandmichaeljackson\etandmichaeljackson2.xnb
 Content\gfx\etandmichaeljackson\etandmichaeljackson.xnb
+Content\font\Arial.xnb
+Content\gfx\1x1.xnb

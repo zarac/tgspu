@@ -8,63 +8,68 @@ using Microsoft.Xna.Framework.Input;
 
 namespace ETalisman.Character
 {
-    enum Step
-    {
-        PICK_CLASS = 1,
-        SET_STATS = 2,
-        END = 6,
-    }
-
     class Creater : DrawableGameComponent
     {
-        private ETalisman eTalisman;
-        private Adventure adventure;
-        private SpriteBatch spriteBatch;
-        private Character character;
-        private ZXNA.Input.Input input;
 
-        private Step step;
+        ETalisman eTalisman;
+        //Adventure adventure;
+        SpriteBatch spriteBatch;
+        Character character;
+        ZXNA.Input.Input input;
+
+        Step step;
+        enum Step
+        {
+            PICK_CLASS = 1,
+            SET_STATS = 2,
+            END = 3,
+        }
 
         private Class[] classes;
 
         int selected;
 
-        //private Texture2D amazon, warrior, sorceress;
+        StatsGUI statsGUI;
+ 
+        int statSelected;
 
         public Creater(ETalisman eTalisman): base(eTalisman)
         {
             this.eTalisman = eTalisman;
             input = eTalisman.input;
             spriteBatch = eTalisman.spriteBatch;
-            adventure = eTalisman.adventure;
             step = Step.PICK_CLASS;
 
             character = new Character(eTalisman);
 
+            // class
             Class amazon = new Class(new Stats(eTalisman), "Yahaua Indian");
-            amazon.texture = eTalisman.Content.Load<Texture2D>("gfx/amazon/amazon");
+            amazon.texture = eTalisman.Content.Load<Texture2D>("gfx/amazon/amazon2");
             amazon.bounds = new Rectangle(-30, 170, 800, 439);
 
             Class warrior = new Class(new Stats(eTalisman), "Dingo Warrior");
-            warrior.texture = eTalisman.Content.Load<Texture2D>("gfx/warrior/warrior");
+            warrior.texture = eTalisman.Content.Load<Texture2D>("gfx/warrior/warrior2");
             warrior.bounds = new Rectangle(290, 0, 270, 355);
 
             Class sorceress = new Class(new Stats(eTalisman), "Mary Kate");
-            sorceress.texture = eTalisman.Content.Load<Texture2D>("gfx/sorceress/sorceress");
+            sorceress.texture = eTalisman.Content.Load<Texture2D>("gfx/sorceress/sorceress2");
             sorceress.bounds = new Rectangle(550, 0, 242, 600);
 
             Class eTMichael = new Class(new Stats(eTalisman), "E.T. and Michael Jackson");
-            eTMichael.texture = eTalisman.Content.Load<Texture2D>("gfx/etandmichaeljackson/etandmichaeljackson");
+            eTMichael.texture = eTalisman.Content.Load<Texture2D>("gfx/etandmichaeljackson/etandmichaeljackson2");
             eTMichael.bounds = new Rectangle(290, 260, 362, 400);
 
             classes = new Class[] { warrior, sorceress, amazon, eTMichael };
+
+            // stats
+            statsGUI = new StatsGUI(eTalisman, character.stats);
         }
 
         public override void Draw(GameTime gameTime)
         {
             spriteBatch.Begin();
             
-            // step: class
+            // step: CLASS
             if (step == Step.PICK_CLASS)
             {
                 Color colorUnSelected = new Color(180, 150, 150);
@@ -78,6 +83,13 @@ namespace ETalisman.Character
                         spriteBatch.Draw(classes[i].texture, classes[i].bounds, colorUnSelected);
                 }
             }
+            // step: STATS
+            else if (step == Step.SET_STATS)
+            {
+                // orange test box
+                // TODO :
+                spriteBatch.Draw(eTalisman.testTexture, new Rectangle(10, 10, 10, 10), Color.Orange);
+            }
 
             spriteBatch.End();
 
@@ -86,18 +98,13 @@ namespace ETalisman.Character
 
         public override void Update(GameTime gameTime)
         {
+            // TODO: ? runs one iteration behind
             if (step >= Step.END)
             {
+                eTalisman.adventure.step = Adventure.Step.MAP;
             }
             // navigation
 
-            // next step
-            if (input.keyboardState.IsKeyDown(Keys.Enter)
-                && !input.lastKeyboardState.IsKeyDown(Keys.Enter))
-            {
-                // TODO ? validation
-                 step++;
-            }
             // prev step
             if (input.keyboardState.IsKeyDown(Keys.Back)
                 && !input.lastKeyboardState.IsKeyDown(Keys.Back))
@@ -106,9 +113,17 @@ namespace ETalisman.Character
                     step--;
             }
 
-            // step: class
+            // step: CLASS
             if (step == Step.PICK_CLASS)
             {
+                // continue
+                // TODO : ? validation
+                if (input.keyboardState.IsKeyDown(Keys.Enter)
+                    && !input.lastKeyboardState.IsKeyDown(Keys.Enter))
+                {
+                    step++;
+                }
+
                 if (input.keyboardState.IsKeyDown(Keys.Left)
                     && !input.lastKeyboardState.IsKeyDown(Keys.Left))
                 {
@@ -124,14 +139,48 @@ namespace ETalisman.Character
                         selected = 0;
                 }
             }
+            // step: STATS
+            else if (step == Step.SET_STATS)
+            {
+                if (eTalisman.input.keyboardState.IsKeyDown(Keys.Left))
+                {
+                }
+                else if (eTalisman.input.keyboardState.IsKeyDown(Keys.Right))
+                {
+                }
+                else if (eTalisman.input.keyboardState.IsKeyDown(Keys.Up))
+                {
+                    // TODO : boundary check
+                    statSelected--;
+                }
+                else if (eTalisman.input.keyboardState.IsKeyDown(Keys.Down))
+                {
+                    // TODO : boundary check
+                    statSelected++;
+                }
+            }
 
             base.Update(gameTime);
         }
 
-        //public void Start()
-        //{
-        //    adventure.character = character;
-        //    adventure.creater = null;
-        //}
+        class StatsGUI
+        {
+            private ETalisman eTalisman;
+            Stats stats;
+
+            public StatsGUI(ETalisman eTalisman, Stats stats)
+            {
+                this.eTalisman = eTalisman;
+                this.stats = stats;
+            }
+
+            public void Draw(GameTime gameTime)
+            {
+            }
+
+            public void Update(GameTime gameTime)
+            {
+            }
+        }
     }
 }

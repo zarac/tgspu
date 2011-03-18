@@ -9,19 +9,17 @@ namespace ETalisman.Menu
     class NewAdventure : Option
     {
         ETalisman eTalisman;
-        Adventure adventure;
 
         public NewAdventure(ETalisman eTalisman, MainMenu menu)
             : base(menu, "New Adventure")
         {
             this.eTalisman = eTalisman;
-            adventure = eTalisman.adventure;
         }
 
         public override void Action()
         {
             // TODO: Ask for confirmation etc..
-
+            eTalisman.adventure.step = Adventure.Step.NEW_CHARACTER;
             menu.close();
         }
     }

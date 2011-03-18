@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework;
 
 namespace ETalisman.Character
 {
-    class Class
+    public class Class
     {
         public Stats stats;
         public String name;

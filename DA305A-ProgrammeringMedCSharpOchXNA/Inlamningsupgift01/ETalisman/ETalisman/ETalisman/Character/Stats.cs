@@ -7,11 +7,14 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace ETalisman.Character
 {
-    class Stats : ETalismanComponent
+    public class Stats : ETalismanComponent
     {
         // diablo ii style ; )
         public int health, mana;
+
+        // attributes
         public int strength, dexterity, vitality, energy;
+        public int availablePoints;
 
         public Stats(ETalisman eTalisman) : base(eTalisman)
         {

@@ -24,6 +24,7 @@ namespace ETalisman
 
         public MainMenu mainMenu;
         public Adventure adventure;
+        public Texture2D testTexture;
 
         // this is so we can change the previous state to current so we don't act twice on one input
         // TODO: there should be a better way to do this.
@@ -57,6 +58,8 @@ namespace ETalisman
         protected override void LoadContent()
         {
             spriteBatch = new SpriteBatch(GraphicsDevice);
+
+            testTexture = Content.Load<Texture2D>(@"gfx/1x1");
 
             // input
             input = new ZXNA.Input.Input(this);
