@@ -22,7 +22,6 @@ namespace ZXNA.Input
         public void Update()
         {
             //gamePadOneState = GamePad.GetState(PlayerIndex.One);
-
             lastKeyboardState = keyboardState;
             keyboardState = Keyboard.GetState();
         }

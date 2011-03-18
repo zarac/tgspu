@@ -11,6 +11,9 @@ namespace ETalisman.Character
         ETalisman eTalisman;
 
         public Stats stats;
+        public String name;
+
+        // TODO : ? Class should be static
         public Class class_;
 
         public Character(ETalisman eTalisman) : base(eTalisman)

@@ -111,6 +111,13 @@ namespace ETalisman
                 input.lastKeyboardState = input.keyboardState;
             }
 
+            // toggle pong
+            if (input.keyboardState.IsKeyDown(Keys.P)
+                && !input.lastKeyboardState.IsKeyDown(Keys.P))
+            {
+                pong.Toggle();
+            }
+
             base.Update(gameTime);
         }
 

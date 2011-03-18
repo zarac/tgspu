@@ -15,13 +15,17 @@ namespace ETalisman.Pong
         Ball ball;
         Paddle paddleLeft;
         Paddle paddleRight;
-        
-        public Pong(ETalisman eTalisman) : base(eTalisman)
+
+        bool enabled;
+
+        public Pong(ETalisman eTalisman)
+            : base(eTalisman)
         {
             this.eTalisman = eTalisman;
 
             bounds = new Rectangle(10, 10, eTalisman.graphics.PreferredBackBufferWidth, eTalisman.graphics.PreferredBackBufferHeight);
-            
+
+            Disable();
             LoadContent();
         }
 
@@ -66,6 +70,34 @@ namespace ETalisman.Pong
             paddleRight.Update(gameTime);
 
             base.Update(gameTime);
+        }
+
+        public bool Toggle()
+        {
+            if (enabled)
+            {
+                Disable();
+                return enabled;
+            }
+            else
+            {
+                Enable();
+                return enabled;
+            }
+        }
+
+        public void Enable()
+        {
+            Enabled = true;
+            Visible = true;
+            enabled = true;
+        }
+
+        public void Disable()
+        {
+            Enabled = false;
+            Visible = false;
+            enabled = false;
         }
     }
 }

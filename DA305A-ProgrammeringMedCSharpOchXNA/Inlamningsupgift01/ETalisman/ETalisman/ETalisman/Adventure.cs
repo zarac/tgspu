@@ -16,7 +16,7 @@ namespace ETalisman
         // the player(s?), kinda
         public Character.Character character;
 
-        internal Creater creater;
+        internal Creator creater;
         Map map;
 
         ETalisman eTalisman;
@@ -36,7 +36,7 @@ namespace ETalisman
             this.eTalisman = eTalisman;
             step = Step.NONE;
 
-            creater = new Creater(eTalisman);
+            creater = new Creator(eTalisman);
             map = new Map(eTalisman);
         }
 
