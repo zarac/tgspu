@@ -114,6 +114,8 @@
     <Compile Include="ETalismanComponent.cs" />
     <Compile Include="Character\Stats.cs" />
     <Compile Include="Map.cs" />
+    <Compile Include="RectangleOverlay.cs" />
+    <Compile Include="ZXNA\Menu\DEMenu.cs" />
     <Compile Include="ZXNA\Menu\ExitGame.cs" />
     <Compile Include="Menu\MainMenu.cs" />
     <Compile Include="Menu\NewGame.cs" />
