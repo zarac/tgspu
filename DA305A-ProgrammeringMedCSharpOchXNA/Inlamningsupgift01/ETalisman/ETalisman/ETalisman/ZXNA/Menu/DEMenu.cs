@@ -5,13 +5,13 @@ using System.Text;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace DeluxeAdventures
+namespace ETalisman.ZXNA.Menu
 {
-    class Menu : XNAGamePart
+    class DEMenu
     {
         Game game;
         GraphicsDeviceManager graphics;
-        static SpriteBatch spriteBatch;
+        SpriteBatch spriteBatch;
 
         public static Texture2D white1x1;
 
@@ -19,7 +19,7 @@ namespace DeluxeAdventures
 
         public Node root;
 
-        public Menu(Game game, GraphicsDeviceManager graphics)
+        public DEMenu(Game game, GraphicsDeviceManager graphics)
         {
             this.game = game;
             this.graphics = graphics;
@@ -36,7 +36,7 @@ namespace DeluxeAdventures
         public void Draw(GameTime gameTime)
         {
             // draw each menu part
-            DeluxeAdventure.spriteBatch.Begin();
+            spriteBatch.Begin();
             
             if (root is Button)
                 ((Button)root).DrawPart();
@@ -45,7 +45,7 @@ namespace DeluxeAdventures
             else
                 throw new UnsupportedMenuTypeException("vafan f0r typ jao?", null);
 
-            DeluxeAdventure.spriteBatch.End();
+            spriteBatch.End();
         }
 
         public void LoadContent()
