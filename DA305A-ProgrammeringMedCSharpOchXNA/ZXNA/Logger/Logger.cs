@@ -13,13 +13,13 @@ using HannesXNA.GUI;
 
 namespace HannesXNA.Logger
 {
-    public class Logger
+    public class Log
     {
         Font text;
         int x, y;
         String log;
 
-        public Logger(Font text, int x, int y)
+        public Log(Font text, int x, int y)
         {
             this.text = text;
             this.x = x;

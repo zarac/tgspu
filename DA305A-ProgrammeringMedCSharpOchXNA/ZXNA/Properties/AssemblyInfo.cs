@@ -5,8 +5,8 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("HannesXNA")]
-[assembly: AssemblyProduct("HannesXNA")]
+[assembly: AssemblyTitle("ZXNA")]
+[assembly: AssemblyProduct("ZXNA")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyCompany("Microsoft")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2011")]
@@ -22,7 +22,7 @@ using System.Runtime.InteropServices;
 // On Windows, the following GUID is for the ID of the typelib if this
 // project is exposed to COM. On other platforms, it unique identifies the
 // title storage container when deploying this assembly to the device.
-[assembly: Guid("3cd59a7e-6b96-40b5-a519-03b9604cfd10")]
+[assembly: Guid("67658089-f357-4ab7-8ae9-a1da4aad2065")]
 
 // Version information for an assembly consists of the following four values:
 //
