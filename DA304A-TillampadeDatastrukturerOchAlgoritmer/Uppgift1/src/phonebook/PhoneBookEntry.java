@@ -2,8 +2,8 @@ package phonebook;
 
 public class PhoneBookEntry
 {
-    String name;
-    String number;
+    public String name;
+    public String number;
 
     public PhoneBookEntry(String name, String number)
     {
