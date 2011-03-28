@@ -2,13 +2,14 @@ package phonebook;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
+
+import javax.swing.text.Position;
 
 @SuppressWarnings("serial")
 public class GUI extends JFrame
@@ -26,9 +29,11 @@ public class GUI extends JFrame
     JPanel display;
     JPanel entry;
 
+    JScrollPane pane;
     JTextArea list;
     JTextField name;
     JTextField number;
+    TreeView treeView;
 
     public GUI(PhoneBook phoneBook)
     {
@@ -65,8 +70,11 @@ public class GUI extends JFrame
 
         // *display*
         display = new JPanel(new GridLayout(1,1));
+
+        // list
         list = new JTextArea();
-        JScrollPane pane = new JScrollPane(list);
+        pane = new JScrollPane(list);
+        treeView = new TreeView();
         display.add(pane);
 
         add(display, BorderLayout.CENTER);
@@ -95,6 +103,10 @@ public class GUI extends JFrame
 
     class ShowTree extends JButton implements ActionListener
     {
+        int TREE = 0;
+        int LIST = 1;
+        int mode = LIST;
+
         public ShowTree()
         {
             setText("Show Tree");
@@ -108,8 +120,21 @@ public class GUI extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             display.removeAll();
-            display.add(new Tree(), BorderLayout.CENTER);
-            display.revalidate();
+
+            if (mode == TREE)
+            {
+                display.add(pane);
+                setText("Show Tree");
+                mode = LIST;
+            }
+            else
+            {
+                display.add(treeView);
+                setText("Show List");
+                mode = TREE;
+            }
+
+            display.repaint();
         }
     }
 
@@ -258,6 +283,8 @@ public class GUI extends JFrame
             if (phoneBook == null)
                 System.out.println("jaa det e null");
             phoneBook.showAll();
+
+            display.repaint();
         }
     }
 
@@ -292,14 +319,66 @@ public class GUI extends JFrame
         }
     }
 
-    class Tree extends JPanel
+    class TreeView extends JPanel
     {
+        int width, height;
+        int firstLevel = 1;
+        int maxLevel = 9;
+        int nodeSize = 30;
+        int widthSpacing = 50;
+        int heightSpacing = 50;
+
+        int startX;
+
+        Graphics g;
+
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
 
+            this.g = g;
+
+            width = getWidth();
+            height = getHeight();
+
+            startX = getWidth()/2 - nodeSize/2;
+            //drawNode(phoneBook.byName.root, startX, 10, firstLevel);
+            drawNode(phoneBook.byName.root, 0, startX, 10, firstLevel);
+        }
+
+        //public void drawNode(AVLTreeNode<PhoneBookEntry> node, int x, int y, int level)
+        public void drawNode(AVLTreeNode<PhoneBookEntry> node, int parentX, int x, int y, int level)
+        {
+            //(maxLevel - level + 1) * (widthSpacing-1) - (widthSpacing/2)
+
+            if (level < maxLevel)
+            {
+                level++;
+                int offset = Math.abs(x - (parentX + x)/2);
+                System.out.println(node.value.name + " offset = '" + offset + "'");
+
+                if (node.left != null)
+                {
+                    //g.drawLine(x + nodeSize/2, y + nodeSize/2, x - widthSpacing + nodeSize/2, y + heightSpacing + nodeSize/2);
+                    g.setColor(Color.BLACK);
+                    g.drawLine(x + nodeSize/2, y + nodeSize/2, x-offset + nodeSize/2, y + heightSpacing + nodeSize/2);
+                    //drawNode(node.left, x - widthSpacing, y + heightSpacing, level);
+                    drawNode(node.left, x, x-offset, y + heightSpacing, level);
+                }
+
+                if (node.right != null)
+                {
+                    //g.drawLine(x + nodeSize/2, y + nodeSize/2, x + widthSpacing + nodeSize/2, y + heightSpacing + nodeSize/2);
+                    g.setColor(Color.BLACK);
+                    g.drawLine(x + nodeSize/2, y + nodeSize/2, x+offset + nodeSize/2, y + heightSpacing + nodeSize/2);
+                    //drawNode(node.right, x + widthSpacing, y + heightSpacing, level);
+                    drawNode(node.right, x, x+offset, y + heightSpacing, level);
+                }
+            }
+
             g.setColor(Color.RED);
-            g.drawOval(0, 0, 50, 50);
+            g.fillOval(x, y, nodeSize, nodeSize);
+            g.drawString(node.value.name, x, y);
         }
     }
 }
