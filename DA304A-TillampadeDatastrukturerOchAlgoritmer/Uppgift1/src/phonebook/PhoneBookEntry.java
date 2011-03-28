@@ -50,4 +50,9 @@ public class PhoneBookEntry
     {
         this.number = number;
     }
+
+    public String toString()
+    {
+        return name + ", " + number;
+    }
 }

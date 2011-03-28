@@ -11,10 +11,18 @@ public class PhoneBook
     AVLTree<PhoneBookEntry> byName;
     AVLTree<PhoneBookEntry> byNumber;
 
+    String defaultFile = "blah.txt";
+
+    GUI gui;
+
     public PhoneBook()
     {
         byName = new AVLTree<PhoneBookEntry>();
         byNumber = new AVLTree<PhoneBookEntry>();
+
+        gui = new GUI(this);
+        loadFromDisk(defaultFile);
+        this.showAll();
     }
 
     public void add(PhoneBookEntry entry)
@@ -57,6 +65,8 @@ public class PhoneBook
 
     public void dumpByName()
     {
+        System.out.println("dumpByName():");
+
         AVLTreeNode<PhoneBookEntry> node = byName.getFirst();
         while (node != null)
         {
@@ -64,11 +74,38 @@ public class PhoneBook
             System.out.println("HEIGHT = " + byName.pointer.height);
             node = ((AVLTree<PhoneBookEntry>)byName).getNext();
         }
-            
+    }
+
+    public void allByName()
+    {
+        gui.list.setText("    * All By Name *\n");
+
+        AVLTreeNode<PhoneBookEntry> node = byName.getFirst();
+        while (node != null)
+        {
+            gui.list.append(node.value.getName() + " - " + node.value.getNumber() + "\n");
+            node = byName.getNext(node);
+        }
+    }
+
+    public void allByNumber()
+    {
+        gui.list.setText("    * All By Number *\n");
+
+        AVLTreeNode<PhoneBookEntry> node = byNumber.getFirst();
+        while (node != null)
+        {
+            gui.list.append(node.value.getName() + " - " + node.value.getNumber() + "\n");
+            node = byNumber.getNext(node);
+        }
     }
 
     public void loadFromDisk(String filepath)
     {
+        // clear current
+        byName.root = null;
+        byNumber.root = null;
+
         try
         {
             FileReader fileReader = new FileReader(filepath);
@@ -91,6 +128,19 @@ public class PhoneBook
         }
     }
 
+    public void showAll()
+    {
+        System.out.println("showAll():");
+        gui.list.setText("");
+        AVLTreeNode<PhoneBookEntry> node = byName.getFirst();
+        while (node != null)
+        {
+            System.out.println("node.value.toString():");
+            gui.list.append(node.value.toString() + "\n");
+            node = byName.getNext(node);
+        }
+    }
+
     static public void saveToDisk(String filepath, AVLTree<PhoneBookEntry> tree)
     {
         System.out.println("saveToDisk()");
@@ -102,7 +152,7 @@ public class PhoneBook
             //BufferedOutputStream bufferedOutputStream = new BufferedOutputStream(fileOutputStream);
             //DataOutputStream dataOutputStream = new DataOutputStream(bufferedOutputStream);
 
-            AVLTreeNode<PhoneBookEntry> node = ((AVLTree<PhoneBookEntry>)tree).getFirst();
+            AVLTreeNode<PhoneBookEntry> node = tree.getFirst();
             while (node != null)
             {
                 bufferedWriter.write(node.value.getName() + "," + node.value.getNumber());
@@ -131,26 +181,24 @@ public class PhoneBook
 
     public static void main(String[] args)
     {
-        PhoneBook phoneBook = new PhoneBook();
-
-        phoneBook.loadFromDisk("blah.txt");
+        new PhoneBook();
+        //PhoneBook phoneBook = new PhoneBook();
 
         //phoneBook.add(new PhoneBookEntry("Hannes", "0739-903348"));
         //phoneBook.add(new PhoneBookEntry("Shwan", "0707-133337"));
         //phoneBook.add(new PhoneBookEntry("Anders", "0703-133337"));
-        phoneBook.add(new PhoneBookEntry("Kalle", "0705-133337"));
+        //phoneBook.add(new PhoneBookEntry("Kalle", "0705-133337"));
         //phoneBook.add(new PhoneBookEntry("Mongo", "0701-133337"));
         //phoneBook.add(new PhoneBookEntry("Neger", "0700-133337"));
 
-        phoneBook.dumpByName();
+        //phoneBook.dumpByName();
 
         //System.out.println(phoneBook.findByName("Mongo").name);
-        System.out.println(phoneBook.findByName("Kalle").name);
-        System.out.println(phoneBook.removeByName("Kalle"));
+        //System.out.println(phoneBook.findByName("Kalle").name);
+        //System.out.println(phoneBook.removeByName("Kalle"));
 
-        phoneBook.saveByName("blah.txt");
+        //phoneBook.dumpByName();
 
-        System.out.println(((AVLTree<PhoneBookEntry>)(phoneBook.byName)).getFirst().key);
-        System.out.println(((AVLTree<PhoneBookEntry>)(phoneBook.byNumber)).getFirst().key);
+        //phoneBook.saveByName("blah.txt");
     }
 }

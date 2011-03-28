@@ -89,13 +89,29 @@ public class AVLTree<Value> implements Dictionary<Value>
         else if (node.right == null)
         {
             //   |
-            //   O    x
-            //  / \
-            // x
+            //   O
+            //    \
             if (node.parent == null)
             {
-                root = node.left;
-                root.parent = null;
+                //   |
+                //   O
+                //  / \
+                if (node.left == null)
+                {
+                    root = null;
+                }
+                //   |
+                //   O   x
+                //  / \
+                // x
+                else
+                {
+                    System.out.println("asdf");
+                    root = node.left;
+                    System.out.println("asdf");
+                    root.parent = null;
+                    System.out.println("asdf");
+                }
             }
 
             //     x   x
@@ -219,6 +235,7 @@ public class AVLTree<Value> implements Dictionary<Value>
             else
                 node = null;
         }
+    }
     
 
     void decHeight(AVLTreeNode<Value> node)
@@ -297,13 +314,27 @@ public class AVLTree<Value> implements Dictionary<Value>
 
     public AVLTreeNode<Value> getFirst()
     {
-        AVLTreeNode<Value> node = root;
+        System.out.println("getFirst():");
+        AVLTreeNode<Value> first = root;
 
-        while (node.left != null)
-            node = node.left;
+        if (first == null)
+        {
+            System.out.println("getFirst(): null");
+            pointer = null;
+            return null;
+        }
 
-        pointer = node;
-        return node;
+        while (first.left != null)
+            first = first.left;
+
+        pointer = first;
+        return first;
+    }
+
+    public AVLTreeNode<Value> getNext()
+    {
+        pointer = getNext(pointer);
+        return pointer;
     }
 
     /**
@@ -312,14 +343,25 @@ public class AVLTree<Value> implements Dictionary<Value>
      * {@inheritDoc}
      * @see Dictionary#getNext()
      */
-    public AVLTreeNode<Value> getNext()
+    public AVLTreeNode<Value> getNext(AVLTreeNode<Value> currentNode)
     {
-        AVLTreeNode<Value> node;
+        return getNext(root, currentNode);
+    }
 
-        // empty tree
-        if (pointer == null)
+    /**
+     * Get next item, in-order. Can return null if empty tree or lonely node.
+     *
+     * {@inheritDoc}
+     * @see Dictionary#getNext()
+     */
+    public AVLTreeNode<Value> getNext(AVLTreeNode<Value> root, AVLTreeNode<Value> currentNode)
+    {
+        AVLTreeNode<Value> next;
+
+        // no node
+        if (currentNode == null)
         {
-            System.out.println("null");
+            System.out.println("Node is 'null', can't get next.");
             return null;
         }
 
@@ -329,17 +371,16 @@ public class AVLTree<Value> implements Dictionary<Value>
         //      o
         //     /
         //    x
-        if (pointer.right != null)
+        if (currentNode.right != null)
         {
             System.out.println(" >");
-            node = pointer.right;
-            while (node.left != null)
+            next = currentNode.right;
+            while (next.left != null)
             {
                 System.out.println("<");
-                node = node.left;
+                next = next.left;
             }
-            pointer = node;
-            return node;
+            return next;
         }
 
         // first right parent
@@ -348,22 +389,21 @@ public class AVLTree<Value> implements Dictionary<Value>
         //  o
         //   \
         //    O
-        node = pointer;
-        while (node.parent != null)
+        next = currentNode;
+        //while (next.parent != null)
+        while (next != root)
         {
-            if (node == node.parent.left)
+            if (next == next.parent.left)
             {
                 System.out.println("parent was next yay..");
-                pointer = node.parent;
-                return node.parent;
+                return next.parent;
             }
-            node = node.parent;
+            next = next.parent;
         }
 
         // no next
         //    x
         System.out.println("null");
-        pointer = null;
         return null;
     }
 
