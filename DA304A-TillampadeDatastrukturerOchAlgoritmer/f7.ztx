@@ -1,0 +1,17 @@
+LECTURE 7
+=========
+
+Quick Sort Analysis
+===================
+
+* In most cases, quick sort is the most efficient.
+
+o f(x) [ Keep largest term and remove constant factors. ]
+
+o Let T(n) be expected number of comparisons in QuickSort with n elements.
+
+o Expected .. O(nlogn)
+
+o Worst .. n2
+
+? Harmoniska summan/serien

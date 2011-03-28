@@ -1,0 +1,24 @@
+Refresher..
+===========
+o Binary search tree
+o AVL-Tree, balancing
+o Queue, Stack
+o B-Tree
+o Ord-notation / algorithm analysis
+o Priority queue / heap
+o ADT
+o Sorting
+    o heap sort
+    o quick sort
+
+
+Lecture 8 - Graphs
+==================
+o ADT modelling of relations
+o Formally.. G = (V,E)
+    o V - some nodes
+        * nodes, vertices
+    o E - a sub-amount of VxV (all possible pairs)
+        * edges, arcs
+o Traversing
+    o Depth Search First (DFS)
