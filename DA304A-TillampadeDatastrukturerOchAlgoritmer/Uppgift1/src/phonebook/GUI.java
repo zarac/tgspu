@@ -2,14 +2,16 @@ package phonebook;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Dimension;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 
 import java.awt.Graphics;
 import java.awt.GridLayout;
-import java.awt.Point;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,22 +20,30 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.JTextField;
 
-import javax.swing.text.Position;
-
 @SuppressWarnings("serial")
 public class GUI extends JFrame
 {
     PhoneBook phoneBook;
 
     JPanel control;
-    JPanel display;
-    JPanel entry;
-
-    JScrollPane pane;
-    JTextArea list;
+    JPanel buttons;
+    JPanel fields;
     JTextField name;
     JTextField number;
+    JPanel entry;
+
+    JPanel display;
+    JScrollPane pane;
+    JTextArea list;
     TreeView treeView;
+    int view;
+    int VIEW_LIST = 0;
+    int VIEW_TREE = 1;
+
+    JPanel logPanel;
+    JFrame logFrame;
+    JScrollPane logPane;
+    JTextArea log;
 
     public GUI(PhoneBook phoneBook)
     {
@@ -42,43 +52,34 @@ public class GUI extends JFrame
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        setBounds(50, 50, 500, 400);
+        setBounds(50, 50, 640, 480);
         setLayout(new BorderLayout());
 
         // *control*
-        control = new JPanel(new GridLayout(1,4));
+        control = new JPanel(new GridLayout(2,1));
+
+        // *buttons*
+        buttons = new JPanel(new GridLayout(1,4));
 
         // load
         LoadButton loadButton = new LoadButton();
-        control.add(loadButton);
+        buttons.add(loadButton);
 
         // save
         SaveButton saveButton = new SaveButton();
-        control.add(saveButton);
+        buttons.add(saveButton);
 
         // all by name
-        control.add(new AllByName());
+        buttons.add(new AllByName());
 
         // all by number
-        control.add(new AllByNumber());
+        buttons.add(new AllByNumber());
 
         // tree view
-        control.add(new ShowTree());
+        buttons.add(new ShowTree());
 
-        add(control, BorderLayout.SOUTH);
-        control.revalidate();
-
-        // *display*
-        display = new JPanel(new GridLayout(1,1));
-
-        // list
-        list = new JTextArea();
-        pane = new JScrollPane(list);
-        treeView = new TreeView();
-        display.add(pane);
-
-        add(display, BorderLayout.CENTER);
-        display.revalidate();
+        control.add(buttons);
+        buttons.revalidate();
 
         // *entry* - the input fields and their actions
         entry = new JPanel(new GridLayout(1,4));
@@ -97,8 +98,46 @@ public class GUI extends JFrame
         // find
         entry.add(new FindButton());
 
-        add(entry, BorderLayout.NORTH);
+        control.add(entry);
         entry.revalidate();
+
+        //control.revalidate();
+        add(control, BorderLayout.NORTH);
+
+        // *display*
+        display = new JPanel(new GridLayout(1,1));
+
+        // list
+        list = new JTextArea();
+        pane = new JScrollPane(list);
+        treeView = new TreeView();
+        display.add(pane);
+
+        add(display, BorderLayout.CENTER);
+        display.revalidate();
+
+        // *log*
+        log = new JTextArea();
+        logPanel = new JPanel();
+        logFrame = new JFrame();
+        log.append("TehE LOOOG\n\ntest\n\n");
+        logPane = new JScrollPane(log);
+        logPane.setAutoscrolls(true);
+
+        add(logPane, BorderLayout.SOUTH);
+        //logPane.revalidate();
+    }
+
+    void setView(int view)
+    {
+        this.view = view;
+        display.removeAll();
+        if (view == VIEW_TREE)
+            display.add(treeView);
+        else if (view == VIEW_LIST)
+            display.add(list);
+        display.revalidate();
+        display.repaint();
     }
 
     class ShowTree extends JButton implements ActionListener
@@ -119,22 +158,25 @@ public class GUI extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            display.removeAll();
+            //display.removeAll();
 
-            if (mode == TREE)
+            //if (mode == TREE)
+            if (view == VIEW_LIST)
             {
-                display.add(pane);
+                setView(VIEW_TREE);
+                //display.add(pane);
                 setText("Show Tree");
-                mode = LIST;
+                //mode = LIST;
             }
             else
             {
-                display.add(treeView);
+                //display.add(treeView);
+                setView(VIEW_LIST);
                 setText("Show List");
-                mode = TREE;
+                //mode = TREE;
             }
 
-            display.repaint();
+            //display.repaint();
         }
     }
 
@@ -153,6 +195,10 @@ public class GUI extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             phoneBook.allByName();
+            setView(VIEW_LIST);
+            //display.removeAll();
+            //display.add(pane);
+            //display.revalidate();
         }
     }
 
@@ -171,6 +217,10 @@ public class GUI extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             phoneBook.allByNumber();
+            setView(VIEW_LIST);
+            //display.removeAll();
+            //display.add(pane);
+            //display.revalidate();
         }
     }
 
@@ -292,7 +342,7 @@ public class GUI extends JFrame
     {
         public SaveButton()
         {
-            setText("Save from disk");
+            setText("Save to disk");
             System.out.println("SaveButton():");
             addActionListener(this);
         }
@@ -316,6 +366,7 @@ public class GUI extends JFrame
         {
             phoneBook.loadFromDisk("blah.txt");
             phoneBook.showAll();
+            display.repaint();
         }
     }
 
@@ -325,12 +376,16 @@ public class GUI extends JFrame
         int firstLevel = 1;
         int maxLevel = 9;
         int nodeSize = 30;
+        int nodeWidth = 100;
+        int nodeHeight = 30;
         int widthSpacing = 50;
         int heightSpacing = 50;
 
         int startX;
 
         Graphics g;
+
+        //TreeViewNode root;
 
         public void paintComponent(Graphics g)
         {
@@ -341,9 +396,11 @@ public class GUI extends JFrame
             width = getWidth();
             height = getHeight();
 
-            startX = getWidth()/2 - nodeSize/2;
+            startX = getWidth()/2 - nodeWidth/2;
             //drawNode(phoneBook.byName.root, startX, 10, firstLevel);
-            drawNode(phoneBook.byName.root, 0, startX, 10, firstLevel);
+            removeAll();
+            if (phoneBook.byName.root != null)
+                drawNode(phoneBook.byName.root, 0, startX, 10, firstLevel);
         }
 
         //public void drawNode(AVLTreeNode<PhoneBookEntry> node, int x, int y, int level)
@@ -361,7 +418,7 @@ public class GUI extends JFrame
                 {
                     //g.drawLine(x + nodeSize/2, y + nodeSize/2, x - widthSpacing + nodeSize/2, y + heightSpacing + nodeSize/2);
                     g.setColor(Color.BLACK);
-                    g.drawLine(x + nodeSize/2, y + nodeSize/2, x-offset + nodeSize/2, y + heightSpacing + nodeSize/2);
+                    g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x-offset + nodeWidth/2, y + heightSpacing + nodeHeight/2);
                     //drawNode(node.left, x - widthSpacing, y + heightSpacing, level);
                     drawNode(node.left, x, x-offset, y + heightSpacing, level);
                 }
@@ -370,15 +427,118 @@ public class GUI extends JFrame
                 {
                     //g.drawLine(x + nodeSize/2, y + nodeSize/2, x + widthSpacing + nodeSize/2, y + heightSpacing + nodeSize/2);
                     g.setColor(Color.BLACK);
-                    g.drawLine(x + nodeSize/2, y + nodeSize/2, x+offset + nodeSize/2, y + heightSpacing + nodeSize/2);
+                    g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x+offset + nodeWidth/2, y + heightSpacing + nodeHeight/2);
                     //drawNode(node.right, x + widthSpacing, y + heightSpacing, level);
                     drawNode(node.right, x, x+offset, y + heightSpacing, level);
                 }
             }
 
-            g.setColor(Color.RED);
-            g.fillOval(x, y, nodeSize, nodeSize);
-            g.drawString(node.value.name, x, y);
+            //g.setColor(Color.RED);
+            //g.fillOval(x, y, nodeSize, nodeSize);
+            TreeViewNode nodeButton = new TreeViewNode(node, x, y);
+            add(nodeButton);
+            //g.drawString(node.value.name + " " + node.height, x, y);
+
+        }
+
+        class TreeViewNode extends JButton implements MouseListener, MouseWheelListener
+        {
+            AVLTreeNode<PhoneBookEntry> node;
+
+            TreeViewNode(AVLTreeNode<PhoneBookEntry> node, int x, int y)
+            {
+                this.node = node;
+                addMouseListener(this);
+                addMouseWheelListener(this);
+                //setLocation(x, y);
+                setBounds(x, y, nodeWidth, nodeHeight);
+                setText(node.value.name + " - " + node.height);
+            }
+
+            /**
+             * {@inheritDoc}
+             * @see MouseListener#mouseClicked(MouseEvent)
+             */
+            public void mouseClicked(MouseEvent e)
+            {
+                //System.out.println("MouseEvent: " + e);
+                //if (e.getButton() == MouseEvent.BUTTON1)
+                //{
+                    //System.out.println("left button");
+                    //phoneBook.byName.rotateLeft(node);
+                    //display.repaint();
+                //}
+                //else if (e.getButton() == MouseEvent.BUTTON3)
+                //{
+                    //System.out.println("right button");
+                    //phoneBook.byName.rotateRight(node);
+                    //display.repaint();
+                //}
+                if (e.getButton() == MouseEvent.BUTTON1)
+                {
+                    log.append(node.toString() + "\n");
+                    log.setCaretPosition(log.getText().length());
+                }
+                else if (e.getButton() == MouseEvent.BUTTON3
+                        || e.getButton() == MouseEvent.BUTTON2)
+                {
+                    phoneBook.removeByName(node.key);
+                    display.repaint();
+                }
+            }
+
+            /**
+             * {@inheritDoc}
+             * @see MouseListener#mousePressed(MouseEvent)
+             */
+            public void mousePressed(MouseEvent e)
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             * @see MouseListener#mouseReleased(MouseEvent)
+             */
+            public void mouseReleased(MouseEvent e)
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             * @see MouseListener#mouseEntered(MouseEvent)
+             */
+            public void mouseEntered(MouseEvent e)
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             * @see MouseListener#mouseExited(MouseEvent)
+             */
+            public void mouseExited(MouseEvent e)
+            {
+            }
+
+            /**
+             * {@inheritDoc}
+             * @see MouseWheelListener#mouseWheelMoved(MouseWheelEvent)
+             */
+            public void mouseWheelMoved(MouseWheelEvent e)
+            {
+                //System.out.println("MouseWheelEvent = " + e);
+                if (e.getWheelRotation() == 1)
+                {
+                    System.out.println("down");
+                    phoneBook.byName.rotateLeft(node);
+                    display.repaint();
+                }
+                else if (e.getWheelRotation() == -1)
+                {
+                    System.out.println("up");
+                    phoneBook.byName.rotateRight(node);
+                    display.repaint();
+                }
+            }
         }
     }
 }
