@@ -135,7 +135,7 @@ public class PhoneBook
         AVLTreeNode<PhoneBookEntry> node = byName.getFirst();
         while (node != null)
         {
-            System.out.println("node.value.toString():");
+            System.out.println("node.toString():" + node.toString());
             gui.list.append(node.value.toString() + "\n");
             node = byName.getNext(node);
         }

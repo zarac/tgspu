@@ -430,6 +430,10 @@ public class AVLTree<Value> implements Dictionary<Value>
             System.out.println("Node is 'null', can't get next.");
             return null;
         }
+        else
+        {
+            System.out.println(currentNode.toString());
+        }
 
         // on right, get left most or self
         //    O

@@ -376,8 +376,8 @@ public class GUI extends JFrame
         int firstLevel = 1;
         int maxLevel = 9;
         int nodeSize = 30;
-        int nodeWidth = 100;
-        int nodeHeight = 30;
+        int nodeWidth = 80;
+        int nodeHeight = 20;
         int widthSpacing = 50;
         int heightSpacing = 50;
 
