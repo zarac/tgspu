@@ -2,6 +2,7 @@ package phonebook;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -15,6 +16,9 @@ import java.awt.GridLayout;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -40,46 +44,20 @@ public class GUI extends JFrame
     int VIEW_LIST = 0;
     int VIEW_TREE = 1;
 
-    JPanel logPanel;
-    JFrame logFrame;
-    JScrollPane logPane;
-    JTextArea log;
+    Log log;
+
+    JMenuBar menuBar;
+    JMenu menuFile;
+    JMenu menuView;
 
     public GUI(PhoneBook phoneBook)
     {
-        //GUI.phoneBook = phoneBook;
         this.phoneBook = phoneBook;
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
         setBounds(50, 50, 640, 480);
         setLayout(new BorderLayout());
-
-        // *control*
-        control = new JPanel(new GridLayout(2,1));
-
-        // *buttons*
-        buttons = new JPanel(new GridLayout(1,4));
-
-        // load
-        LoadButton loadButton = new LoadButton();
-        buttons.add(loadButton);
-
-        // save
-        SaveButton saveButton = new SaveButton();
-        buttons.add(saveButton);
-
-        // all by name
-        buttons.add(new AllByName());
-
-        // all by number
-        buttons.add(new AllByNumber());
-
-        // tree view
-        buttons.add(new ShowTree());
-
-        control.add(buttons);
-        buttons.revalidate();
 
         // *entry* - the input fields and their actions
         entry = new JPanel(new GridLayout(1,4));
@@ -98,11 +76,8 @@ public class GUI extends JFrame
         // find
         entry.add(new FindButton());
 
-        control.add(entry);
         entry.revalidate();
-
-        //control.revalidate();
-        add(control, BorderLayout.NORTH);
+        add(entry, BorderLayout.NORTH);
 
         // *display*
         display = new JPanel(new GridLayout(1,1));
@@ -117,15 +92,37 @@ public class GUI extends JFrame
         display.revalidate();
 
         // *log*
-        log = new JTextArea();
-        logPanel = new JPanel();
-        logFrame = new JFrame();
-        log.append("TehE LOOOG\n\ntest\n\n");
-        logPane = new JScrollPane(log);
-        logPane.setAutoscrolls(true);
+        log = new Log();
+        add(log, BorderLayout.SOUTH);
+        log.revalidate();
+        repaint();
 
-        add(logPane, BorderLayout.SOUTH);
-        //logPane.revalidate();
+        // *menu*
+        menuBar = new JMenuBar();
+        // file menu
+        menuFile = new JMenu("File");
+        menuFile.setMnemonic('F');
+        menuBar.add(menuFile);
+        // load
+        menuFile.add(new LoadOption());
+        // save
+        menuFile.add(new SaveOption());
+
+        // view menu
+        menuView = new JMenu("View");
+        menuView.setMnemonic('V');
+        menuBar.add(menuView);
+        menuView.add(new LogOption());
+        menuView.addSeparator();
+        menuView.add(new ResultOption());
+        menuView.add(new TreeOption());
+        menuView.addSeparator();
+        menuView.add(new AllByNameOption());
+        menuView.add(new AllByNumberOption());
+
+        setJMenuBar(menuBar);
+        repaint();
+        menuBar.revalidate();
     }
 
     void setView(int view)
@@ -140,15 +137,13 @@ public class GUI extends JFrame
         display.repaint();
     }
 
-    class ShowTree extends JButton implements ActionListener
+    class ResultOption extends JMenuItem implements ActionListener
     {
-        int TREE = 0;
-        int LIST = 1;
-        int mode = LIST;
-
-        public ShowTree()
+        public ResultOption()
         {
-            setText("Show Tree");
+            setText("Result");
+            setMnemonic('R');
+            setEnabled(true);
             addActionListener(this);
         }
 
@@ -158,33 +153,37 @@ public class GUI extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            //display.removeAll();
-
-            //if (mode == TREE)
-            if (view == VIEW_LIST)
-            {
-                setView(VIEW_TREE);
-                //display.add(pane);
-                setText("Show Tree");
-                //mode = LIST;
-            }
-            else
-            {
-                //display.add(treeView);
-                setView(VIEW_LIST);
-                setText("Show List");
-                //mode = TREE;
-            }
-
-            //display.repaint();
+            setView(VIEW_LIST);
         }
     }
 
-    class AllByName extends JButton implements ActionListener
+    class TreeOption extends JMenuItem implements ActionListener
     {
-        public AllByName()
+        public TreeOption()
+        {
+            setText("Tree");
+            setMnemonic('T');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            setView(VIEW_TREE);
+        }
+    }
+
+    class AllByNameOption extends JMenuItem implements ActionListener
+    {
+        public AllByNameOption()
         {
             setText("All By Name");
+            setMnemonic('N');
+            setEnabled(true);
             addActionListener(this);
         }
 
@@ -196,17 +195,16 @@ public class GUI extends JFrame
         {
             phoneBook.allByName();
             setView(VIEW_LIST);
-            //display.removeAll();
-            //display.add(pane);
-            //display.revalidate();
         }
     }
 
-    class AllByNumber extends JButton implements ActionListener
+    class AllByNumberOption extends JMenuItem implements ActionListener
     {
-        public AllByNumber()
+        public AllByNumberOption()
         {
             setText("All By Number");
+            setMnemonic('U');
+            setEnabled(true);
             addActionListener(this);
         }
 
@@ -218,9 +216,6 @@ public class GUI extends JFrame
         {
             phoneBook.allByNumber();
             setView(VIEW_LIST);
-            //display.removeAll();
-            //display.add(pane);
-            //display.revalidate();
         }
     }
 
@@ -253,7 +248,7 @@ public class GUI extends JFrame
             if (numberEntry != null)
                 list.append(numberEntry.toString()+"\n");
 
-            display.revalidate();
+            setView(VIEW_LIST);
         }
     }
 
@@ -280,7 +275,7 @@ public class GUI extends JFrame
             if (nameEntry != null)
                 list.append(nameEntry.toString()+"\n");
 
-            display.revalidate();
+            setView(VIEW_LIST);
         }
     }
 
@@ -307,7 +302,7 @@ public class GUI extends JFrame
             if (numberEntry != null)
                 list.append(numberEntry.toString()+"\n");
 
-            display.revalidate();
+            setView(VIEW_LIST);
         }
     }
 
@@ -338,12 +333,13 @@ public class GUI extends JFrame
         }
     }
 
-    class SaveButton extends JButton implements ActionListener
+    class SaveOption extends JMenuItem implements ActionListener
     {
-        public SaveButton()
+        public SaveOption()
         {
-            setText("Save to disk");
-            System.out.println("SaveButton():");
+            setText("Save");
+            setMnemonic('S');
+            setEnabled(true);
             addActionListener(this);
         }
 
@@ -354,11 +350,13 @@ public class GUI extends JFrame
         }
     }
 
-    class LoadButton extends JButton implements ActionListener
+    class LoadOption extends JMenuItem implements ActionListener
     {
-        public LoadButton()
+        public LoadOption()
         {
-            setText("Load from disk");
+            setText("Load");
+            setMnemonic('L');
+            setEnabled(true);
             addActionListener(this);
         }
 
@@ -367,6 +365,26 @@ public class GUI extends JFrame
             phoneBook.loadFromDisk("blah.txt");
             phoneBook.showAll();
             display.repaint();
+        }
+    }
+
+    class LogOption extends JMenuItem implements ActionListener
+    {
+        public LogOption()
+        {
+            setText("Log");
+            setMnemonic('L');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            System.out.println("logger");
+            if (log.isVisible() == true)
+                log.setVisible(false);
+            else
+                log.setVisible(true);
         }
     }
 
@@ -476,8 +494,8 @@ public class GUI extends JFrame
                 //}
                 if (e.getButton() == MouseEvent.BUTTON1)
                 {
-                    log.append(node.toString() + "\n");
-                    log.setCaretPosition(log.getText().length());
+                    log.append(node.toString());
+                    //log.setCaretPosition(log.getText().length());
                 }
                 else if (e.getButton() == MouseEvent.BUTTON3
                         || e.getButton() == MouseEvent.BUTTON2)
@@ -539,6 +557,39 @@ public class GUI extends JFrame
                     display.repaint();
                 }
             }
+        }
+    }
+
+    class Log extends JPanel
+    {
+        JScrollPane logPane;
+        JTextArea log;
+
+        Log()
+        {
+            setMaximumSize(new Dimension(100, 100));
+            setPreferredSize(new Dimension(100, 100));
+            setMinimumSize(new Dimension(100, 100));
+            setLayout(new GridLayout(1,1));
+            log = new JTextArea();
+            append("TehE LOOOG\n\ntest\n\n");
+            logPane = new JScrollPane(log);
+            add(logPane);
+
+            log.repaint();
+            logPane.repaint();
+            repaint();
+
+            log.revalidate();
+            logPane.revalidate();
+            revalidate();
+        }
+
+        public void append(String message)
+        {
+            log.append("max size = " + getMaximumSize().toString());
+            log.append(message + "\n");
+            log.setCaretPosition(log.getText().length());
         }
     }
 }

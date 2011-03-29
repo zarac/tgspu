@@ -77,28 +77,25 @@ public class AVLTree<Value> implements Dictionary<Value>
             if (getHeight(node.left) - getHeight(node.right) > 1)
             {
                 System.out.println("rotate right...");
-                // if left child is right heavy, rotate it left first
-                // double right? (a left on node's left child first)
+                // is left child is right heavy, rotate it left first (double right)
                 if (getHeight(node.left.right) > getHeight(node.left.left))
                 {
                     System.out.println("double right...");
                     rotateLeft(node.left);
-                    //fixHeight(node.left);
                 }
                 rotateRight(node);
-                //fixHeight(node);
             }
+            // left rotate
             else if (getHeight(node.right) - getHeight(node.left) > 1)
             {
                 System.out.println("rotate left...");
+                // double left
                 if (getHeight(node.right.left) > getHeight(node.right.right))
                 {
                     System.out.println("double left...");
                     rotateRight(node.right);
-                    //fixHeight(node.right);
                 }
                 rotateLeft(node);
-                //fixHeight(node);
             }
 
             node = node.parent;
@@ -125,6 +122,8 @@ public class AVLTree<Value> implements Dictionary<Value>
      */
     public AVLTreeNode<Value> removeNode(String key)
     {
+        System.out.println("removeNode():");
+
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)findNode(key);
         if (node == null)
             return null;
@@ -167,7 +166,7 @@ public class AVLTree<Value> implements Dictionary<Value>
             else if (node.parent.left == node)
             {
                 node.parent.left = node.left;
-                decHeight(node.parent);
+                fixHeight(node.parent);
             }
 
             // x     x   O
@@ -178,7 +177,7 @@ public class AVLTree<Value> implements Dictionary<Value>
             else
             {
                 node.parent.right = node.left;
-                decHeight(node.parent);
+                fixHeight(node.parent);
             }
         }
 
@@ -205,7 +204,7 @@ public class AVLTree<Value> implements Dictionary<Value>
             else if (node == node.parent.left)
             {
                 node.parent.left = node.right;
-                decHeight(node.parent);
+                fixHeight(node.parent);
             }
 
             // o    o
@@ -216,80 +215,105 @@ public class AVLTree<Value> implements Dictionary<Value>
             else
             {
                 node.parent.right = node.right;
-                decHeight(node.parent);
+                fixHeight(node.parent);
             }
         }
 
-        //   |
-        //   O
-        //  / \
-        else if (node.parent == null)
-            root = null;
+        ////   |
+        ////   O
+        ////  / \
+        //// o   o
+        //else if (node.parent == null)
+        //{
+            //// TODO : implement
+            //root = null;
+        //}
 
-        //   o
-        //   |
         //   O
         //  / \
+        // o   o
         else
         {
-            // o
-            //  \
-            //   O
-            //  / \
-            if (node.parent.right == node)
+            System.out.println("node.left.right ??");
+            if (node.left.right == null)
             {
-                node.parent.right = null;
-                decHeight(node.parent);
+                System.out.println("node.left.right == null");
+                if (node == root)
+                    root = node.left;
+                else if (node.parent.right == node)
+                    node.parent.right = node.left;
+                else
+                    node.parent.left = node.left;
+                node.left.right = node.right;
+                node.left.parent = node.parent;
+                fixHeight(node.left);
+                balance(node.left);
             }
-
-            //
-            //    o
-            //   /
-            //  O
-            // / \
             else
             {
-                node.parent.left = null;
-                decHeight(node.parent);
+                System.out.println("node.left.right = " + node.left.right.toString());
+                AVLTreeNode<Value> newRoot = getRightMost(node.left);
+                System.out.println("newRoot = " + newRoot.toString());
+                node.left.right = newRoot.left;
+                newRoot.left = node.left;
+                newRoot.left.parent = newRoot;
+                newRoot.right = node.right;
+                if (node == root)
+                    root = newRoot;
+                else if (node.parent.right == node)
+                    node.parent.right = newRoot;
+                else
+                    node.parent.left = newRoot;
+                newRoot.parent = node.parent;
             }
+            //newRoot.right = node.right;
+            //newRoot.parent.right = newRoot.left;
+            //newRoot.left = node.left;
+
+/*            // o*/
+            ////  \
+            ////   O
+            ////  / \
+            //// o   o
+            //if (node.parent.right == node)
+            //{
+                //AVLTreeNode<Value> rightMost = getRightMost(node.left);
+                //node.parent.right = rightMost;
+                //rightMost.right = node.right;
+                //node.right.parent = rightMost;
+                //rightMost.parent.right = rightMost.left;
+                //if (rightMost == node.left)
+                    //rightMost.left = node.left.left;
+                //else
+                    //rightMost.left = node.left;
+                //rightMost.parent = node.parent;
+
+                //fixHeight(node.parent);
+            //}
+
+            ////     o
+            ////    /
+            ////   O
+            ////  / \
+            //// o   o
+            //else
+            //{
+                //node.parent.left = null;
+                //fixHeight(node.parent);
+            /*}*/
         }
 
         size--;
         return node;
     }
 
-    // increase height of parents recursively
-    void incHeight(AVLTreeNode<Value> node)
+    public AVLTreeNode<Value> getRightMost(AVLTreeNode<Value> node)
     {
-        node.height++;
-        while (node != null)
-        {
-            System.out.println("cur" + node.height + " other" + node.height);
-            if (node.parent != null
-                    && ((node.parent.left == node
-                            && node.parent.right != null
-                            && node.height > node.parent.right.height)
-                        || (node.parent.right == node
-                            && node.parent.left != null
-                            && node.height > node.parent.left.height)))
-            {
-                System.out.println("hejja");
-                node.height++;
-                node = node.parent;
-            }
-            else
-                node = null;
-        }
-    }
-    
+        AVLTreeNode<Value> rightMost = node;
+        while (rightMost.right != null)
+            rightMost = rightMost.right;
 
-    void decHeight(AVLTreeNode<Value> node)
-    {
-        while (node != null)
-        {
-            node.height--;
-            node = node.parent;
-        }
+        return rightMost;
     }
 
     public int getHeight(AVLTreeNode<Value> node)
@@ -302,14 +326,8 @@ public class AVLTree<Value> implements Dictionary<Value>
         while (node != null)
         {
             int max = Math.max(getHeight(node.left), getHeight(node.right));
-            // TODO ? So we do have to check height all the way to the top.. ?
-            //if (max != getHeight(node) - 1)
-            //{
-                node.height = max + 1;
-                node = node.parent;
-            //}
-            //else
-                //node = null;
+            node.height = max + 1;
+            node = node.parent;
         }
     }
 
@@ -319,23 +337,15 @@ public class AVLTree<Value> implements Dictionary<Value>
      */
     public AVLTreeNode<Value> findNode(String key)
     {
-        //AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
-        //AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
         while (node != null)
         {
-            // if equal return self
             if (key.compareTo(node.key) < 0)
                 node = node.left;
             else if (key.compareTo(node.key) > 0)
                 node = node.right;
-            else if (key.compareTo(node.key) == 0)
-            {
+            else
                 return node;
-            }
-                //return (AVLTreeNode<Value>)node;
-            // if less go left
-            // if more go righ
         }
         return null;
     }
@@ -346,27 +356,11 @@ public class AVLTree<Value> implements Dictionary<Value>
      */
     public Value find(String key)
     {
-        //AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
-        //AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
-        //AVLTreeNode<Value> node = (AVLTreeNode<Value>)find(key);
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)findNode(key);
-        //AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
-        while (node != null)
-        {
-            // if equal return self
-            if (key.compareTo(node.key) < 0)
-                node = node.left;
-            else if (key.compareTo(node.key) > 0)
-                node = node.right;
-            else if (key.compareTo(node.key) == 0)
-            {
-                return node.value;
-            }
-                //return (AVLTreeNode<Value>)node;
-            // if less go left
-            // if more go righ
-        }
-        return null;
+        if (node == null)
+            return null;
+        else
+            return node.value;
     }
 
     /**
@@ -479,18 +473,10 @@ public class AVLTree<Value> implements Dictionary<Value>
 
     public void rotateRight(AVLTreeNode<Value> node)
     {
-        // in case we click rotate right in GUI
+        // in case we do manual rotate right in GUI
         if (node.left == null)
             return;
 
-        //AVLTreeNode<Value> newRoot = node.left;
-        //newRoot.parent = node.parent;
-        //node.parent = newRoot;
-        //node.left = newRoot.right;
-        //newRoot.right = node;
-
-        //if (node.parent == null)
-        // assume we have node.left
         AVLTreeNode<Value> newRoot = node.left;
         if (node == root)
         {
@@ -508,41 +494,21 @@ public class AVLTree<Value> implements Dictionary<Value>
             newRoot.parent = node.parent;
         }
 
-        //node.left.parent = node.parent;
-        //node.parent = node.left;
-        //node.left = node.left.right;
-
         node.left = newRoot.right;
         if (node.left != null)
             node.left.parent = node;
         newRoot.right = node;
         node.parent = newRoot;
 
-        //node.left = node.left.right;
-        //pivot.right = node;
-        //node.parent = pivot;
-        
-        //if (node == node.parent)
-            //node.parent = null;
         fixHeight(node);
     }
 
     public void rotateLeft(AVLTreeNode<Value> node)
     {
-        // in case we click rotate left in GUI
+        // in case we do manual rotate left in GUI
         if (node.right == null)
             return;
 
-        //// TODO : Update heights..
-        //// TODO : check if node.parent == null ... update root
-        //// same on rotateRight()
-        //AVLTreeNode<Value> newRoot = node.right;
-        //newRoot.parent = node.parent;
-        //node.parent = newRoot;
-        //node.right = newRoot.left;
-        //newRoot.left = node;
-
-        // assume we have a righ node (or we should not call this method)
         AVLTreeNode<Value> newRoot = node.right;
 
         if (node == root)
@@ -566,16 +532,7 @@ public class AVLTree<Value> implements Dictionary<Value>
             node.right.parent = node;
         newRoot.left = node;
         node.parent = newRoot;
-        //node.right.parent = node.parent;
-        //node.parent = node.right;
-        //node.right = node.right.left;
 
-        //node.right = pivot.left;
-        //pivot.left = node;
-        //node.parent = pivot;
-        
-        //if (node == node.parent)
-            //node.parent = null;
         fixHeight(node);
     }
 }

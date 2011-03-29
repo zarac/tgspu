@@ -1,5 +1,11 @@
-efefa,44
+Anders,185821
+Arne,8653
+Bengt,0995
+Fabian,51275
+Greger,66633
+Kalle,666
+Stigbert,831
+Torgny,6663335
+Torlief,949221
 efefe,3331
-faweh,15331
-fefe,86653
 gegegahh,111

@@ -27,6 +27,19 @@ public class PhoneBook
 
     public void add(PhoneBookEntry entry)
     {
+        if (byName.find(entry.getName()) != null)
+        {
+            gui.log.append("Key '" + entry.getName() + "' already exists in name index.\n");
+            gui.display.repaint();
+            return;
+        }
+        else if (byNumber.find(entry.getNumber()) != null)
+        {
+            gui.log.append("Key '" + entry.getNumber() + "' already exists in number index.\n");
+            gui.display.repaint();
+            return;
+        }
+
         byName.add(entry.getName(), entry);
         byNumber.add(entry.getNumber(), entry);
     }
@@ -53,8 +66,6 @@ public class PhoneBook
 
     public PhoneBookEntry findByName(String key)
     {
-        //AVLTreeNode node = byName.find(key);
-        //PhoneBookEntry entry = byName.find(key);
         return byName.find(key);
     }
 
