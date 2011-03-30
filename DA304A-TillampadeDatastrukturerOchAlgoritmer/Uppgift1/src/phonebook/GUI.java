@@ -56,7 +56,7 @@ public class GUI extends JFrame
 
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setVisible(true);
-        setBounds(50, 50, 640, 480);
+        setBounds(50, 50, 800, 600);
         setLayout(new BorderLayout());
 
         // *entry* - the input fields and their actions
@@ -479,19 +479,6 @@ public class GUI extends JFrame
              */
             public void mouseClicked(MouseEvent e)
             {
-                //System.out.println("MouseEvent: " + e);
-                //if (e.getButton() == MouseEvent.BUTTON1)
-                //{
-                    //System.out.println("left button");
-                    //phoneBook.byName.rotateLeft(node);
-                    //display.repaint();
-                //}
-                //else if (e.getButton() == MouseEvent.BUTTON3)
-                //{
-                    //System.out.println("right button");
-                    //phoneBook.byName.rotateRight(node);
-                    //display.repaint();
-                //}
                 if (e.getButton() == MouseEvent.BUTTON1)
                 {
                     log.append(node.toString());
@@ -500,6 +487,7 @@ public class GUI extends JFrame
                 else if (e.getButton() == MouseEvent.BUTTON3
                         || e.getButton() == MouseEvent.BUTTON2)
                 {
+                    log.append("[remove] " + node.toString());
                     phoneBook.removeByName(node.key);
                     display.repaint();
                 }
@@ -587,7 +575,6 @@ public class GUI extends JFrame
 
         public void append(String message)
         {
-            log.append("max size = " + getMaximumSize().toString());
             log.append(message + "\n");
             log.setCaretPosition(log.getText().length());
         }

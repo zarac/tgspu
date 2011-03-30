@@ -40,7 +40,8 @@ public class AVLTreeNode<Value>
             right = this.right.key;
                 
 
-        return "parent='" + parent + "', self='" + self + "', left='" + left + "', right='" + right + "', height='" + height + "'";
+        return "SELF='" + self + "', <<<'" + left + "<<< >>>" + right + ">>> , ^^^" + parent + "^^^, height='" + height + "'";
+        //return "parent='" + parent + "', self='" + self + "', left='" + left + "', right='" + right + "', height='" + height + "'";
     }
 }
 
