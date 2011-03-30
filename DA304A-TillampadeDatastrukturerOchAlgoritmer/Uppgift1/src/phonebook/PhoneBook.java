@@ -25,6 +25,13 @@ public class PhoneBook
         this.showAll();
     }
 
+    public void addRandom()
+    {
+        int random = (int)(Math.random() * 1000000000);
+        String number = Integer.toString(random);
+        String name = Integer.toHexString(random);
+        add(new PhoneBookEntry(name, number));
+    }
     public void add(PhoneBookEntry entry)
     {
         if (byName.find(entry.getName()) != null)
@@ -72,19 +79,6 @@ public class PhoneBook
     public PhoneBookEntry findByNumber(String key)
     {
         return byNumber.find(key);
-    }
-
-    public void dumpByName()
-    {
-        System.out.println("dumpByName():");
-
-        AVLTreeNode<PhoneBookEntry> node = byName.getFirst();
-        while (node != null)
-        {
-            System.out.println("NODE VALUE = " + ((PhoneBookEntry)byName.pointer.value).getName());
-            System.out.println("HEIGHT = " + byName.pointer.height);
-            node = ((AVLTree<PhoneBookEntry>)byName).getNext();
-        }
     }
 
     public void allByName()
@@ -193,23 +187,5 @@ public class PhoneBook
     public static void main(String[] args)
     {
         new PhoneBook();
-        //PhoneBook phoneBook = new PhoneBook();
-
-        //phoneBook.add(new PhoneBookEntry("Hannes", "0739-903348"));
-        //phoneBook.add(new PhoneBookEntry("Shwan", "0707-133337"));
-        //phoneBook.add(new PhoneBookEntry("Anders", "0703-133337"));
-        //phoneBook.add(new PhoneBookEntry("Kalle", "0705-133337"));
-        //phoneBook.add(new PhoneBookEntry("Mongo", "0701-133337"));
-        //phoneBook.add(new PhoneBookEntry("Neger", "0700-133337"));
-
-        //phoneBook.dumpByName();
-
-        //System.out.println(phoneBook.findByName("Mongo").name);
-        //System.out.println(phoneBook.findByName("Kalle").name);
-        //System.out.println(phoneBook.removeByName("Kalle"));
-
-        //phoneBook.dumpByName();
-
-        //phoneBook.saveByName("blah.txt");
     }
 }

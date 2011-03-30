@@ -125,182 +125,111 @@ public class AVLTree<Value> implements Dictionary<Value>
         System.out.println("removeNode():");
 
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)findNode(key);
-        if (node == null)
-            return null;
-
-        //  O
-        //   \
-        else if (node.right == null)
+        if (node != null)
         {
-            //   |
             //   O
             //    \
-            if (node.parent == null)
+            if (node.right == null)
             {
-                //   |
+                // assuming balanced tree
+                if (node == root)
+                {
+                    root = node.left;
+                    if (node.left != null)
+                        node.left.parent = root;
+                }
+                else
+                {
+                    if (node.parent.right == node)
+                        node.parent.right = node.left;
+                    else
+                        node.parent.left = node.left;
+
+                    if (node.left != null)
+                        node.left.parent = node.parent;
+
+                    fixHeight(node.parent);
+                    balance(node.parent);
+                }
+            }
+
+            //   O
+            //  / \
+            //     o
+            else if (node.left == null)
+            {
+                // assuming balanced tree
+                if (node == root)
+                {
+                    root = node.right;
+                    root.parent = null;
+                }
+                else
+                {
+                    node.right.parent = node.parent;
+                    if (node.parent.right == node)
+                        node.parent.right = node.right;
+                    else
+                        node.parent.left = node.right;
+
+                    fixHeight(node.parent);
+                    balance(node.parent);
+                }
+            }
+
+            //   O
+            //  / \
+            // o   o
+            else
+            {
                 //   O
                 //  / \
-                if (node.left == null)
+                // o   o
+                //  \
+                if (node.left.right == null)
                 {
-                    root = null;
+                    if (node == root)
+                        root = node.left;
+                    else if (node.parent.right == node)
+                        node.parent.right = node.left;
+                    else
+                        node.parent.left = node.left;
+                    node.left.right = node.right;
+                    node.left.parent = node.parent;
+                    node.right.parent = node.left;
+                    fixHeight(node.left);
+                    balance(node.left);
                 }
-                //   |
-                //   O   x
+                //   O
                 //  / \
-                // x
+                // o   o
+                //  \
+                //   o
                 else
                 {
-                    System.out.println("asdf");
-                    root = node.left;
-                    System.out.println("asdf");
-                    root.parent = null;
-                    System.out.println("asdf");
+                    AVLTreeNode<Value> newRoot = getRightMost(node.left);
+                    AVLTreeNode<Value> toBalance = newRoot.parent;
+                    //newRoot.parent.right = newRoot.left;
+                    if (newRoot.left != null)
+                        newRoot.left.parent = newRoot.parent;
+                    newRoot.parent.right = newRoot.left;
+
+                    newRoot.left = node.left;
+                    newRoot.left.parent = newRoot;
+                    newRoot.right = node.right;
+                    newRoot.right.parent = newRoot;
+                    if (node == root)
+                        root = newRoot;
+                    else if (node.parent.right == node)
+                        node.parent.right = newRoot;
+                    else
+                        node.parent.left = newRoot;
+                    newRoot.parent = node.parent;
+
+                    fixHeight(toBalance);
+                    balance(toBalance);
                 }
             }
-
-            //     x   x
-            //    /   /
-            //   O   ?
-            //  / \
-            // ?
-            else if (node.parent.left == node)
-            {
-                node.parent.left = node.left;
-                fixHeight(node.parent);
-            }
-
-            // x     x   O
-            //  \     \ '
-            //   O     ?
-            //  / \
-            // ?
-            else
-            {
-                node.parent.right = node.left;
-                fixHeight(node.parent);
-            }
-        }
-
-        //   O
-        //  / \
-        //     o
-        else if (node.left == null)
-        {
-            //   |    |
-            //   O    x
-            //  / \
-            //     x
-            if (node.parent == null)
-            {
-                root = node.right;
-                node.right.parent = null;
-            }
-
-            //     o    o
-            //    /    /
-            //   O    x
-            //  / \
-            //     x
-            else if (node == node.parent.left)
-            {
-                node.parent.left = node.right;
-                fixHeight(node.parent);
-            }
-
-            // o    o
-            //  \    \
-            //   O    x
-            //  / \
-            //     x
-            else
-            {
-                node.parent.right = node.right;
-                fixHeight(node.parent);
-            }
-        }
-
-        ////   |
-        ////   O
-        ////  / \
-        //// o   o
-        //else if (node.parent == null)
-        //{
-            //// TODO : implement
-            //root = null;
-        //}
-
-        //   O
-        //  / \
-        // o   o
-        else
-        {
-            System.out.println("node.left.right ??");
-            if (node.left.right == null)
-            {
-                System.out.println("node.left.right == null");
-                if (node == root)
-                    root = node.left;
-                else if (node.parent.right == node)
-                    node.parent.right = node.left;
-                else
-                    node.parent.left = node.left;
-                node.left.right = node.right;
-                node.left.parent = node.parent;
-                fixHeight(node.left);
-                balance(node.left);
-            }
-            else
-            {
-                System.out.println("node.left.right = " + node.left.right.toString());
-                AVLTreeNode<Value> newRoot = getRightMost(node.left);
-                System.out.println("newRoot = " + newRoot.toString());
-                node.left.right = newRoot.left;
-                newRoot.left = node.left;
-                newRoot.left.parent = newRoot;
-                newRoot.right = node.right;
-                if (node == root)
-                    root = newRoot;
-                else if (node.parent.right == node)
-                    node.parent.right = newRoot;
-                else
-                    node.parent.left = newRoot;
-                newRoot.parent = node.parent;
-            }
-            //newRoot.right = node.right;
-            //newRoot.parent.right = newRoot.left;
-            //newRoot.left = node.left;
-
-/*            // o*/
-            ////  \
-            ////   O
-            ////  / \
-            //// o   o
-            //if (node.parent.right == node)
-            //{
-                //AVLTreeNode<Value> rightMost = getRightMost(node.left);
-                //node.parent.right = rightMost;
-                //rightMost.right = node.right;
-                //node.right.parent = rightMost;
-                //rightMost.parent.right = rightMost.left;
-                //if (rightMost == node.left)
-                    //rightMost.left = node.left.left;
-                //else
-                    //rightMost.left = node.left;
-                //rightMost.parent = node.parent;
-
-                //fixHeight(node.parent);
-            //}
-
-            ////     o
-            ////    /
-            ////   O
-            ////  / \
-            //// o   o
-            //else
-            //{
-                //node.parent.left = null;
-                //fixHeight(node.parent);
-            /*}*/
         }
 
         size--;

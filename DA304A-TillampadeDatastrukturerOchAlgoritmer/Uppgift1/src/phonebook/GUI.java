@@ -13,12 +13,14 @@ import java.awt.event.MouseWheelListener;
 
 import java.awt.Graphics;
 import java.awt.GridLayout;
+import java.awt.Insets;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -107,6 +109,13 @@ public class GUI extends JFrame
         menuFile.add(new LoadOption());
         // save
         menuFile.add(new SaveOption());
+
+        // edit menu
+        JMenu menuEdit = new JMenu("Edit");
+        menuEdit.setMnemonic('E');
+        menuEdit.add(new AddRandomEntry());
+        menuEdit.add(new AddRandomEntries());
+        menuBar.add(menuEdit);
 
         // view menu
         menuView = new JMenu("View");
@@ -306,6 +315,53 @@ public class GUI extends JFrame
         }
     }
 
+    class AddRandomEntry extends JMenuItem implements ActionListener
+    {
+        public AddRandomEntry()
+        {
+            setText("Add Random");
+            setMnemonic('R');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            phoneBook.addRandom();
+            phoneBook.showAll();
+            display.repaint();
+        }
+    }
+
+    class AddRandomEntries extends JMenuItem implements ActionListener
+    {
+        public AddRandomEntries()
+        {
+            setText("Add Many Random");
+            setMnemonic('S');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            int count = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter count"));
+            for (int i = 1; i <= count; i++) 
+                phoneBook.addRandom();
+
+            phoneBook.showAll();
+            display.repaint();
+        }
+    }
+
     class AddEntry extends JButton implements ActionListener
     {
         public AddEntry()
@@ -325,8 +381,6 @@ public class GUI extends JFrame
             System.out.println(name);
             System.out.println(number);
             phoneBook.add(new PhoneBookEntry(name, number));
-            if (phoneBook == null)
-                System.out.println("jaa det e null");
             phoneBook.showAll();
 
             display.repaint();
@@ -403,8 +457,6 @@ public class GUI extends JFrame
 
         Graphics g;
 
-        //TreeViewNode root;
-
         public void paintComponent(Graphics g)
         {
             super.paintComponent(g);
@@ -415,48 +467,41 @@ public class GUI extends JFrame
             height = getHeight();
 
             startX = getWidth()/2 - nodeWidth/2;
-            //drawNode(phoneBook.byName.root, startX, 10, firstLevel);
             removeAll();
             if (phoneBook.byName.root != null)
                 drawNode(phoneBook.byName.root, 0, startX, 10, firstLevel);
         }
 
-        //public void drawNode(AVLTreeNode<PhoneBookEntry> node, int x, int y, int level)
         public void drawNode(AVLTreeNode<PhoneBookEntry> node, int parentX, int x, int y, int level)
         {
-            //(maxLevel - level + 1) * (widthSpacing-1) - (widthSpacing/2)
-
             if (level < maxLevel)
             {
                 level++;
                 int offset = Math.abs(x - (parentX + x)/2);
-                System.out.println(node.value.name + " offset = '" + offset + "'");
 
                 if (node.left != null)
                 {
-                    //g.drawLine(x + nodeSize/2, y + nodeSize/2, x - widthSpacing + nodeSize/2, y + heightSpacing + nodeSize/2);
-                    g.setColor(Color.BLACK);
+                    if (node != node.left.parent)
+                        g.setColor(Color.RED);
+                    else
+                        g.setColor(Color.BLACK);
                     g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x-offset + nodeWidth/2, y + heightSpacing + nodeHeight/2);
-                    //drawNode(node.left, x - widthSpacing, y + heightSpacing, level);
                     drawNode(node.left, x, x-offset, y + heightSpacing, level);
                 }
 
                 if (node.right != null)
                 {
-                    //g.drawLine(x + nodeSize/2, y + nodeSize/2, x + widthSpacing + nodeSize/2, y + heightSpacing + nodeSize/2);
-                    g.setColor(Color.BLACK);
+                    if (node != node.right.parent)
+                        g.setColor(Color.RED);
+                    else
+                        g.setColor(Color.BLACK);
                     g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x+offset + nodeWidth/2, y + heightSpacing + nodeHeight/2);
-                    //drawNode(node.right, x + widthSpacing, y + heightSpacing, level);
                     drawNode(node.right, x, x+offset, y + heightSpacing, level);
                 }
             }
 
-            //g.setColor(Color.RED);
-            //g.fillOval(x, y, nodeSize, nodeSize);
             TreeViewNode nodeButton = new TreeViewNode(node, x, y);
             add(nodeButton);
-            //g.drawString(node.value.name + " " + node.height, x, y);
-
         }
 
         class TreeViewNode extends JButton implements MouseListener, MouseWheelListener
@@ -468,7 +513,7 @@ public class GUI extends JFrame
                 this.node = node;
                 addMouseListener(this);
                 addMouseWheelListener(this);
-                //setLocation(x, y);
+                setMargin(new Insets(1,1,1,1));
                 setBounds(x, y, nodeWidth, nodeHeight);
                 setText(node.value.name + " - " + node.height);
             }
@@ -482,7 +527,6 @@ public class GUI extends JFrame
                 if (e.getButton() == MouseEvent.BUTTON1)
                 {
                     log.append(node.toString());
-                    //log.setCaretPosition(log.getText().length());
                 }
                 else if (e.getButton() == MouseEvent.BUTTON3
                         || e.getButton() == MouseEvent.BUTTON2)
@@ -531,7 +575,6 @@ public class GUI extends JFrame
              */
             public void mouseWheelMoved(MouseWheelEvent e)
             {
-                //System.out.println("MouseWheelEvent = " + e);
                 if (e.getWheelRotation() == 1)
                 {
                     System.out.println("down");
