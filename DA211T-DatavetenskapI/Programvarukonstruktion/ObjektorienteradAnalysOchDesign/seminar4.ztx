@@ -1,0 +1,28 @@
+class Uttagsautomat
+    def uttag():
+        kort = Kontokort()
+        bank = Bank()
+
+        nr = kort.getKortNummer()
+        PINNr = lasInPINNr()
+        if bank.verifieraKort(nr,PINNr):
+            belopp = lasInBelopp()
+            if registreraUttag(nr, belopp):
+                utforUttag(belopp)
+            else
+                visaUttagEjMojligt()
+
+    def utforUttag(belopp):
+    def lasInPIN():
+    def lasInBelopp():
+
+
+class Kontokort
+    def getKortNumbber():
+
+class Bank
+    def visaUttagEjMojligt():
+    def registreraUttag():
+
+main()
+    new Uttagsautomat.uttag()
