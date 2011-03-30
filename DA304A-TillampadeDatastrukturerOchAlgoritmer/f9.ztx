@@ -1,0 +1,38 @@
+[HL-20110330 1026]
+
+Graphs
+======
+
+o ADT
+    o nodes
+    o arcs
+    : multigraph
+    : hypergraph
+    o directed / undirected
+    o weighted / unweighted
+
+o Traversing
+    o DFS / depth first search
+    o BFS / breadth first search
+
+
+1972 Bellman-Ford shortestPath(s): // O(n) + O(n*m) + O(m) = (n+n*m+m) = O(n*m)  .. m <- O(n2) .. worst case O(n3)
+    for a in nodes: // O(n)
+        u.dist = infinity
+        u.ref = null
+
+    s.dist = 0
+    for (i=1; i<n; i++): // O(n*m)
+        for each arc(u,v) in G: // O(m)
+            if v.dist > u.dist + w(u,v):
+                v.dist = u.dist + w(u,v)
+                v.ref = u
+
+    for each arc(u,v) in G: // O(m)
+        if v.dist > u.dist + w(u,v):
+            return false
+
+    return true
+
+
+1959 Edsger Dijkstra..
