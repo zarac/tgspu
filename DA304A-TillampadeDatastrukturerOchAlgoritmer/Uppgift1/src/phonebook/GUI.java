@@ -46,9 +46,11 @@ public class GUI extends JFrame
     JScrollPane pane;
     JTextArea list;
     TreeView treeView;
+    StatisticsView stats;
     int view;
     int VIEW_LIST = 0;
     int VIEW_TREE = 1;
+    int VIEW_STATS = 2;
 
     Log log;
 
@@ -99,6 +101,9 @@ public class GUI extends JFrame
         add(display, BorderLayout.CENTER);
         display.revalidate();
 
+        // statistics
+        stats = new StatisticsView();
+
         // *log*
         log = new Log();
         add(log, BorderLayout.SOUTH);
@@ -135,6 +140,7 @@ public class GUI extends JFrame
         menuView.addSeparator();
         menuView.add(new AllByNameOption());
         menuView.add(new AllByNumberOption());
+        menuView.add(new StatisticsOption());
 
         setJMenuBar(menuBar);
         repaint();
@@ -149,6 +155,8 @@ public class GUI extends JFrame
             display.add(treeView);
         else if (view == VIEW_LIST)
             display.add(list);
+        else if (view == VIEW_STATS)
+            display.add(stats);
         display.revalidate();
         display.repaint();
     }
@@ -381,7 +389,7 @@ public class GUI extends JFrame
             {
                 phoneBook.addRandom();
                 if (i % onePercent == 0)
-                    System.out.println(percent++ + "% - " + i);
+                    System.out.println(++percent + "% - " + i);
             }
             System.out.println("DONE!");
 
@@ -474,6 +482,26 @@ public class GUI extends JFrame
         {
             phoneBook.allByNumber();
             setView(VIEW_LIST);
+        }
+    }
+
+    class StatisticsOption extends JMenuItem implements ActionListener
+    {
+        public StatisticsOption()
+        {
+            setText("Statistics");
+            setMnemonic('S');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            setView(VIEW_STATS);
         }
     }
 
@@ -660,6 +688,25 @@ public class GUI extends JFrame
                     display.repaint();
                 }
             }
+        }
+    }
+
+    class StatisticsView extends JPanel
+    {
+        int width, height;
+
+        Graphics g;
+
+        public void paintComponent(Graphics g)
+        {
+            super.paintComponent(g);
+            this.g = g;
+            width = getWidth();
+            height = getHeight();
+        }
+
+        public void drawSpeedTests(SpeedTest[] tests)
+        {
         }
     }
 

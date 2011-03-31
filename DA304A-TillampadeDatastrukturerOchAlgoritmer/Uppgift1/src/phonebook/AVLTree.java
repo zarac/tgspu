@@ -190,7 +190,6 @@ public class AVLTree<Value> implements Dictionary<Value>
                 {
                     AVLTreeNode<Value> newRoot = getRightMost(node.left);
                     AVLTreeNode<Value> toBalance = newRoot.parent;
-                    //newRoot.parent.right = newRoot.left;
                     if (newRoot.left != null)
                         newRoot.left.parent = newRoot.parent;
                     newRoot.parent.right = newRoot.left;
@@ -376,7 +375,6 @@ public class AVLTree<Value> implements Dictionary<Value>
         //   \
         //    O
         next = currentNode;
-        //while (next.parent != null)
         while (next != root)
         {
             if (next == next.parent.left)
@@ -389,7 +387,6 @@ public class AVLTree<Value> implements Dictionary<Value>
 
         // no next
         //    x
-        //System.out.println("getNext():null");
         return null;
     }
 
@@ -400,21 +397,13 @@ public class AVLTree<Value> implements Dictionary<Value>
             return;
 
         AVLTreeNode<Value> newRoot = node.left;
+        newRoot.parent = node.parent;
         if (node == root)
-        {
             root = newRoot;
-            newRoot.parent = null;
-        }
         else if (node.parent.left == node)
-        {
             node.parent.left = newRoot;
-            newRoot.parent = node.parent;
-        }
         else
-        {
             node.parent.right = node.left;
-            newRoot.parent = node.parent;
-        }
 
         node.left = newRoot.right;
         if (node.left != null)
@@ -432,22 +421,14 @@ public class AVLTree<Value> implements Dictionary<Value>
             return;
 
         AVLTreeNode<Value> newRoot = node.right;
+        newRoot.parent = node.parent;
 
         if (node == root)
-        {
             root = newRoot;
-            newRoot.parent = null;
-        }
         else if (node.parent.right == node)
-        {
             node.parent.right = newRoot;
-            newRoot.parent = node.parent;
-        }
         else
-        {
             node.parent.left = newRoot;
-            newRoot.parent = node.parent;
-        }
 
         node.right = newRoot.left;
         if (node.right != null)
