@@ -1,5 +1,7 @@
 package phonebook;
 
+import java.util.ArrayList;
+
 public class AVLTree<Value> implements Dictionary<Value>
 {
     int size;
@@ -16,10 +18,7 @@ public class AVLTree<Value> implements Dictionary<Value>
     public void add(String key, Value value)
     {
         if (root == null)
-        {
             root = new AVLTreeNode<Value>(key, value);
-            System.out.println("new root, " + key);
-        }
         else 
         {
             AVLTreeNode<Value> current = root;
@@ -31,7 +30,6 @@ public class AVLTree<Value> implements Dictionary<Value>
                     {
                         current.left = new AVLTreeNode<Value>(key, value);
                         current.left.parent = current;
-                        System.out.println("putting " + key + " left of " + current.key);
                         fixHeight(current);
                         balance(current);
                         break;
@@ -45,7 +43,6 @@ public class AVLTree<Value> implements Dictionary<Value>
                     {
                         current.right = new AVLTreeNode<Value>(key, value);
                         current.right.parent = current;
-                        System.out.println("putting " + key + " right of " + current.key);
                         fixHeight(current);
                         balance(current);
                         break;
@@ -54,7 +51,6 @@ public class AVLTree<Value> implements Dictionary<Value>
                         current = current.right;
                 }
             }
-
         }
 
         size++;
@@ -62,39 +58,24 @@ public class AVLTree<Value> implements Dictionary<Value>
 
     public void balance(AVLTreeNode<Value> node)
     {
-        System.out.println("balance(): node='" + node.key + "'");
-
         while (node != null)
         {
-            if (node.left != null)
-                System.out.println("Left: " + node.left.key);
-
-            if (node.right != null)
-                System.out.println("Right: " + node.right.key);
-
             // check if right rotate is needed
-            System.out.println("balancing..." + getHeight(node.left) + " " + getHeight(node.right));
             if (getHeight(node.left) - getHeight(node.right) > 1)
             {
-                System.out.println("rotate right...");
                 // is left child is right heavy, rotate it left first (double right)
                 if (getHeight(node.left.right) > getHeight(node.left.left))
-                {
-                    System.out.println("double right...");
                     rotateLeft(node.left);
-                }
+
                 rotateRight(node);
             }
             // left rotate
             else if (getHeight(node.right) - getHeight(node.left) > 1)
             {
-                System.out.println("rotate left...");
                 // double left
                 if (getHeight(node.right.left) > getHeight(node.right.right))
-                {
-                    System.out.println("double left...");
                     rotateRight(node.right);
-                }
+
                 rotateLeft(node);
             }
 
@@ -122,7 +103,7 @@ public class AVLTree<Value> implements Dictionary<Value>
      */
     public AVLTreeNode<Value> removeNode(String key)
     {
-        System.out.println("removeNode():");
+        //System.out.println("removeNode():");
 
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)findNode(key);
         if (node != null)
@@ -260,10 +241,22 @@ public class AVLTree<Value> implements Dictionary<Value>
         }
     }
 
-    /**
-     * {@inheritDoc}
-     * @see Dictionary#findNode(String)
-     */
+    //public AVLTreeNode<Value>[] fuzzyFindNode(String key)
+    //{
+        //AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
+        //ArrayList<AVLTreeNode<Value>> matches = new ArrayList<AVLTreeNode<Value>>();
+        //while (node != null)
+        //{
+            //if (key.compareTo(node.key) < 0)
+                //node = node.left;
+            //else if (key.compareTo(node.key) > 0)
+                //node = node.right;
+            //else
+                //return node;
+        //}
+        //return null;
+    //}
+
     public AVLTreeNode<Value> findNode(String key)
     {
         AVLTreeNode<Value> node = (AVLTreeNode<Value>)root;
@@ -303,12 +296,12 @@ public class AVLTree<Value> implements Dictionary<Value>
 
     public AVLTreeNode<Value> getFirst()
     {
-        System.out.println("getFirst():");
+        //System.out.println("getFirst():");
         AVLTreeNode<Value> first = root;
 
         if (first == null)
         {
-            System.out.println("getFirst(): null");
+            //System.out.println("getFirst(): null");
             pointer = null;
             return null;
         }
@@ -350,12 +343,12 @@ public class AVLTree<Value> implements Dictionary<Value>
         // no node
         if (currentNode == null)
         {
-            System.out.println("Node is 'null', can't get next.");
+            //System.out.println("getNext(): Node is 'null', can't get next.");
             return null;
         }
         else
         {
-            System.out.println(currentNode.toString());
+            //System.out.println("getNext(): " + currentNode.toString());
         }
 
         // on right, get left most or self
@@ -366,11 +359,11 @@ public class AVLTree<Value> implements Dictionary<Value>
         //    x
         if (currentNode.right != null)
         {
-            System.out.println(" >");
+            //System.out.println("getNext(): >");
             next = currentNode.right;
             while (next.left != null)
             {
-                System.out.println("<");
+                //System.out.println("getNext():<");
                 next = next.left;
             }
             return next;
@@ -388,7 +381,7 @@ public class AVLTree<Value> implements Dictionary<Value>
         {
             if (next == next.parent.left)
             {
-                System.out.println("parent was next yay..");
+                //System.out.println("getNext():parent was next yay..");
                 return next.parent;
             }
             next = next.parent;
@@ -396,7 +389,7 @@ public class AVLTree<Value> implements Dictionary<Value>
 
         // no next
         //    x
-        System.out.println("null");
+        //System.out.println("getNext():null");
         return null;
     }
 

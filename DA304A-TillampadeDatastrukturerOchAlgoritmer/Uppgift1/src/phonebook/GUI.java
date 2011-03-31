@@ -6,6 +6,8 @@ import java.awt.Dimension;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
@@ -14,6 +16,8 @@ import java.awt.event.MouseWheelListener;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
+
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -62,21 +66,22 @@ public class GUI extends JFrame
         setLayout(new BorderLayout());
 
         // *entry* - the input fields and their actions
-        entry = new JPanel(new GridLayout(1,4));
+        entry = new JPanel(new BorderLayout());
+        //entry = new JPanel(new GridLayout(1,2));
 
         // add
-        entry.add(new AddEntry());
+        entry.add(new AddEntry(), BorderLayout.EAST);
 
         // name
         name = new NameField();
-        entry.add(name);
+        entry.add(name, BorderLayout.CENTER);
 
-        // number
-        number = new NumberField();
-        entry.add(number);
+        //// number
+        //number = new NumberField();
+        //entry.add(number);
 
-        // find
-        entry.add(new FindButton());
+        //// find
+        //entry.add(new FindButton());
 
         entry.revalidate();
         add(entry, BorderLayout.NORTH);
@@ -87,6 +92,7 @@ public class GUI extends JFrame
         // list
         list = new JTextArea();
         pane = new JScrollPane(list);
+        pane.setAutoscrolls(true);
         treeView = new TreeView();
         display.add(pane);
 
@@ -115,6 +121,7 @@ public class GUI extends JFrame
         menuEdit.setMnemonic('E');
         menuEdit.add(new AddRandomEntry());
         menuEdit.add(new AddRandomEntries());
+        menuEdit.add(new GenerateOption());
         menuBar.add(menuEdit);
 
         // view menu
@@ -146,6 +153,268 @@ public class GUI extends JFrame
         display.repaint();
     }
 
+    class FindButton extends JButton implements ActionListener
+    {
+        public FindButton()
+        {
+            setText("Find");
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            String name = phoneBook.gui.name.getText();
+            list.setText("finding '" + name + "'...");
+
+            //list.append("    * By Name *\n");
+            PhoneBookEntry nameEntry = phoneBook.byName.find(name);
+            if (nameEntry != null)
+                list.append(nameEntry.toString()+"\n");
+
+            //list.append("\n\n    * By Number *\n");
+            String number = phoneBook.gui.number.getText();
+            PhoneBookEntry numberEntry = phoneBook.byNumber.find(number);
+            if (numberEntry != null)
+                list.append(numberEntry.toString()+"\n");
+
+            setView(VIEW_LIST);
+        }
+    }
+
+    class AddEntry extends JButton implements ActionListener
+    {
+        public AddEntry()
+        {
+            setText("Add");
+            //setMaximumSize(new Dimension(100, 100));
+            setMnemonic('A');
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            String[] search = GUI.this.name.getText().split("=");
+            //String name = GUI.this.name.getText();
+            //String number = GUI.this.number.getText();
+            phoneBook.add(new PhoneBookEntry(search[0].trim(), search[1].trim()));
+            phoneBook.showAll();
+
+            display.repaint();
+        }
+    }
+
+    class NameField extends JTextField implements ActionListener, KeyListener
+    {
+        public NameField()
+        {
+            setText("<name>");
+            addActionListener(this);
+            addKeyListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            list.setText("");
+
+            String name = phoneBook.gui.name.getText();
+            list.append("    * By Name * (" + name + ")\n");
+            PhoneBookEntry nameEntry = phoneBook.byName.find(name);
+            if (nameEntry != null)
+                list.append(nameEntry.toString()+"\n");
+
+            setView(VIEW_LIST);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see KeyListener#keyTyped(KeyEvent)
+         */
+        public void keyTyped(KeyEvent e)
+        {
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see KeyListener#keyPressed(KeyEvent)
+         */
+        public void keyPressed(KeyEvent e)
+        {
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see KeyListener#keyReleased(KeyEvent)
+         */
+        public void keyReleased(KeyEvent e)
+        {
+            String name = phoneBook.gui.name.getText();
+            list.setText("finding '" + name + "'...\n\n");
+
+            list.append("    * By Name *\n");
+            PhoneBookEntry nameEntry = phoneBook.byName.find(name.toLowerCase());
+            if (nameEntry != null)
+                list.append(nameEntry.toString()+"\n");
+
+            list.append("\n\n    * By Number *\n");
+            PhoneBookEntry numberEntry = phoneBook.byNumber.find(name.toLowerCase());
+            if (numberEntry != null)
+                list.append(numberEntry.toString()+"\n");
+
+            setView(VIEW_LIST);
+        }
+    }
+
+    class NumberField extends JTextField implements ActionListener
+    {
+        public NumberField()
+        {
+            setText("<number>");
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            list.setText("");
+
+            String number = phoneBook.gui.number.getText();
+            list.append("    * By Number * (" + number + ")\n");
+            PhoneBookEntry numberEntry = phoneBook.byNumber.find(number);
+            if (numberEntry != null)
+                list.append(numberEntry.toString()+"\n");
+
+            setView(VIEW_LIST);
+        }
+    }
+
+    class SaveOption extends JMenuItem implements ActionListener
+    {
+        public SaveOption()
+        {
+            setText("Save");
+            setMnemonic('S');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            PhoneBook.saveToDisk("blah.txt", phoneBook.byName);
+        }
+    }
+
+    class LoadOption extends JMenuItem implements ActionListener
+    {
+        public LoadOption()
+        {
+            setText("Load");
+            setMnemonic('L');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            phoneBook.loadFromDisk("blah.txt");
+            phoneBook.showAll();
+            display.repaint();
+        }
+    }
+
+    class AddRandomEntry extends JMenuItem implements ActionListener
+    {
+        public AddRandomEntry()
+        {
+            setText("Add Random");
+            setMnemonic('R');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            phoneBook.addRandom();
+            phoneBook.showAll();
+            display.repaint();
+        }
+    }
+
+    class AddRandomEntries extends JMenuItem implements ActionListener
+    {
+        public AddRandomEntries()
+        {
+            setText("Add Many Random");
+            setMnemonic('M');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        /**
+         * {@inheritDoc}
+         * @see ActionListener#actionPerformed(ActionEvent)
+         */
+        public void actionPerformed(ActionEvent e)
+        {
+            int count = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter count"));
+            int onePercent = count/100;
+            int percent = 0;
+            for (int i = 1; i <= count; i++) 
+            {
+                phoneBook.addRandom();
+                if (i % onePercent == 0)
+                    System.out.println(percent++ + "% - " + i);
+            }
+            System.out.println("DONE!");
+
+            phoneBook.showAll();
+            display.repaint();
+        }
+    }
+
+    class GenerateOption extends JMenuItem implements ActionListener
+    {
+        public GenerateOption()
+        {
+            setText("Generate");
+            setMnemonic('G');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            String[] counts = JOptionPane.showInputDialog(this, "Enter number of entries (comma separated for many).").split(",");
+            ArrayList<SpeedTest> tests = new ArrayList<SpeedTest>();
+
+            for (String count : counts)
+            {
+                System.out.println("Generating file with '" + count + "' entries.");
+                SpeedTest test = phoneBook.generateTestFile("test" + count + ".txt", Integer.parseInt(count.trim()));
+                tests.add(test);
+                System.out.println("... total time: '" + test.time + "'ms.");
+            }
+        }
+    }
+
     class ResultOption extends JMenuItem implements ActionListener
     {
         public ResultOption()
@@ -163,26 +432,6 @@ public class GUI extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             setView(VIEW_LIST);
-        }
-    }
-
-    class TreeOption extends JMenuItem implements ActionListener
-    {
-        public TreeOption()
-        {
-            setText("Tree");
-            setMnemonic('T');
-            setEnabled(true);
-            addActionListener(this);
-        }
-
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            setView(VIEW_TREE);
         }
     }
 
@@ -228,99 +477,12 @@ public class GUI extends JFrame
         }
     }
 
-    class FindButton extends JButton implements ActionListener
+    class TreeOption extends JMenuItem implements ActionListener
     {
-        public FindButton()
+        public TreeOption()
         {
-            setText("Find");
-            addActionListener(this);
-        }
-
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            System.out.println("FindButton.actionPerformed():");
-            list.setText("");
-
-            list.append("    * By Name *\n");
-            String name = phoneBook.gui.name.getText();
-            PhoneBookEntry nameEntry = phoneBook.byName.find(name);
-            if (nameEntry != null)
-                list.append(nameEntry.toString()+"\n");
-
-            list.append("\n\n    * By Number *\n");
-            String number = phoneBook.gui.number.getText();
-            PhoneBookEntry numberEntry = phoneBook.byNumber.find(number);
-            if (numberEntry != null)
-                list.append(numberEntry.toString()+"\n");
-
-            setView(VIEW_LIST);
-        }
-    }
-
-    class NameField extends JTextField implements ActionListener
-    {
-        public NameField()
-        {
-            setText("<name>");
-            addActionListener(this);
-        }
-
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            System.out.println("NameField.actionPerformed():");
-            list.setText("");
-
-            String name = phoneBook.gui.name.getText();
-            list.append("    * By Name * (" + name + ")\n");
-            PhoneBookEntry nameEntry = phoneBook.byName.find(name);
-            if (nameEntry != null)
-                list.append(nameEntry.toString()+"\n");
-
-            setView(VIEW_LIST);
-        }
-    }
-
-    class NumberField extends JTextField implements ActionListener
-    {
-        public NumberField()
-        {
-            setText("<number>");
-            addActionListener(this);
-        }
-
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            System.out.println("NumberField.actionPerformed():");
-            list.setText("");
-
-            String number = phoneBook.gui.number.getText();
-            list.append("    * By Number * (" + number + ")\n");
-            PhoneBookEntry numberEntry = phoneBook.byNumber.find(number);
-            if (numberEntry != null)
-                list.append(numberEntry.toString()+"\n");
-
-            setView(VIEW_LIST);
-        }
-    }
-
-    class AddRandomEntry extends JMenuItem implements ActionListener
-    {
-        public AddRandomEntry()
-        {
-            setText("Add Random");
-            setMnemonic('R');
+            setText("Tree");
+            setMnemonic('T');
             setEnabled(true);
             addActionListener(this);
         }
@@ -331,94 +493,7 @@ public class GUI extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            phoneBook.addRandom();
-            phoneBook.showAll();
-            display.repaint();
-        }
-    }
-
-    class AddRandomEntries extends JMenuItem implements ActionListener
-    {
-        public AddRandomEntries()
-        {
-            setText("Add Many Random");
-            setMnemonic('S');
-            setEnabled(true);
-            addActionListener(this);
-        }
-
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            int count = Integer.parseInt(JOptionPane.showInputDialog(this, "Enter count"));
-            for (int i = 1; i <= count; i++) 
-                phoneBook.addRandom();
-
-            phoneBook.showAll();
-            display.repaint();
-        }
-    }
-
-    class AddEntry extends JButton implements ActionListener
-    {
-        public AddEntry()
-        {
-            setText("Add");
-            addActionListener(this);
-        }
-
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            String name = GUI.this.name.getText();
-            String number = GUI.this.number.getText();
-            System.out.println(name);
-            System.out.println(number);
-            phoneBook.add(new PhoneBookEntry(name, number));
-            phoneBook.showAll();
-
-            display.repaint();
-        }
-    }
-
-    class SaveOption extends JMenuItem implements ActionListener
-    {
-        public SaveOption()
-        {
-            setText("Save");
-            setMnemonic('S');
-            setEnabled(true);
-            addActionListener(this);
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            System.out.println("actionPerformed():");
-            PhoneBook.saveToDisk("blah.txt", phoneBook.byName);
-        }
-    }
-
-    class LoadOption extends JMenuItem implements ActionListener
-    {
-        public LoadOption()
-        {
-            setText("Load");
-            setMnemonic('L');
-            setEnabled(true);
-            addActionListener(this);
-        }
-
-        public void actionPerformed(ActionEvent e)
-        {
-            phoneBook.loadFromDisk("blah.txt");
-            phoneBook.showAll();
-            display.repaint();
+            setView(VIEW_TREE);
         }
     }
 
@@ -434,7 +509,6 @@ public class GUI extends JFrame
 
         public void actionPerformed(ActionEvent e)
         {
-            System.out.println("logger");
             if (log.isVisible() == true)
                 log.setVisible(false);
             else
@@ -577,13 +651,11 @@ public class GUI extends JFrame
             {
                 if (e.getWheelRotation() == 1)
                 {
-                    System.out.println("down");
                     phoneBook.byName.rotateLeft(node);
                     display.repaint();
                 }
                 else if (e.getWheelRotation() == -1)
                 {
-                    System.out.println("up");
                     phoneBook.byName.rotateRight(node);
                     display.repaint();
                 }
@@ -598,6 +670,7 @@ public class GUI extends JFrame
 
         Log()
         {
+            setVisible(false);
             setMaximumSize(new Dimension(100, 100));
             setPreferredSize(new Dimension(100, 100));
             setMinimumSize(new Dimension(100, 100));
