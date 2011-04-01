@@ -6,5 +6,6 @@ class SpeedTest
     AVLTreeNode<PhoneBookEntry> byNumberRoot;
     int size;
     long time;
+    long avarageTime;
     String filename;
 }

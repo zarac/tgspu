@@ -18,6 +18,7 @@ import java.awt.GridLayout;
 import java.awt.Insets;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -156,7 +157,10 @@ public class GUI extends JFrame
         else if (view == VIEW_LIST)
             display.add(list);
         else if (view == VIEW_STATS)
+        {
+            //stats.drawSpeedTests(
             display.add(stats);
+        }
         display.revalidate();
         display.repaint();
     }
@@ -410,16 +414,29 @@ public class GUI extends JFrame
 
         public void actionPerformed(ActionEvent e)
         {
-            String[] counts = JOptionPane.showInputDialog(this, "Enter number of entries (comma separated for many).").split(",");
+            //String[] counts = JOptionPane.showInputDialog(this, "Enter number of entries (comma separated for many).").split(",");
+            String[] counts = "1000,2000,3000,4000,5000,6000,7000,8000,9000,10000".split(",");
             ArrayList<SpeedTest> tests = new ArrayList<SpeedTest>();
+            
 
-            for (String count : counts)
+            int[] intCounts = new int[counts.length];
+            for (int i = 0; i < counts.length; i++) 
+            {
+                intCounts[i] = Integer.parseInt(counts[i].trim());
+            }
+
+            Arrays.sort(intCounts);
+
+            for (int count : intCounts)
             {
                 System.out.println("Generating file with '" + count + "' entries.");
-                SpeedTest test = phoneBook.generateTestFile("test" + count + ".txt", Integer.parseInt(count.trim()));
+                SpeedTest test = phoneBook.generateTestFile("test" + count + ".txt", count);
                 tests.add(test);
                 System.out.println("... total time: '" + test.time + "'ms.");
             }
+
+            stats.tests = tests.toArray(new SpeedTest[tests.size()]);
+            setView(VIEW_STATS);
         }
     }
 
@@ -693,9 +710,20 @@ public class GUI extends JFrame
 
     class StatisticsView extends JPanel
     {
+        // of plotting area
         int width, height;
-
+        int marginLeft = 50;
+        int marginBottom = 50;
+        int marginRight = 50;
+        int marginTop = 50;
+        int dotSize = 7;
         Graphics g;
+        public SpeedTest[] tests;
+
+        public StatisticsView()
+        {
+            setBackground(Color.WHITE);
+        }
 
         public void paintComponent(Graphics g)
         {
@@ -703,10 +731,57 @@ public class GUI extends JFrame
             this.g = g;
             width = getWidth();
             height = getHeight();
+            System.out.println("paintComponent():");
+            drawSpeedTests();
         }
 
-        public void drawSpeedTests(SpeedTest[] tests)
+        public void drawSpeedTests()
         {
+            System.out.println("drawSpeedTests():");
+
+            // find min and max values
+            long maxSize = 0;
+            long maxTime = 0;
+            long minSize = Long.MAX_VALUE;
+            long minTime = Long.MAX_VALUE;
+            for (SpeedTest test : tests)
+            {
+                if (test.size > maxSize)
+                    maxSize = test.size;
+                if (test.time > maxTime)
+                    maxTime = test.time;
+                if (test.size < minSize)
+                    minSize = test.size;
+                if (test.time < minTime)
+                    minTime = test.time;
+            }
+            System.out.println("maxSize=" + maxSize + ", minSize=" + minSize + ", maxTime=" + maxTime + ", minTime=" + minTime);
+
+            //minSize -= marginLeft;
+            //maxSize += marginRight;
+            //minTime -= marginTop;
+            //maxTime += marginBottom;
+
+            // plot
+            int x, y, lastX = -1, lastY = -1;
+            g.setColor(Color.BLACK);
+            for (SpeedTest test : tests)
+            {
+                x = marginLeft + ((int)(((double)(test.size-minSize) / (double)(maxSize-minSize)) * (width-dotSize-marginLeft-marginRight)));
+                //y = height - (int)((double)test.time / (double)maxTime * height);
+                //y = marginTop + height - (int)((double)(test.time-minTime) / (double)(maxTime-minTime) * (height-dotSize-marginTop-marginBottom));
+                y = height - (marginTop + (int)((double)(test.time-minTime) / (double)(maxTime-minTime) * (height-dotSize-marginTop-marginBottom)));
+                //y = height - (int)((double)test.time / (double)maxTime * height);
+                System.out.print("size=" + test.size + ", time=" + test.time);
+                System.out.print(", x%=" + (double)test.size/(double)maxSize + ", y%=" + (double)test.time/(double)maxTime);
+                System.out.println(", x=" + x + ", y=" + y);
+                g.fillOval(x, y, dotSize, dotSize);
+                g.drawString("size=" + test.size + " time=" + test.time, x, y);
+                if (lastX > -1)
+                    g.drawLine(lastX+dotSize/2, lastY+dotSize/2, x+dotSize/2, y+dotSize/2);
+                lastX = x;
+                lastY = y;
+            }
         }
     }
 

@@ -250,6 +250,7 @@ public class PhoneBook
         //test.byNumberRoot = byNumber.root;
         test.time = System.currentTimeMillis() - start;
         test.size = size;
+        test.avarageTime = test.time/size;
         test.filename = filename;
 
         // restore tree state
