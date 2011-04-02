@@ -6,6 +6,11 @@ class SpeedTest
     AVLTreeNode<PhoneBookEntry> byNumberRoot;
     int size;
     long time;
-    long avarageTime;
+    double avarageTime;
     String filename;
+
+    public String toString()
+    {
+        return "size='" + size + "', time='" + time + "', avarageTime='" + avarageTime + "', filename='" + filename + "', byNameRoot='" + byNameRoot + "', byNumberRoot='" + byNumberRoot + "'";
+    }
 }
