@@ -767,10 +767,10 @@ public class GUI extends JFrame
             g.setColor(Color.BLACK);
             for (SpeedTest test : tests)
             {
-                x = ((int)((double)test.size / (double)(maxSize) * width));
-                y = height - (int)((double)test.time / (double)maxTime * height);
-                //x = marginLeft + (int)((double)test.size / (double)maxSize * (width - marginLeft - marginRight));
-                //x = marginLeft + ((int)((double)test.size / (double)(maxSize-minSize) * (width - marginLeft - marginRight)));
+                x = marginLeft + ((int)(((double)(test.size-minSize) / (double)(maxSize-minSize)) * (width-dotSize-marginLeft-marginRight)));
+                //y = height - (int)((double)test.time / (double)maxTime * height);
+                //y = marginTop + height - (int)((double)(test.time-minTime) / (double)(maxTime-minTime) * (height-dotSize-marginTop-marginBottom));
+                y = height - (marginTop + (int)((double)(test.time-minTime) / (double)(maxTime-minTime) * (height-dotSize-marginTop-marginBottom)));
                 //y = height - (int)((double)test.time / (double)maxTime * height);
                 System.out.print("size=" + test.size + ", time=" + test.time);
                 System.out.print(", x%=" + (double)test.size/(double)maxSize + ", y%=" + (double)test.time/(double)maxTime);
