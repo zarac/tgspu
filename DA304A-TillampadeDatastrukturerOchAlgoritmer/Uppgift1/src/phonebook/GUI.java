@@ -13,6 +13,7 @@ import java.awt.event.MouseListener;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
@@ -36,28 +37,30 @@ public class GUI extends JFrame
 {
     PhoneBook phoneBook;
 
-    JPanel control;
-    JPanel buttons;
-    JPanel fields;
-    JTextField name;
-    JTextField number;
-    JPanel entry;
+    protected JPanel control;
+    protected JPanel buttons;
+    protected JPanel fields;
+    protected JTextField name;
+    protected JTextField number;
+    protected JPanel entry;
 
-    JPanel display;
-    JScrollPane pane;
-    JTextArea list;
-    TreeView treeView;
-    StatisticsView stats;
-    int view;
-    int VIEW_LIST = 0;
-    int VIEW_TREE = 1;
-    int VIEW_STATS = 2;
+    protected JPanel display;
+    protected JScrollPane pane;
+    protected JTextArea list;
+    protected TreeView treeView;
+    protected StatisticsView stats;
+    protected int[] lastTestSizes;
+    protected int view;
+    protected int VIEW_LIST = 0;
+    protected int VIEW_TREE = 1;
+    protected int VIEW_STATS = 2;
+    protected int VIEW_RESULT = 3;
 
     Log log;
 
-    JMenuBar menuBar;
-    JMenu menuFile;
-    JMenu menuView;
+    protected JMenuBar menuBar;
+    protected JMenu menuFile;
+    protected JMenu menuView;
 
     public GUI(PhoneBook phoneBook)
     {
@@ -78,13 +81,6 @@ public class GUI extends JFrame
         // name
         name = new NameField();
         entry.add(name, BorderLayout.CENTER);
-
-        //// number
-        //number = new NumberField();
-        //entry.add(number);
-
-        //// find
-        //entry.add(new FindButton());
 
         entry.revalidate();
         add(entry, BorderLayout.NORTH);
@@ -127,82 +123,132 @@ public class GUI extends JFrame
         menuEdit.setMnemonic('E');
         menuEdit.add(new AddRandomEntry());
         menuEdit.add(new AddRandomEntries());
-        menuEdit.add(new GenerateOption());
+        menuEdit.add(new RunTestsOption());
+        menuEdit.add(new ReRunTestsOption());
         menuBar.add(menuEdit);
 
         // view menu
         menuView = new JMenu("View");
         menuView.setMnemonic('V');
         menuBar.add(menuView);
-        menuView.add(new LogOption());
-        menuView.addSeparator();
         menuView.add(new ResultOption());
-        menuView.add(new TreeOption());
-        menuView.addSeparator();
         menuView.add(new AllByNameOption());
         menuView.add(new AllByNumberOption());
+        menuView.addSeparator();
+        menuView.add(new TreeOption());
         menuView.add(new StatisticsOption());
+        menuView.addSeparator();
+        menuView.add(new LogOption());
 
         setJMenuBar(menuBar);
         repaint();
         menuBar.revalidate();
     }
 
-    void setView(int view)
+    protected void setView(int view)
     {
         this.view = view;
         display.removeAll();
+
         if (view == VIEW_TREE)
             display.add(treeView);
         else if (view == VIEW_LIST)
             display.add(list);
         else if (view == VIEW_STATS)
         {
-            //stats.drawSpeedTests(
+            stats.tests = doTests();
             display.add(stats);
         }
+        else if (view == VIEW_RESULT)
+        {
+            // not optimal it does new search on every view change, probably should remember last one... but do we care?! :7
+            doSearch();
+            display.add(list);
+        }
+
         display.revalidate();
         display.repaint();
     }
 
-    class FindButton extends JButton implements ActionListener
+    protected void doSearch()
     {
-        public FindButton()
+        String name = phoneBook.gui.name.getText();
+        list.setText("finding '" + name + "'...\n\n");
+
+        list.append("    * By Name *\n");
+        PhoneBookEntry nameEntry = phoneBook.byName.find(name.toLowerCase());
+        if (nameEntry != null)
+            list.append(nameEntry.toString()+"\n");
+
+        list.append("\n\n    * By Number *\n");
+        PhoneBookEntry numberEntry = phoneBook.byNumber.find(name.toLowerCase());
+        if (numberEntry != null)
+            list.append(numberEntry.toString()+"\n");
+    }
+
+    protected SpeedTest[] doTests()
+    {
+        if (lastTestSizes == null)
+            lastTestSizes = new int[]{1000,2000,3000,4000,5000,6000,7000,8000,9000,10000};
+
+        return doTests(lastTestSizes);
+    }
+
+    protected SpeedTest[] doTests(int[] sizes)
+    {
+        lastTestSizes = sizes;
+
+        SpeedTest[] tests = new SpeedTest[sizes.length];
+
+        for (int i = 0; i < sizes.length; i++) 
         {
-            setText("Find");
-            addActionListener(this);
+            System.out.println("Generating file with '" + sizes[i] + "' entries.");
+            tests[i] = phoneBook.generateTestFile("test" + sizes[i] + ".txt", sizes[i]);
+            System.out.println(tests[i].toString());
+            System.out.println("... total time: '" + tests[i].time + "'ms.");
         }
 
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
+        return tests;
+    }
+
+    public class Log extends JPanel
+    {
+        protected JScrollPane logPane;
+        protected JTextArea log;
+
+        Log()
         {
-            String name = phoneBook.gui.name.getText();
-            list.setText("finding '" + name + "'...");
+            setVisible(false);
+            setMaximumSize(new Dimension(100, 100));
+            setPreferredSize(new Dimension(100, 100));
+            setMinimumSize(new Dimension(100, 100));
+            setLayout(new GridLayout(1,1));
+            log = new JTextArea();
+            append("TehE LOOOG\n\ntest\n\n");
+            logPane = new JScrollPane(log);
+            add(logPane);
 
-            //list.append("    * By Name *\n");
-            PhoneBookEntry nameEntry = phoneBook.byName.find(name);
-            if (nameEntry != null)
-                list.append(nameEntry.toString()+"\n");
+            log.repaint();
+            logPane.repaint();
+            repaint();
 
-            //list.append("\n\n    * By Number *\n");
-            String number = phoneBook.gui.number.getText();
-            PhoneBookEntry numberEntry = phoneBook.byNumber.find(number);
-            if (numberEntry != null)
-                list.append(numberEntry.toString()+"\n");
+            log.revalidate();
+            logPane.revalidate();
+            revalidate();
+        }
 
-            setView(VIEW_LIST);
+        public void append(String message)
+        {
+            log.append(message + "\n");
+            log.setCaretPosition(log.getText().length());
         }
     }
 
-    class AddEntry extends JButton implements ActionListener
+    protected class AddEntry extends JButton implements ActionListener
     {
         public AddEntry()
         {
             setText("Add");
-            //setMaximumSize(new Dimension(100, 100));
             setMnemonic('A');
             addActionListener(this);
         }
@@ -223,30 +269,12 @@ public class GUI extends JFrame
         }
     }
 
-    class NameField extends JTextField implements ActionListener, KeyListener
+    protected class NameField extends JTextField implements KeyListener
     {
         public NameField()
         {
             setText("<name>");
-            addActionListener(this);
             addKeyListener(this);
-        }
-
-        /**
-         * {@inheritDoc}
-         * @see ActionListener#actionPerformed(ActionEvent)
-         */
-        public void actionPerformed(ActionEvent e)
-        {
-            list.setText("");
-
-            String name = phoneBook.gui.name.getText();
-            list.append("    * By Name * (" + name + ")\n");
-            PhoneBookEntry nameEntry = phoneBook.byName.find(name);
-            if (nameEntry != null)
-                list.append(nameEntry.toString()+"\n");
-
-            setView(VIEW_LIST);
         }
 
         /**
@@ -271,24 +299,11 @@ public class GUI extends JFrame
          */
         public void keyReleased(KeyEvent e)
         {
-            String name = phoneBook.gui.name.getText();
-            list.setText("finding '" + name + "'...\n\n");
-
-            list.append("    * By Name *\n");
-            PhoneBookEntry nameEntry = phoneBook.byName.find(name.toLowerCase());
-            if (nameEntry != null)
-                list.append(nameEntry.toString()+"\n");
-
-            list.append("\n\n    * By Number *\n");
-            PhoneBookEntry numberEntry = phoneBook.byNumber.find(name.toLowerCase());
-            if (numberEntry != null)
-                list.append(numberEntry.toString()+"\n");
-
-            setView(VIEW_LIST);
+            setView(VIEW_RESULT);
         }
     }
 
-    class NumberField extends JTextField implements ActionListener
+    protected class NumberField extends JTextField implements ActionListener
     {
         public NumberField()
         {
@@ -314,7 +329,7 @@ public class GUI extends JFrame
         }
     }
 
-    class SaveOption extends JMenuItem implements ActionListener
+    protected class SaveOption extends JMenuItem implements ActionListener
     {
         public SaveOption()
         {
@@ -330,7 +345,7 @@ public class GUI extends JFrame
         }
     }
 
-    class LoadOption extends JMenuItem implements ActionListener
+    protected class LoadOption extends JMenuItem implements ActionListener
     {
         public LoadOption()
         {
@@ -348,7 +363,7 @@ public class GUI extends JFrame
         }
     }
 
-    class AddRandomEntry extends JMenuItem implements ActionListener
+    protected class AddRandomEntry extends JMenuItem implements ActionListener
     {
         public AddRandomEntry()
         {
@@ -365,12 +380,10 @@ public class GUI extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             phoneBook.addRandom();
-            phoneBook.showAll();
-            display.repaint();
         }
     }
 
-    class AddRandomEntries extends JMenuItem implements ActionListener
+    protected class AddRandomEntries extends JMenuItem implements ActionListener
     {
         public AddRandomEntries()
         {
@@ -402,45 +415,53 @@ public class GUI extends JFrame
         }
     }
 
-    class GenerateOption extends JMenuItem implements ActionListener
+    protected class ReRunTestsOption extends JMenuItem implements ActionListener
     {
-        public GenerateOption()
+        public ReRunTestsOption()
         {
-            setText("Generate");
-            setMnemonic('G');
+            setText("Re-run Tests");
+            setMnemonic('T');
             setEnabled(true);
             addActionListener(this);
         }
 
         public void actionPerformed(ActionEvent e)
         {
-            //String[] counts = JOptionPane.showInputDialog(this, "Enter number of entries (comma separated for many).").split(",");
-            String[] counts = "1000,2000,3000,4000,5000,6000,7000,8000,9000,10000".split(",");
-            ArrayList<SpeedTest> tests = new ArrayList<SpeedTest>();
-            
-
-            int[] intCounts = new int[counts.length];
-            for (int i = 0; i < counts.length; i++) 
-            {
-                intCounts[i] = Integer.parseInt(counts[i].trim());
-            }
-
-            Arrays.sort(intCounts);
-
-            for (int count : intCounts)
-            {
-                System.out.println("Generating file with '" + count + "' entries.");
-                SpeedTest test = phoneBook.generateTestFile("test" + count + ".txt", count);
-                tests.add(test);
-                System.out.println("... total time: '" + test.time + "'ms.");
-            }
-
-            stats.tests = tests.toArray(new SpeedTest[tests.size()]);
+            stats.tests = doTests();
             setView(VIEW_STATS);
         }
     }
 
-    class ResultOption extends JMenuItem implements ActionListener
+    protected class RunTestsOption extends JMenuItem implements ActionListener
+    {
+        public RunTestsOption()
+        {
+            setText("Specify Tests");
+            setMnemonic('S');
+            setEnabled(true);
+            addActionListener(this);
+        }
+
+        public void actionPerformed(ActionEvent e)
+        {
+            String input = JOptionPane.showInputDialog(this, "Enter size of tests in a comma separated list.\n\nPress escape for default.\n\nExample: 1000,2000,3000");
+
+            if (input == null)
+                stats.tests = doTests();
+            else
+            {
+                String[] counts = input.split(",");
+                int[] intCounts = new int[counts.length];
+                for (int i = 0; i < counts.length; i++) 
+                    intCounts[i] = Integer.parseInt(counts[i].trim());
+                Arrays.sort(intCounts);
+                stats.tests = doTests(intCounts);
+            }
+            setView(VIEW_STATS);
+        }
+    }
+
+    protected class ResultOption extends JMenuItem implements ActionListener
     {
         public ResultOption()
         {
@@ -456,11 +477,11 @@ public class GUI extends JFrame
          */
         public void actionPerformed(ActionEvent e)
         {
-            setView(VIEW_LIST);
+            setView(VIEW_RESULT);
         }
     }
 
-    class AllByNameOption extends JMenuItem implements ActionListener
+    protected class AllByNameOption extends JMenuItem implements ActionListener
     {
         public AllByNameOption()
         {
@@ -481,7 +502,7 @@ public class GUI extends JFrame
         }
     }
 
-    class AllByNumberOption extends JMenuItem implements ActionListener
+    protected class AllByNumberOption extends JMenuItem implements ActionListener
     {
         public AllByNumberOption()
         {
@@ -502,7 +523,7 @@ public class GUI extends JFrame
         }
     }
 
-    class StatisticsOption extends JMenuItem implements ActionListener
+    protected class StatisticsOption extends JMenuItem implements ActionListener
     {
         public StatisticsOption()
         {
@@ -522,7 +543,7 @@ public class GUI extends JFrame
         }
     }
 
-    class TreeOption extends JMenuItem implements ActionListener
+    protected class TreeOption extends JMenuItem implements ActionListener
     {
         public TreeOption()
         {
@@ -542,11 +563,11 @@ public class GUI extends JFrame
         }
     }
 
-    class LogOption extends JMenuItem implements ActionListener
+    protected class LogOption extends JMenuItem implements ActionListener
     {
         public LogOption()
         {
-            setText("Log");
+            setText("Toggle Log");
             setMnemonic('L');
             setEnabled(true);
             addActionListener(this);
@@ -561,7 +582,7 @@ public class GUI extends JFrame
         }
     }
 
-    class TreeView extends JPanel
+    protected class TreeView extends JPanel
     {
         int width, height;
         int firstLevel = 1;
@@ -591,7 +612,8 @@ public class GUI extends JFrame
                 drawNode(phoneBook.byName.root, 0, startX, 10, firstLevel);
         }
 
-        public void drawNode(AVLTreeNode<PhoneBookEntry> node, int parentX, int x, int y, int level)
+        public void drawNode(AVLTreeNode<PhoneBookEntry> node, int parentX, int
+                x, int y, int level)
         {
             if (level < maxLevel)
             {
@@ -604,7 +626,8 @@ public class GUI extends JFrame
                         g.setColor(Color.RED);
                     else
                         g.setColor(Color.BLACK);
-                    g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x-offset + nodeWidth/2, y + heightSpacing + nodeHeight/2);
+                    g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x-offset +
+                            nodeWidth/2, y + heightSpacing + nodeHeight/2);
                     drawNode(node.left, x, x-offset, y + heightSpacing, level);
                 }
 
@@ -614,7 +637,8 @@ public class GUI extends JFrame
                         g.setColor(Color.RED);
                     else
                         g.setColor(Color.BLACK);
-                    g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x+offset + nodeWidth/2, y + heightSpacing + nodeHeight/2);
+                    g.drawLine(x + nodeWidth/2, y + nodeHeight/2, x+offset +
+                            nodeWidth/2, y + heightSpacing + nodeHeight/2);
                     drawNode(node.right, x, x+offset, y + heightSpacing, level);
                 }
             }
@@ -708,21 +732,25 @@ public class GUI extends JFrame
         }
     }
 
-    class StatisticsView extends JPanel
+    protected class StatisticsView extends JPanel
     {
-        // of plotting area
-        int width, height;
-        int marginLeft = 50;
-        int marginBottom = 50;
-        int marginRight = 50;
-        int marginTop = 50;
-        int dotSize = 7;
-        Graphics g;
+        int X = 0;
+        int Y = 1;
+
         public SpeedTest[] tests;
+        // limits of plotting area
+        protected int width, height;
+        protected int marginLeft = 50;
+        protected int marginBottom = 50;
+        protected int marginRight = 50;
+        protected int marginTop = 50;
+        protected int dotSize = 7;
+        protected int textSize = 10;
+        protected Graphics g;
 
         public StatisticsView()
         {
-            setBackground(Color.WHITE);
+            getContentPane().setBackground(Color.WHITE);
         }
 
         public void paintComponent(Graphics g)
@@ -731,90 +759,118 @@ public class GUI extends JFrame
             this.g = g;
             width = getWidth();
             height = getHeight();
+            dotSize = (width+height)/180;
             System.out.println("paintComponent():");
             drawSpeedTests();
         }
 
-        public void drawSpeedTests()
+        void drawSpeedTests()
         {
-            System.out.println("drawSpeedTests():");
+            double[][] values;
 
-            // find min and max values
-            long maxSize = 0;
-            long maxTime = 0;
-            long minSize = Long.MAX_VALUE;
-            long minTime = Long.MAX_VALUE;
-            for (SpeedTest test : tests)
+            // time over size
+            values = new double[tests.length][2];
+            for (int i = 0; i < tests.length; i++)
             {
-                if (test.size > maxSize)
-                    maxSize = test.size;
-                if (test.time > maxTime)
-                    maxTime = test.time;
-                if (test.size < minSize)
-                    minSize = test.size;
-                if (test.time < minTime)
-                    minTime = test.time;
+                values[i][X] = tests[i].size;
+                values[i][Y] = tests[i].time;
             }
-            System.out.println("maxSize=" + maxSize + ", minSize=" + minSize + ", maxTime=" + maxTime + ", minTime=" + minTime);
+            plot(1, "Total time (ms)", "Size", values, new Color(25, 25, 255),
+                    new Color(20, 20, 100), new Color(100,100,255), new
+                    Color(220,220,255));
 
-            //minSize -= marginLeft;
-            //maxSize += marginRight;
-            //minTime -= marginTop;
-            //maxTime += marginBottom;
-
-            // plot
-            int x, y, lastX = -1, lastY = -1;
-            g.setColor(Color.BLACK);
-            for (SpeedTest test : tests)
+            // avarage time over size
+            values = new double[tests.length][2];
+            for (int i = 0; i < tests.length; i++)
             {
-                x = marginLeft + ((int)(((double)(test.size-minSize) / (double)(maxSize-minSize)) * (width-dotSize-marginLeft-marginRight)));
-                //y = height - (int)((double)test.time / (double)maxTime * height);
-                //y = marginTop + height - (int)((double)(test.time-minTime) / (double)(maxTime-minTime) * (height-dotSize-marginTop-marginBottom));
-                y = height - (marginTop + (int)((double)(test.time-minTime) / (double)(maxTime-minTime) * (height-dotSize-marginTop-marginBottom)));
-                //y = height - (int)((double)test.time / (double)maxTime * height);
-                System.out.print("size=" + test.size + ", time=" + test.time);
-                System.out.print(", x%=" + (double)test.size/(double)maxSize + ", y%=" + (double)test.time/(double)maxTime);
-                System.out.println(", x=" + x + ", y=" + y);
+                values[i][X] = tests[i].size;
+                values[i][Y] = tests[i].avarageTime;
+            }
+            plot(2, "Time per post (ms)", "Size", values, new Color(255, 25,
+                        25), new Color(100, 20, 20), new Color(255,100,100),
+                    new Color(255,220,220));
+        }
+
+        public void plot(int id, String xLabel, String yLabel, double[][]
+                values, Color lineColor, Color dotColor, Color valueColor,
+                Color labelColor)
+        {
+            // TODO : Can this be prettier?
+            long[][] positions = new long[values.length][values[0].length];
+            double[] min = new double[]{Long.MAX_VALUE, Long.MAX_VALUE};
+            double[] max = new double[]{0, 0};
+            for (int i = 0; i < values.length; i++)
+            {
+                if (values[i][X] > max[X])
+                    max[X] = values[i][X];
+                if (values[i][Y] > max[Y])
+                    max[Y] = values[i][Y];
+                if (values[i][X] < min[X])
+                    min[X] = values[i][X];
+                if (values[i][Y] < min[Y])
+                    min[Y] = values[i][Y];
+            }
+            System.out.println("plot(): maxX=" + max[X] + ", minX=" + min[X] +
+                    ", maxY=" + max[Y] + ", minY=" + min[Y]);
+            System.out.println("plot(): plot(xLabel='" + xLabel + "', yLabel='"
+                    + yLabel + "',length='" + values.length + "'):");
+            plot(id, xLabel, yLabel, min, max, values, positions, lineColor,
+                    dotColor, valueColor, labelColor);
+        }
+
+        public void plot(int id, String xLabel, String yLabel, double[] min,
+                double[] max, double[][] values, long[][] positions, Color
+                lineColor, Color dotColor, Color valueColor, Color labelColor)
+        {
+            FontMetrics fontMetrics;
+            // find min and max values
+
+            // axis labels
+            g.setFont(getFont().deriveFont((float)((width+height)/20)));
+            fontMetrics = g.getFontMetrics();
+            g.setColor(labelColor);
+            System.out.println(fontMetrics.stringWidth(xLabel));
+            g.drawString(xLabel, 3, height/2-fontMetrics.getHeight()/2 +
+                    id*fontMetrics.getHeight());
+            g.drawString(yLabel, (width/2-fontMetrics.stringWidth(yLabel)/2) +
+                    id*fontMetrics.stringWidth(yLabel), (int)(height*0.95));
+
+            // border
+            g.setColor(labelColor);
+            g.drawLine(marginLeft-1, marginTop-1, width-marginRight+1, marginTop-1);
+            g.drawLine(marginLeft-1, marginTop-1, marginLeft, height-marginBottom);
+            g.drawLine(width-marginRight+1, marginTop-1, width-marginRight+1, height-marginBottom+1);
+            g.drawLine(marginLeft-1, height-marginBottom+1, width-marginRight+1, height-marginBottom+1);
+
+            // plotting
+            g.setFont(getFont().deriveFont((float)((width+height)/100)));
+            fontMetrics = g.getFontMetrics();
+            int lastX = -1, lastY = -1;
+            int x,y;
+            for (int i = 0; i < values.length; i++)
+            {
+                x = marginLeft + ((int)(((double)(values[i][X] - min[X]) /
+                                (double)(max[X] - min[X])) * (width - dotSize -
+                                marginLeft - marginRight)));
+                y = height - (marginTop + (int)((double)(values[i][Y] - min[Y])
+                            / (double)(max[Y] - min[Y]) * (height - dotSize -
+                                marginTop - marginBottom)));
+                // label
+                String label = values[i][X] + "," + values[i][Y];
+                g.setColor(valueColor);
+                g.drawString(label, x-fontMetrics.stringWidth(label)/2,
+                        y-dotSize/2);
+                // dot
+                g.setColor(dotColor);
                 g.fillOval(x, y, dotSize, dotSize);
-                g.drawString("size=" + test.size + " time=" + test.time, x, y);
+                // line
+                g.setColor(lineColor);
                 if (lastX > -1)
-                    g.drawLine(lastX+dotSize/2, lastY+dotSize/2, x+dotSize/2, y+dotSize/2);
+                    g.drawLine(lastX+dotSize/2, lastY+dotSize/2, x+dotSize/2,
+                            y+dotSize/2);
                 lastX = x;
                 lastY = y;
             }
-        }
-    }
-
-    class Log extends JPanel
-    {
-        JScrollPane logPane;
-        JTextArea log;
-
-        Log()
-        {
-            setVisible(false);
-            setMaximumSize(new Dimension(100, 100));
-            setPreferredSize(new Dimension(100, 100));
-            setMinimumSize(new Dimension(100, 100));
-            setLayout(new GridLayout(1,1));
-            log = new JTextArea();
-            append("TehE LOOOG\n\ntest\n\n");
-            logPane = new JScrollPane(log);
-            add(logPane);
-
-            log.repaint();
-            logPane.repaint();
-            repaint();
-
-            log.revalidate();
-            logPane.revalidate();
-            revalidate();
-        }
-
-        public void append(String message)
-        {
-            log.append(message + "\n");
-            log.setCaretPosition(log.getText().length());
         }
     }
 }
