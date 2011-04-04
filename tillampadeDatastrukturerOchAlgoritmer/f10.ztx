@@ -1,0 +1,43 @@
+: Dijkstra
+def shortestPath(Node s):
+    q = Priority Q()
+    for v in G && v != s:
+        v.dist = ∞
+        v.ref = null
+        q.insert(v,v.dist)
+    s.dist = 0
+    q.insert(s, s.dist)
+    while !q.isEmpty():
+        u = q.deleteMin()
+        for v to neighbours(u):
+            if u.dist + w(u,v) < v.dist:
+                v.dist = u.dist + w(u,v)
+                v.ref = u
+                q.changePriority(v,v.dist)
+
+
+def shortestPath(Node s, Node t):
+    q = Priority Q()
+    s.dist = 0
+    s.inQ = true
+    q.insert(s, s.dist)
+        while !q.isEmpty():
+            u = q.deleteMin()
+            if u==t : return
+            for v in neighbours(u):
+                if !v.inQ:
+                    v.dist = ∞
+                    q.insert(v, v.dist)
+                    v.inQ = true
+                if !v.done
+                    if u.dist + w(u,v) < v.dist
+                        v.dist = u.dist + w(u,v)
+                        v.ref = u
+                        q.changePriority(v, v.dist)
+                    v.done = true
+            u.klar = true
+
+
+// deeper reading...
+// A*
+// Nils Nilsson made A1, someone else made A2.. together with a third made A*

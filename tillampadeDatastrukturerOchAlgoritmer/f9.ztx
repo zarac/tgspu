@@ -15,8 +15,10 @@ o Traversing
     o DFS / depth first search
     o BFS / breadth first search
 
-
-1972 Bellman-Ford shortestPath(s): // O(n) + O(n*m) + O(m) = (n+n*m+m) = O(n*m)  .. m <- O(n2) .. worst case O(n3)
+// * 1972
+// * Bellman-Ford
+// O(n) + O(n*m) + O(m) = (n+n*m+m) = O(n*m)  .. m <- O(n2) .. worst case O(n3)
+shortestPath(s):
     for a in nodes: // O(n)
         u.dist = infinity
         u.ref = null
@@ -35,4 +37,111 @@ o Traversing
     return true
 
 
-1959 Edsger Dijkstra..
+// * 1959
+// * Edsger Dijkstra..
+// * faster, O(n+mlogn), worst case O(n+n2 logn) = O(n2 logn)
+
+
+
+... tack Raheb
+---------------------------------------------------------------
+Bredden - först-sökning
+
+ BFS ( s )
+ {
+     for(varje nod u)
+     {
+         u.mark = false;
+         u.ref = null;
+     }
+
+      Q = new Q();   ---> Kan bytas mot Stack
+      s.mark = true;
+      Q.enQ(s);           ---> Push
+
+       while(Q != empty)
+       {
+           u = Q.deQ();      ----> pop
+           For(varje granne v till u)
+           {
+               If(v.mark == false)
+               {
+                   v.mark = true;
+                   Q.enQ(v); ---> push
+               }
+           }
+       }
+
+
+ }
+ -------------------------------------------------------------------
+ shortestPath ( s)
+ {
+     For(varje nod u)
+     {
+         u.dist = oändlighet(väldigt stort);
+         u.ref = null;
+     }
+
+      s.dist = 0;
+      for (i=1; i < n; i++)
+      {
+          for( varje båge (u,v) i G)
+          {
+              If(v.dist > u.dist + w(u,v))
+              {
+                  v.dist = u.dist+ w(u,v);
+                  v.ref = u;
+              }
+          }
+      }
+
+       for(varje båge (u,v) i G)
+       {
+           If(v.dist > u.dist+w(u,v))
+           {
+               return False;
+           }
+           else
+               return True;
+       }
+ }
+ -------------------------------------------------------------------
+
+
+  OCH DEN ANDRA
+
+  Edsger Dijkstra
+  1959
+  O(n+m*logn)
+  I värsta fall:
+  O(n2 *logn)
+
+   shortestPath (s)
+   {
+       Q = new PriortqQ();
+       For(varje nod u)
+       {
+           u.dist = evighet;
+           u.ref = null;
+           Q.insert(u,u.dist);
+       }
+
+        s.dist = 0;
+        Q.changePriority (s, s.dist);
+
+         While( Q != empty)
+         {
+             u = Q.deleteMin();
+             For(varje granne v till u)
+             {
+                 If(u.dist + w(u,v) < v.dist)
+                 {
+                     v.dist = u.dist+w(u,v);
+                     v.ref = u;
+                     Q.changepriority(v, v.dist);
+                 }
+             }
+         }
+   }
+
