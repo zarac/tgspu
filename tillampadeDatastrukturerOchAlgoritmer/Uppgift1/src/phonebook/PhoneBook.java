@@ -192,6 +192,12 @@ public class PhoneBook
         }
     }
 
+    public PhoneBookEntry getRandomEntry()
+    {
+        return new PhoneBookEntry(randomString(9),
+                Long.toString((long)(Math.random() * Long.MAX_VALUE)));
+    }
+
     /**
      * @param entry
      * @return Returns 0 if all went OK, 1 if name exists and 2 if number exists.
@@ -261,6 +267,49 @@ public class PhoneBook
         byNumber.size = byNumberSize;
 
         return test;
+    }
+    
+    public void runTests(SpeedTest[] tests)
+    {
+        // save tree state
+        AVLTreeNode<PhoneBookEntry> byNameRoot = byName.root;
+        int byNameSize = byName.size;
+        byName.root = null;
+        byName.size = 0;
+
+        AVLTreeNode<PhoneBookEntry> byNumberRoot = byNumber.root;
+        int byNumberSize = byNumber.size;
+        byNumber.root = null;
+        byNumber.size = 0;
+
+        //for (int i = 0; i < tests.length; i++) 
+        for (SpeedTest test : tests)
+        {
+            long start = System.currentTimeMillis();
+
+            for (int i = 1; i <= test.size; i++) 
+                add(test.entries[i]);
+
+            test.time = System.currentTimeMillis() - start;
+            test.avarageTime = (double)test.time/(double)test.size;
+        }
+
+        // restore tree state
+        byName.root = byNameRoot;
+        byName.size = byNameSize;
+
+        byNumber.root = byNumberRoot;
+        byNumber.size = byNumberSize;
+    }
+
+    public PhoneBookEntry[] generateTestEntries(int size)
+    {
+        PhoneBookEntry[] testEntries = new PhoneBookEntry[size];
+
+        for (int i = 1; i <= size; i++) 
+            testEntries[i] = getRandomEntry();
+
+        return testEntries;
     }
 
     public static void main(String[] args)

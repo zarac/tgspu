@@ -18,7 +18,6 @@ import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Insets;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import javax.swing.JButton;
@@ -427,7 +426,8 @@ public class GUI extends JFrame
 
         public void actionPerformed(ActionEvent e)
         {
-            stats.tests = doTests();
+            //stats.tests = doTests();
+            phoneBook.runTests(stats.tests);
             setView(VIEW_STATS);
         }
     }
@@ -447,9 +447,10 @@ public class GUI extends JFrame
             String input = JOptionPane.showInputDialog(this, "Enter size of tests in a comma separated list.\n\nPress escape for default.\n\nExample: 1000,2000,3000");
 
             if (input == null)
-                stats.tests = doTests();
+                phoneBook.runTests(stats.tests);
             else
             {
+                // generate new tests before running, perhaps use same test data?
                 String[] counts = input.split(",");
                 int[] intCounts = new int[counts.length];
                 for (int i = 0; i < counts.length; i++) 

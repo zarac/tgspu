@@ -4,6 +4,7 @@ class SpeedTest
 {
     AVLTreeNode<PhoneBookEntry> byNameRoot;
     AVLTreeNode<PhoneBookEntry> byNumberRoot;
+    PhoneBookEntry[] entries;
     int size;
     long time;
     double avarageTime;
