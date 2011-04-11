@@ -1,0 +1,3 @@
+[submodule "datavetenskapI/Programvarukonstruktion/ObjektorienteradAnalysOchDesign/librarysystem"]
+	path = datavetenskapI/Programvarukonstruktion/ObjektorienteradAnalysOchDesign/librarysystem
+	url = git@github.com:zarac/tgspu-librarysystem.git
