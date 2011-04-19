@@ -1,12 +1,13 @@
 package p2;
 
-class Capital
+public class Capital
 {
     HashTable<String,Country> byCountry;
 
     public Capital()
     {
-        byCountry = new HashTable<String,Country>();
+        int size = 100;
+        byCountry = new HashTable<String, Country>(size);
     }
 
     public void add(String country, String capital)
