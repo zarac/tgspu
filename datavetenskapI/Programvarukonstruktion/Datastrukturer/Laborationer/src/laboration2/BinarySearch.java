@@ -15,6 +15,5 @@ public class BinarySearch {
                 min = pos + 1;
         }
         return res;
-        public 
     }
 }

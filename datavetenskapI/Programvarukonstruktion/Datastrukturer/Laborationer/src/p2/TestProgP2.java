@@ -3,7 +3,7 @@ import java.util.*;
 
 public class TestProgP2 {
     public static void main(String[] args) {
-        HashMap tabell = new HashMap(5); // Ersätt denna rad med nästa rad när du är färdig med Uppgift 1
+        HashTable tabell = new HashTable(5); // Ersätt denna rad med nästa rad när du är färdig med Uppgift 1
 //        Hashtabell tabell = new Hashtabell(5); // färdig med klassen Hashtabell
         System.out.println("---------------------------------------------");
         tabell.put("hej", "hallo");

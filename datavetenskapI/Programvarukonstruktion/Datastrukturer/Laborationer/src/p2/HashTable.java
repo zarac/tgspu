@@ -15,6 +15,7 @@ public class HashTable<K, V>
 
     public void _init(int size)
     {
+    	this.size = 0;
         table = new Object[size];
         for ( int i = 0; i < table.length; ++i )
             table[i] = new Entries();
@@ -40,31 +41,30 @@ public class HashTable<K, V>
 
     public V get(K key)
     {
-        System.out.println("get() : hashIndex("+key+") = " + hashIndex(key));
+        //System.out.println("get() : hashIndex("+key+") = " + hashIndex(key));
         return ((Entries)table[hashIndex(key)]).find(key);
     }
 
     public void put(K key, V value)
     {
-        System.out.println("put() : hashIndex("+key+") = " + hashIndex(key));
+        //System.out.println("put() : hashIndex("+key+") = " + hashIndex(key));
         ((Entries)table[hashIndex(key)]).add(new Entry(key, value));
     }
 
     public V remove(K key)
     {
-        System.out.println("remove() : hashIndex("+key+") = " + hashIndex(key));
+        //System.out.println("remove() : hashIndex("+key+") = " + hashIndex(key));
         return ((Entries)table[hashIndex(key)]).remove(key);
     }
 
     public int size()
     {
-        return -1;
+        return size;
     }
 
     protected class Entries
     {
         Entry first;
-        Entry pointer;
         Entry last;
 
         public void add(Entry entry)
@@ -72,14 +72,15 @@ public class HashTable<K, V>
             if (first == null)
             {
                 first = entry;
-                pointer = entry;
                 last = entry;
             }
             else
             {
+                entry.previous = last;
                 last.next = entry;
                 last = entry;
             }
+            size++;
         }
 
         public V find(K key)
@@ -87,7 +88,7 @@ public class HashTable<K, V>
             Entry entry = first;
             while (entry != null)
             {
-                System.out.println("find("+key+") : entry.key="+entry.key);
+                //System.out.println("find("+key+") : entry.key="+entry.key);
                 if (entry.key.equals(key))
                 {
                     return entry.value;
@@ -100,7 +101,6 @@ public class HashTable<K, V>
 
         public V remove(K key)
         {
-            // TODO: ? update pointer, or perhaps it shouldn't..
             Entry entry = first;
             while (entry != null)
             {
@@ -108,26 +108,27 @@ public class HashTable<K, V>
                 {
                     if (entry == first)
                     {
-                        System.out.println("first...");
+                        //System.out.println("first...");
                         first = entry.next;
                         if (first == null)
-                            last = pointer = null;
+                            last = null;
                         else
                             first.previous = null;
                     }
                     else if (entry != last)
                     {
-                        System.out.println("not last...");
+                        //System.out.println("not last...");
                         entry.previous.next = entry.next;
                         entry.next.previous = entry.previous;
                     }
                     else
                     {
-                        System.out.println("last...");
+                        //System.out.println("last...");
                         entry.previous.next = null;
                         last = entry.previous;
                     }
 
+                    size--;
                     return entry.value;
                 }
 
