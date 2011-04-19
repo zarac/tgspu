@@ -10,4 +10,9 @@ class Country
         this.name = name;
         this.capital = capital;
     }
+
+    public String toString()
+    {
+        return "Country: name='" + name + "', capital='" + capital + "'";
+    }
 }
