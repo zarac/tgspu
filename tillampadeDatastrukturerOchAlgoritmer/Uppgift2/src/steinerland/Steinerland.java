@@ -4,14 +4,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import graph.WDGDijkstra;
-import graph.WeightedDirectedGraph;
+import graf.WDGimpl;
+import graf.WeightedDirectedGraph;
 
 public class Steinerland {
-    protected WeightedDirectedGraph graph;
+    protected WeightedDirectedGraph<SteinerlandNode,String> graph;
 
     public Steinerland() {
-        graph = new WDGDijkstra();
+        //graph = new WDGDijkstra();
+        graph = new WDGimpl();
     }
 
     public String search(String from, String hours, String minutes, String to)
@@ -21,6 +22,7 @@ public class Steinerland {
 
     public void addRoute(String from, String hoursDeparture, String minutesDeparture, String to, String hoursArrival, String minutesArrival, String train)
     {
+        //graph.insertNode(WDGimpl.new Node());
     }
 
     public void loadFile(String path)
