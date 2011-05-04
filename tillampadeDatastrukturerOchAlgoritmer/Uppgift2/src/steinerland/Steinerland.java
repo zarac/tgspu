@@ -22,6 +22,7 @@ public class Steinerland {
 
     public void addRoute(String from, String hoursDeparture, String minutesDeparture, String to, String hoursArrival, String minutesArrival, String train)
     {
+        System.out.println(from + ", " + hoursDeparture + ", " + minutesDeparture + ", " + to + ", " + hoursArrival + ", " + minutesArrival + ", " + train);
         //graph.insertNode(WDGimpl.new Node());
     }
 
@@ -32,6 +33,7 @@ public class Steinerland {
             FileReader fileReader = new FileReader(path);
             BufferedReader bufferedReader = new BufferedReader(fileReader);
 
+            // the formatting in the time table file is shady, it's not uniformed..
             // assuming format:
             // <train>
             // <departureCity>:<departureTime>-<arrivalCity>:<arrivalTime>
@@ -41,17 +43,22 @@ public class Steinerland {
             // Steinerstadt: 05.40 - El Seco: 06.03
             // El Seco: 06.05 - Neubergstadt: 06.39
             // Neubergstadt: 06.41 - Steinerstadt: 06:58
+            // REGEXP to match a line: [^:]*: *[^ ]* *- *[^:]*: *[^$]*
             String line = bufferedReader.readLine();
+            String train = "Unknown train";
             while (line != null) 
             {
-                String train = "Unknown train";
-                // the formatting in the time table file is shady, it's not uniformed..
-                String[] parts = line.split("[.-:]");
-                System.out.println(parts);
-                if (parts.length == 6)
+                System.out.println("line=" + line);
+                // Route
+                if (line.matches("[^:]*: *[^ ]* *- *[^:]*: *[^$]*"))
+                {
+                    String[] parts = line.split("[:.-]");
+                    //System.out.println("From" + parts[0].trim() + ",h" + parts[1].trim() + ",min" + parts[2].trim() + ",To" + parts[3].trim() + ",h" + parts[4].trim() + ",min" + parts[5].trim() + ",train" + train);
                     addRoute(parts[0].trim(), parts[1].trim(), parts[2].trim(), parts[3].trim(), parts[4].trim(), parts[5].trim(), train);
-                else
-                    train = line;
+                }
+                else // Train name (or blank line, but who-the-heck cares)
+                    train = line.trim();
+
                 line = bufferedReader.readLine();
             }
 
@@ -66,7 +73,7 @@ public class Steinerland {
     public static void main( String[] args ) {
         Steinerland steinerland = new Steinerland();
 
-        steinerland.loadFile("data/timetable.tbl");
+        steinerland.loadFile("data/timetable-fixed.tbl");
         new Gui(steinerland);
     }
 }
