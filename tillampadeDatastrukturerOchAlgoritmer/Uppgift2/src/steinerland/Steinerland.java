@@ -22,6 +22,23 @@ public class Steinerland {
 
     public void addRoute(String from, String hoursDeparture, String minutesDeparture, String to, String hoursArrival, String minutesArrival, String train)
     {
+        // Add nodes (unless they exist).
+        // - from
+        // - fromTime
+        // - to
+        // - toTime
+
+        // Add arc.
+        // - from
+        //  fromTime
+        // - fromTime
+        //  toTime
+        //  all from.to
+        // - to
+        //  toTime
+        // - toTime
+        //  all fromTime
+
         System.out.println(from + ", " + hoursDeparture + ", " + minutesDeparture + ", " + to + ", " + hoursArrival + ", " + minutesArrival + ", " + train);
         //graph.insertNode(WDGimpl.new Node());
     }
