@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 
-public class WDGimpl<K> implements WeightedDirectedGraph<Node<K>,K>
+public class WDGimpl<K> implements WeightedDirectedGraph<K,Node<K>>
 {
     static int MAX_SIZE = 1501;
 
@@ -14,9 +14,10 @@ public class WDGimpl<K> implements WeightedDirectedGraph<Node<K>,K>
     RiskyHash<K, Node<K>> nodes = new RiskyHash<K, Node<K>>(MAX_SIZE);
     RiskyHash<Node<K>, LinkedList<Arc>> arcs = new RiskyHash<Node<K>, LinkedList<Arc>>(MAX_SIZE);
 
-    public void insertNode(Node<K> node, K key) {
+    @Override
+    public void insertNode(K key, Node<K> node)
+    {
         nodes.put(key, node);
-
     }
 
     public Node<K> findNode(K key) {
@@ -57,7 +58,8 @@ public class WDGimpl<K> implements WeightedDirectedGraph<Node<K>,K>
     }
 
     @SuppressWarnings("unchecked")
-    public Node<K>[] getNeighbours(Node<K> node) {
+    public Node<K>[] getNeighbours(Node<K> node)
+    {
         LinkedList<Arc> arcs = this.arcs.get(node);
         Node<K>[] returnValue;
 
@@ -90,7 +92,7 @@ public class WDGimpl<K> implements WeightedDirectedGraph<Node<K>,K>
             return Integer.MAX_VALUE;
     }
 
-    public WeightedDirectedGraph<Node<K>,K> shortestPath(Node<K> from, Node<K> to) {
+    public WeightedDirectedGraph<K,Node<K>> shortestPath(Node<K> from, Node<K> to) {
         // TODO : ? Use heap
         PriorityQueue<Node<K>> Q = new PriorityQueue<Node<K>>();
         Node<K> u;
@@ -124,12 +126,12 @@ public class WDGimpl<K> implements WeightedDirectedGraph<Node<K>,K>
             }
         }
 
-        WeightedDirectedGraph<Node<K>,K> returnGraph = new WDGimpl<K>();
-        returnGraph.insertNode(to, to.getKey());
+        WeightedDirectedGraph<K,Node<K>> returnGraph = new WDGimpl<K>();
+        returnGraph.insertNode(to.getKey(), to);
         Node<K> current = to;
         while (current.ref != null)
         {
-            returnGraph.insertNode(current.getRef(), current.getRef().getKey());
+            returnGraph.insertNode(current.getRef().getKey(), current.getRef());
             returnGraph.insertArc(current.getRef(), current, getWeight(current.getRef(), current)); 
             current = current.getRef();
         }

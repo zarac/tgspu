@@ -6,13 +6,13 @@ package graf;
  * 
  * @author 
  */
-public interface WeightedDirectedGraph<N,K>
+public interface WeightedDirectedGraph<K,N>
 {
-    public void insertNode(N node, K key);
+    public void insertNode(K key, N node);
     public N findNode(K key);
     public void deleteNode(N node);
     public void insertArc(N from, N to, int weight);
     public N[] getNeighbours(N node);
     public int getWeight(N from, N to);
-    public WeightedDirectedGraph<N,K> shortestPath(N from, N to);
+    public WeightedDirectedGraph<K,N> shortestPath(N from, N to);
 }

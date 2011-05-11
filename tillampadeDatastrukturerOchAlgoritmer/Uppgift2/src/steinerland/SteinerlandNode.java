@@ -2,21 +2,21 @@ package steinerland;
 
 import java.util.Comparator;
 
-public class SteinerlandNode extends graf.Node<String> implements Comparator<SteinerlandNode>
+public class SteinerlandNode<K> extends graf.Node<K> implements Comparator<SteinerlandNode<K>>
 {
     protected String city;
     protected short minutesFromMidnight;
 
-    public SteinerlandNode(String city)
+    public SteinerlandNode(String city, K key)
     {
         // TODO : ? Can we have -1 here, in order to represent an invalid/no
         // time? In other words a "city node".
-        this(city, (short)-1);
+        this(city, key, (short)-1);
     }
 
-    public SteinerlandNode(String city, short minutesFromMidnight)
+    public SteinerlandNode(String city, K key, short minutesFromMidnight)
     {
-        super(city);
+        super(key);
         this.city = city;
         this.minutesFromMidnight = minutesFromMidnight;
     }
@@ -47,5 +47,15 @@ public class SteinerlandNode extends graf.Node<String> implements Comparator<Ste
     public String getCity()
     {
         return this.city;
+    }
+
+    /**
+     * Gets the minutesFromMidnight for this instance.
+     *
+     * @return The minutesFromMidnight.
+     */
+    public short getMinutesFromMidnight()
+    {
+        return this.minutesFromMidnight;
     }
 }
