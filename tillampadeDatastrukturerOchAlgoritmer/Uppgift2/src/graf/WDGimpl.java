@@ -46,9 +46,7 @@ public class WDGimpl<K> implements WeightedDirectedGraph<K,Node<K>>
     public void insertArc(Node<K> from, Node<K> to, int weight) {
         LinkedList<Arc> arcs = this.arcs.get(from);
         if(arcs != null)
-        {
             arcs.add(new Arc(from, to, weight));
-        }
         else
         {
             arcs = new LinkedList<Arc>();
@@ -64,7 +62,7 @@ public class WDGimpl<K> implements WeightedDirectedGraph<K,Node<K>>
         Node<K>[] returnValue;
 
         if (arcs == null)
-            return null;
+            returnValue = new Node[0];
         else
         {
             Iterator<Arc> it = arcs.iterator();

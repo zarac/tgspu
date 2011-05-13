@@ -61,7 +61,7 @@ public class Gui extends JFrame
             add(fromLabel);
 
             from = new JComboBox();
-            from.addActionListener(this);
+            //from.addActionListener(this);
             add(from);
 
             timeLabel = new JLabel("At");
@@ -72,7 +72,7 @@ public class Gui extends JFrame
                         "00", "01", "02", "03", "04", "05", "06", "07", "08", "09",
                   "11", "12", "13", "14", "15", "16", "17", "18", "20", "21",
                   "22", "23", } );
-            hours.addActionListener(this);
+            //hours.addActionListener(this);
             add(hours);
 
             minutes = new JComboBox(new String[]
@@ -83,14 +83,14 @@ public class Gui extends JFrame
                     "31", "32", "33", "34", "35", "36", "37", "38", "39", "40",
                     "41", "42", "43", "44", "45", "46", "47", "48", "49", "50",
                     "51", "52", "53", "54", "55", "56", "57", "58", "59", });
-            minutes.addActionListener(this);
+            //minutes.addActionListener(this);
             add(minutes);
 
             toLabel = new JLabel("To");
             add(toLabel);
 
             to = new JComboBox();
-            to.addActionListener(this);
+            //to.addActionListener(this);
             add(to);
 
             JButton search = new JButton("Search");
@@ -116,7 +116,10 @@ public class Gui extends JFrame
         public void actionPerformed(ActionEvent e)
         {
             System.out.println("e=" + e);
-            result.set(steinerland.search(from.getSelectedItem().toString(), (String)hours.getSelectedItem(), (String)minutes.getSelectedItem(), (String)to.getSelectedItem()));
+            result.set(steinerland.search(from.getSelectedItem().toString(),
+                        Short.parseShort((String)hours.getSelectedItem()),
+                        Short.parseShort((String)minutes.getSelectedItem()),
+                        (String)to.getSelectedItem()));
         }
     }
 

@@ -34,10 +34,77 @@ public class Steinerland
         loadFile("data/timetable-fixed.tbl");
     }
 
-    public String search(String from, String hours, String minutes, String to)
+    public String search(String from, short hours, short minutes, String to)
     {
-        // TODO : IAMHERE
-        return "Just go to the station and wait for the next train. It'll be there \"soon\".";
+        System.out.println("to = " + to);
+        System.out.println("search():");
+        boolean wasNodeNull = false;
+        // create from node and arcs from it (if it does not exist)
+        SteinerlandNode<String> fromTimeNode = (SteinerlandNode<String>)graph.findNode(generateKey(from, hours, minutes));
+        if (fromTimeNode == null)
+        {
+            wasNodeNull = true;
+            System.out.println("search(): node was null...");
+            fromTimeNode = new SteinerlandNode<String>(from, generateKey(from, hours, minutes), getMinutesFromMidnight(hours,minutes));
+            graph.insertNode(generateKey(from, hours, minutes), fromTimeNode);
+            //  all from.to
+            for (Node<String> node : graph.getNeighbours((SteinerlandNode<String>)graph.findNode(from)))
+            {
+                System.out.println("search(): adding arc...");
+                SteinerlandNode<String> steinerlandNode = (SteinerlandNode<String>)node;
+                graph.insertArc(fromTimeNode, steinerlandNode, getTimeDifference(getMinutesFromMidnight(hours,minutes), steinerlandNode.getMinutesFromMidnight()));
+            }
+        }
+        System.out.println("search(): " + fromTimeNode.toString());
+        // get to node
+        SteinerlandNode<String> toNode = (SteinerlandNode<String>)graph.findNode(to);
+        // Seach graph for shortest path
+        WeightedDirectedGraph<String, Node<String>> shortestPath = graph.shortestPath(fromTimeNode, toNode);
+        // set returnValue to the WDG in form of a nice time table
+        // TODO : ? remove first node from shortestPath graph if wasNodeNull == true
+        String returnValue = graphToString(fromTimeNode, shortestPath);
+        // remove the node we created (and its arcs) (if added)
+        if (wasNodeNull)
+        {
+            // TODO : implement...
+        }
+
+        return returnValue;
+    }
+
+    protected String graphToString(SteinerlandNode<String> from, WeightedDirectedGraph<String, Node<String>> graph)
+    {
+        String returnValue = "Your recomended path is:\n";
+
+        if (graph == null)
+            return "THERE IS NO SPOON!";
+
+        SteinerlandNode<String> node = from;
+        while (node != null)
+        {
+            // set next node
+            Node<String>[] neighbours = graph.getNeighbours(node);
+            if (neighbours.length > 0)
+            {
+                SteinerlandNode<String> toNode = (SteinerlandNode<String>)neighbours[0];
+                returnValue += "From '" + node.getCity() + "' at '" + toMilitaryTime(node.getMinutesFromMidnight()) + "' to '" + toNode.getCity();
+                node = toNode;
+            }
+            else
+            {
+                // You've reached your target location...
+                returnValue += "Congratulations, we can serve you in your travelz! Total time is '" + toMilitaryTime((short)node.getDist());
+                node = null;
+            }
+        }
+
+        return returnValue;
+    }
+
+    public String toMilitaryTime(short minutes)
+    {
+        // TODO : impl..
+        return "14:88";
     }
 
     public void addLink(String from, short hoursDeparture, short minutesDeparture, String to, short hoursArrival, short minutesArrival, String train)
@@ -49,20 +116,25 @@ public class Steinerland
         // Add nodes (unless they exist).
         SteinerlandNode<String> fromNode = new SteinerlandNode<String>(from, from);
         SteinerlandNode<String> toNode = new SteinerlandNode<String>(to, to);
-        SteinerlandNode<String> fromTimeNode = new SteinerlandNode<String>(from, from+hoursDeparture+minutesDeparture, getMinutesFromMidnight(hoursDeparture, minutesDeparture));
-        SteinerlandNode<String> toTimeNode = new SteinerlandNode<String>(to, to+hoursArrival+minutesArrival, getMinutesFromMidnight(hoursArrival, minutesArrival));
+        SteinerlandNode<String> fromTimeNode = new
+            SteinerlandNode<String>(from, generateKey(from, hoursDeparture,
+                    minutesDeparture), getMinutesFromMidnight(hoursDeparture,
+                        minutesDeparture));
+        SteinerlandNode<String> toTimeNode = new SteinerlandNode<String>(to,
+                generateKey(to, hoursArrival, minutesArrival),
+                getMinutesFromMidnight(hoursArrival, minutesArrival));
         // - from
         if (graph.findNode(from) == null)
             graph.insertNode(from, fromNode);
         // - fromTime
-        if (graph.findNode(from+hoursDeparture+minutesDeparture) == null)
-            graph.insertNode(from+hoursDeparture+minutesDeparture, fromTimeNode);
+        if (graph.findNode(generateKey(from, hoursDeparture, minutesDeparture)) == null)
+            graph.insertNode(generateKey(from, hoursDeparture, minutesDeparture), fromTimeNode);
         // - to
         if (graph.findNode(to) == null)
             graph.insertNode(to, toNode);
         // - toTime
-        if (graph.findNode(to+hoursArrival+minutesArrival) == null)
-            graph.insertNode(to+hoursArrival+minutesArrival, toTimeNode);
+        if (graph.findNode(generateKey(to, hoursArrival, minutesArrival)) == null)
+            graph.insertNode(generateKey(to, hoursArrival, minutesArrival), toTimeNode);
 
         // Add arc.
         // - from
@@ -91,6 +163,11 @@ public class Steinerland
         System.out.println(from + ", " + hoursDeparture + ", " + minutesDeparture + ", " + to + ", " + hoursArrival + ", " + minutesArrival + ", " + train);
     }
 
+    protected String generateKey(String city, short hours, short minute)
+    {
+        return city + hours + minute;
+    }
+
     protected short getMinutesFromMidnight(short hours, short minutes)
     {
         return (short)(1440-(hours*60 + minutes));
@@ -102,9 +179,7 @@ public class Steinerland
         if (time > 0)
             return time;
         else
-        {
             return (short)(1440+time);
-        }
     }
 
     protected short getTimeDifference(short hoursDeparture, short minutesDeparture, short hoursArrival, short minutesArrival)

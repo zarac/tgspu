@@ -37,6 +37,16 @@ public class Node<K> implements Comparable<Node<K>>
     }
 
     /**
+     * Gets the dist for this instance.
+     *
+     * @return The dist.
+     */
+    public double getDist()
+    {
+        return this.dist;
+    }
+
+    /**
      * Gets the ref for this instance.
      *
      * @return The ref.
