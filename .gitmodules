@@ -1,3 +1,6 @@
 [submodule "datavetenskapI/Programvarukonstruktion/ObjektorienteradAnalysOchDesign/librarysystem"]
 	path = datavetenskapI/Programvarukonstruktion/ObjektorienteradAnalysOchDesign/librarysystem
 	url = git@github.com:zarac/tgspu-librarysystem.git
+[submodule "datavetenskapI/Programvarukonstruktion/ProjectVT11-whatevergame"]
+	path = datavetenskapI/Programvarukonstruktion/ProjectVT11-whatevergame
+	url = git@github.com:zarac/whatevergame.git
