@@ -4,3 +4,6 @@
 [submodule "datavetenskapI/Programvarukonstruktion/ProjectVT11-whatevergame"]
 	path = datavetenskapI/Programvarukonstruktion/ProjectVT11-whatevergame
 	url = git@github.com:zarac/whatevergame.git
+[submodule "datavetenskapI/Programvarukonstruktion/whatevergame"]
+	path = datavetenskapI/Programvarukonstruktion/whatevergame
+	url = git@github.com:zarac/whatevergame.git
