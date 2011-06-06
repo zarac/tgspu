@@ -18,12 +18,7 @@ public class Node<K> implements Comparable<Node<K>>
 
     public int compareTo(Node<K> node)
     {
-        if (this.dist == node.dist)
-            return 0;
-        else if (this.dist > node.dist)
-            return -1;
-        else
-            return 1;
+        return (int)(dist - node.dist);
     }
 
     /**
@@ -54,5 +49,9 @@ public class Node<K> implements Comparable<Node<K>>
     public Node<K> getRef()
     {
         return this.ref;
+    }
+
+    public String toString() {
+        return (String)key;
     }
 }

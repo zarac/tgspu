@@ -6,6 +6,8 @@ public class SteinerlandNode<K> extends graf.Node<K> implements Comparator<Stein
 {
     protected String city;
     protected short minutesFromMidnight;
+    public boolean isToNode;
+    public boolean isFromNode;
 
     public SteinerlandNode(String city, K key)
     {
@@ -36,8 +38,14 @@ public class SteinerlandNode<K> extends graf.Node<K> implements Comparator<Stein
      */
     public boolean equals(Object obj)
     {
+//        return (this == obj);
         return (city.equals(((SteinerlandNode)obj).getCity()));
     }
+
+//    public boolean isSimilar(graf.Node<K> node)
+//    {
+//        return (city.equals(((SteinerlandNode)node).getCity()));
+//    }
 
     /**
      * Gets the city for this instance.
@@ -57,5 +65,16 @@ public class SteinerlandNode<K> extends graf.Node<K> implements Comparator<Stein
     public short getMinutesFromMidnight()
     {
         return this.minutesFromMidnight;
+    }
+
+    public String toString(){
+        if (minutesFromMidnight == -1){
+            return this.city;
+        }else
+        return this.city + " " + this.minutesFromMidnight + " isFromNode=" + isFromNode + ", isToNode=" + isToNode;
+    }
+
+    public int hashCode() {
+        return (city + minutesFromMidnight).hashCode();
     }
 }

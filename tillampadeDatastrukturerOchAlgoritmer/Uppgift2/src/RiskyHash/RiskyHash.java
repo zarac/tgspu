@@ -18,7 +18,7 @@ public class RiskyHash<K,V> {
         }
     }
     
-    private int hashIndex( Object key ) {
+    public int hashIndex( Object key ) {
         int hashCode = key.hashCode();
         hashCode = hashCode % table.length;
         return ( hashCode < 0 ) ? -hashCode : hashCode;
@@ -73,9 +73,9 @@ public class RiskyHash<K,V> {
     public void remove(Object key){
         int index = hashIndex(key);
         if (index != -1){
-        boolean togsBort = table[hashIndex(key)].remove(new Entry(key,null));
-        if (togsBort)
-        size--;
+            boolean togsBort = table[hashIndex(key)].remove(new Entry(key,null));
+            if (togsBort)
+                size--;
         }
     }
     public void remove(K key, V value){

@@ -12,4 +12,8 @@ package graf;
             this.from = from;
             this.weight = weight;
         }
+
+        public String toString() {
+            return "Arc.toString(): " + from + " to " + to + ", weight: " + weight;
+        }
     }
