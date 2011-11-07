@@ -1,0 +1,24 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoombaSmasher", "ZoombaSmasher\ZoombaSmasher\ZoombaSmasher.csproj", "{93386963-1864-4CE3-87F6-76C4E760D862}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZoombaSmasherContent", "ZoombaSmasher\ZoombaSmasherContent\ZoombaSmasherContent.contentproj", "{AE9B8115-159B-4D24-AFD7-192231F88E7F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x86 = Debug|x86
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{93386963-1864-4CE3-87F6-76C4E760D862}.Debug|x86.ActiveCfg = Debug|x86
+		{93386963-1864-4CE3-87F6-76C4E760D862}.Debug|x86.Build.0 = Debug|x86
+		{93386963-1864-4CE3-87F6-76C4E760D862}.Release|x86.ActiveCfg = Release|x86
+		{93386963-1864-4CE3-87F6-76C4E760D862}.Release|x86.Build.0 = Release|x86
+		{AE9B8115-159B-4D24-AFD7-192231F88E7F}.Debug|x86.ActiveCfg = Debug|x86
+		{AE9B8115-159B-4D24-AFD7-192231F88E7F}.Release|x86.ActiveCfg = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
