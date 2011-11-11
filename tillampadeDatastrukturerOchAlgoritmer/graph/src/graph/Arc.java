@@ -1,33 +1,33 @@
 package graph;
 
-public class Arc
+public class Arc<T>
 {
-    protected Node from, to;
-    protected double weight;
+    protected Node<T> from, to;
+    protected double weight = 0;
 
-    public Arc(Node from, Node to, double weight)
+    public Arc(Node<T> from, Node<T> to, double weight)
     {
         this.from = from;
         this.to = to;
         this.weight = weight;
     }
 
-    public Node getFrom()
+    public Node<T> getFrom()
     {
         return from;
     }
 
-    public void setFrom(Node from)
+    public void setFrom(Node<T> from)
     {
         this.from = from;
     }
 
-    public Node getTo()
+    public Node<T> getTo()
     {
         return to;
     }
 
-    public void setTo(Node to)
+    public void setTo(Node<T> to)
     {
         this.to = to;
     }
@@ -44,6 +44,6 @@ public class Arc
 
     public String toString()
     {
-        return "From '" + from + "' to '" + to + "' weighing '" + weight + "'.";
+        return "Arc[" + from + "   -- " + weight + " -->   " + to + "]";
     }
 }

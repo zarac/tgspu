@@ -18,7 +18,9 @@
     </target>
     <target name="compile" depends="init">
         <mkdir dir="${classes.dir}"/>
-        <javac debug="true" includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath"/>
+        <javac debug="true" includeantruntime="false" srcdir="${src.dir}" destdir="${classes.dir}" classpathref="classpath">
+            <compilerarg value="-Xlint"/>
+        </javac>
         <copy todir="${classes.dir}">
             <fileset dir="${src.dir}" excludes="**/*.java,**/*.swp"/>
         </copy>
